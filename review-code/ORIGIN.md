@@ -1,6 +1,6 @@
 # Adaptation Notes
 
-The user adopted the seven-part review design and requested a formal package. Runtime guidance is in [code-review/SKILL.md](../code-review/SKILL.md) and its package references. This file records source and adaptation rationale; the package does not depend on it. Other finalized skills are unchanged.
+The user adopted the seven-part review design and requested a formal package. Runtime guidance is in [review-code/SKILL.md](../review-code/SKILL.md) and its package references. The custom entry is named `review-code` to avoid replacing Claude Code's bundled `/code-review`; the upstream name remains `code-review`. This file records source and adaptation rationale; the package does not depend on it. Other finalized skills are unchanged.
 
 ## Upstream Source
 

@@ -1,9 +1,9 @@
 ---
-name: code-review
+name: review-code
 description: "Review changes against requirements, project standards, and relevant correctness concerns, including related interfaces and failure scenarios. Use when the user requests a review or when reviewing the actual changes before delivery. Identify the correct target and source material, verify findings with evidence, distinguish defects from maintenance suggestions and open questions, and report by impact. A review alone defaults to reporting findings; it does not authorize fixes, commits, or broader audit."
 ---
 
-# Code Review
+# Review Code
 
 ## 1. Confirm Authority and Purpose
 

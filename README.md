@@ -10,8 +10,10 @@ Eight skills for design discussions, engineering documentation, implementation, 
 | [maintenance-docs](maintenance-docs/SKILL.md) | Maintain subsystem documentation, change designs, plans, and their source relationships. |
 | [decision-notes](decision-notes/SKILL.md) | Find and maintain long-term decisions, rationale, and rejected or superseded approaches. |
 | [tdd](tdd/SKILL.md) | Develop behavior incrementally through discriminating failing tests, minimal implementation, and refactoring. |
-| [code-review](code-review/SKILL.md) | Review requirements, project standards, and correctness against the actual change scope. |
+| [review-code](review-code/SKILL.md) | Review requirements, project standards, and correctness against the actual change scope. |
 | [handoff](handoff/SKILL.md) | Prepare a context transfer or verify a handoff before continuing work. |
+
+The custom review skill uses `/review-code` to keep Claude Code's bundled `/code-review` available. A custom skill with the same name replaces the bundled command; see [Resolve skills that share a name](https://code.claude.com/docs/en/skills#resolve-skills-that-share-a-name).
 
 ## Install
 
@@ -30,7 +32,7 @@ Expected layout, where `<configured-skill-directory>` is your host's actual conf
   maintenance-docs/SKILL.md
   decision-notes/SKILL.md
   tdd/SKILL.md
-  code-review/SKILL.md
+  review-code/SKILL.md
   handoff/SKILL.md
   ...other files inside each complete package
 ```
@@ -58,7 +60,7 @@ to-docs/
 maintenance-docs/
 decision-notes/
 tdd/
-code-review/
+review-code/
 handoff/
 ```
 
@@ -70,4 +72,4 @@ handoff/
 
 Locally authored material is licensed under the [MIT License](LICENSE), with Copyright (c) 2026 skills contributors. This covers the project template, companion guidance, this README, and the locally authored packages, which also retain their own copies: [decision-notes/LICENSE](decision-notes/LICENSE), [maintenance-docs/LICENSE](maintenance-docs/LICENSE), and [to-docs/LICENSE](to-docs/LICENSE).
 
-The upstream and adapted packages retain Copyright (c) 2026 Matt Pocock and their original MIT notices: [grilling/LICENSE](grilling/LICENSE), [grill-me/LICENSE](grill-me/LICENSE), [tdd/LICENSE](tdd/LICENSE), [code-review/LICENSE](code-review/LICENSE), and [handoff/LICENSE](handoff/LICENSE). Their upstream is [mattpocock/skills](https://github.com/mattpocock/skills), using source revision [`c55ee46073ed923f86ce59a5eb3b6d895095d1b7`](https://github.com/mattpocock/skills/tree/c55ee46073ed923f86ce59a5eb3b6d895095d1b7). Local adaptations are documented in [grill-me/ORIGIN.md](grill-me/ORIGIN.md), [tdd/ORIGIN.md](tdd/ORIGIN.md), [code-review/ORIGIN.md](code-review/ORIGIN.md), and [handoff/ORIGIN.md](handoff/ORIGIN.md). Retain the applicable copyright, license, and origin notices when redistributing these packages; the root license does not replace their notices.
+The upstream and adapted packages retain Copyright (c) 2026 Matt Pocock and their original MIT notices: [grilling/LICENSE](grilling/LICENSE), [grill-me/LICENSE](grill-me/LICENSE), [tdd/LICENSE](tdd/LICENSE), [review-code/LICENSE](review-code/LICENSE), and [handoff/LICENSE](handoff/LICENSE). Their upstream is [mattpocock/skills](https://github.com/mattpocock/skills), using source revision [`c55ee46073ed923f86ce59a5eb3b6d895095d1b7`](https://github.com/mattpocock/skills/tree/c55ee46073ed923f86ce59a5eb3b6d895095d1b7). Local adaptations are documented in [grill-me/ORIGIN.md](grill-me/ORIGIN.md), [tdd/ORIGIN.md](tdd/ORIGIN.md), [review-code/ORIGIN.md](review-code/ORIGIN.md), and [handoff/ORIGIN.md](handoff/ORIGIN.md). Retain the applicable copyright, license, and origin notices when redistributing these packages; the root license does not replace their notices.
