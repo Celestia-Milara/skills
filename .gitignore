@@ -1,0 +1,19 @@
+# Internal working material (root only).
+/design/
+/zh-backup/
+/handoff.md
+/github-preupload-review.md
+/.claude/
+
+# Local generated artifacts and scratch output (root only).
+/.dist/
+/generated-images/
+/generated-videos/
+/tmp/
+/.tmp/
+/.cache/
+
+# Operating-system metadata.
+.DS_Store
+Thumbs.db
+Desktop.ini

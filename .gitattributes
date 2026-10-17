@@ -1,0 +1,7 @@
+# Normalize text on Git add and use LF in working copies.
+* text=auto eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+LICENSE text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf

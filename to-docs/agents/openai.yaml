@@ -1,0 +1,5 @@
+interface:
+  display_name: "To Docs"
+  short_description: "Turn discussions into designs to read, revise, and reuse"
+policy:
+  allow_implicit_invocation: true

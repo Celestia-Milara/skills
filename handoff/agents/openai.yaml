@@ -1,0 +1,5 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Prepare handoffs or verify context when taking over"
+policy:
+  allow_implicit_invocation: true
