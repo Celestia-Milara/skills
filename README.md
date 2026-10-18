@@ -1,6 +1,6 @@
 # Agent Skills
 
-Eight skills for design discussions, engineering documentation, implementation, review, and handoff. The root-level packages are the maintained English edition. `zh-backup/` is a local Chinese backup, excluded from publication; do not install it alongside the root packages because their skill names overlap.
+A reusable collection of personal engineering conventions: eight skills for design discussions, engineering documentation, implementation, review, and handoff, plus project agent guidance. The root-level packages are the maintained English edition. `zh-backup/` is a local Chinese backup, excluded from publication; do not install it alongside the root packages because their skill names overlap.
 
 | Skill | Purpose |
 | --- | --- |
@@ -73,13 +73,15 @@ For read-only Claude Code invocation tests, retain `Glob` and `Grep` alongside `
 
 ## Project agent guidance
 
-[AGENTS.md](AGENTS.md) is the project instruction entry point and also serves as reusable guidance for other projects; it is not a ninth skill. Follow [Agent Guidance Integration](agent-guidance/README.md) to place it under the name your tool recognizes, such as `AGENTS.md` or `CLAUDE.md`, and copy its three companion files from `agent-guidance/`. Replace placeholders with actual project resources and update skill links to the installed locations. Markdown links provide navigation; they do not automatically load the linked rules.
+[AGENTS.md](AGENTS.md) is the active instruction entry point for maintaining this library. For other projects, start with [AGENTS.template.md](agent-guidance/AGENTS.template.md) and the three companion files in `agent-guidance/`; these are engineering conventions, not a ninth skill. [Agent Guidance Integration](agent-guidance/README.md) owns the setup, link adjustment, and source-version workflow. Each project keeps a reviewable copy with its own resources and constraints, adopting source updates explicitly rather than following a live global file. Markdown links provide navigation; they do not automatically load the linked rules.
 
 ## Reading and maintenance
 
 Each package's `description` identifies when it applies; `SKILL.md` contains its main workflow and necessary defaults. Read bundled references under the conditions given in the entry point. The purpose table above is navigation, not an overriding policy. A standalone review reports by default; an authorized implementation task or explicit fix request may address confirmed defects within scope.
 
 Project guidance is optional. Skill packages retain essential boundaries locally; where a commit step applies, the standalone fallback is: show checked work and ask by default, honor explicit authorization already given for the same scope, and do not treat saving a document as permission to publish. Companion skill names describe cooperating methods; use installed capabilities or readable configured guidance, state missing dependencies, and do not claim unavailable invocations.
+
+For guidance-only changes, check Markdown links and anchors, reading triggers, source ownership, and the template after adapting its paths to a target project. Use `git diff --check` for tracked changes and include new files in the review. For package or installation changes, also check affected package metadata and references; use host checks when discovery or invocation behavior is affected, and report their limits separately from static checks. Preserve complete package contents and license/origin notices; keep publication selection within the scope below.
 
 ## Publication scope
 
