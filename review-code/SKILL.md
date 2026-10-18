@@ -1,57 +1,40 @@
 ---
 name: review-code
-description: "Review changes against requirements, project standards, and relevant correctness concerns, including related interfaces and failure scenarios. Use when the user requests a review or when reviewing the actual changes before delivery. Identify the correct target and source material, verify findings with evidence, distinguish defects from maintenance suggestions and open questions, and report by impact. A review alone defaults to reporting findings; it does not authorize fixes, commits, or broader audit."
+description: "Review changes against requirements, project standards, and relevant correctness risks. Use for a requested review or delivery self-review; verify findings and rank by impact. A standalone review reports by default and does not authorize fixes or a broader audit."
 ---
 
 # Review Code
 
-## 1. Confirm Authority and Purpose
+## 1. Establish authority and target
 
-- Review is read-only by default. A review request authorizes investigation and reporting, not code edits, commits, pushes, PR actions, or release.
-- When reviewing your own implementation as part of an already-authorized task, address clear issues within that task's scope and verify the resulting changes. For a standalone review, report only unless the user authorizes fixes.
-- Do not make behavior or scope decisions for the user. Investigate, explain material alternatives and consequences, and ask when a key choice remains unclear.
-- Use the skills and tools actually available in the environment. A capability's name alone does not establish that it is installed or available.
+A standalone review authorizes investigation and reporting by default. Respect explicit read-only, report-first, and discussion limits. An implementation self-review or explicit fix request permits clear fixes within existing scope. Neither review nor speculation adds commit, push, PR, or release authorization.
 
-## 2. Identify the Review Target
+Use the requested PR, commit, range, files, or behavior. Otherwise infer this task's changes from repository status, branch and base, recent history, index, working tree, and relevant untracked files. Do not inspect only HEAD, silently include unrelated work, or always use merge-base-to-HEAD. Ask only if material target ambiguity remains; an empty diff is no evidence of quality.
 
-Start with the user's specified PR, commit, range, files, or review scope. Otherwise, inspect repository status, branch and base information, recent relevant history, the index, and working-tree changes to identify the current task's changes. Include relevant untracked files and local modifications; do not limit an implementation review to HEAD or silently mix unrelated changes into it.
+Read [Review Scope and Sources](references/scope-and-sources.md) when choosing the comparison, distinguishing workspace/index versions, or locating requirements and related paths. Recheck affected conclusions if the target changes; do not commit or clean the workspace just to enable review.
 
-Choose a comparison suited to the request: PR diff against its base, specified commits or range, a focused file change, or the authorized set of staged, unstaged, committed, and untracked files. Do not always use merge-base-to-HEAD. If the target can be determined from the task and repository, do not ask merely for a base ref. If it cannot be established, state the ambiguity and ask a focused question.
+## 2. Locate the basis and assess both perspectives
 
-If the target is empty, say so; an empty diff is not evidence of code quality. If the target changes during review, update the scope and recheck affected findings. Do not create a commit just to make review possible.
+Follow the actual project entry point to applicable requirements, acceptance criteria, designs, subsystem documentation, standards, and decisions. Verify related source, tests, callers, and interfaces. Issue and commit text provide clues; existing code does not automatically establish intent, and old documents do not override new user instructions. State missing-source limits while continuing correctness checks supported by evidence.
 
-## 3. Locate Requirements and Sources
+Assess requirements and standards for omissions, partial implementation, incorrect behavior, and scope expansion. Separately assess correctness relevant to the change: interfaces, failure paths, resources, concurrency, compatibility, and whether tests discriminate intended behavior. Neither perspective substitutes for the other.
 
-Follow the project's actual Agent entry point to relevant requirements, acceptance criteria, change designs, subsystem documentation, coding standards, and effective decision notes. Use issue or commit text as a clue, not as the sole authority for intent. Verify related source and tests for the changed paths and behavior. If a required source is absent, state which conclusions cannot be checked while continuing to assess correctness that has evidence.
+Read [Review Criteria](references/review-criteria.md) for applicable risk prompts and tool-evidence checks. Smells are investigation leads, not automatic violations; prefer explicit project rules and suggest cleanup only for concrete benefit at acceptable cost. Stay within the target's impact.
 
-When documentation and implementation conflict, investigate the discrepancy. Existing code does not automatically define the requirement, and old documentation does not overrule a new user instruction. See [Review Scope and Sources](references/scope-and-sources.md).
+Use capabilities actually available. If needed companion guidance cannot be invoked, read its configured source through the host's mechanism; state inaccessible guidance without claiming a successful invocation. Do not require a fixed number of agents or repeated loading.
 
-## 4. Review from Independent Perspectives
+## 3. Verify and report
 
-Check requirements and project standards for omissions, partial implementations, incorrect behavior, and scope expansion. Separately investigate correctness risks related to the actual change, including affected callers and interfaces, failure cases, resources, concurrency, compatibility, and whether tests can distinguish the intended behavior from a faulty implementation.
+Read [Findings, Reporting, and Fixes](references/findings-and-report.md) when verifying candidates or preparing the report; it owns detailed evidence, counterexample, causation, deduplication, and reporting rules.
 
-Neither perspective replaces the other. Missing complete requirements do not excuse skipping correctness analysis supported by evidence; finding no bug does not prove requirements were met.
+Establish a location, applicable rule or contract, trigger, and concrete impact for each finding. Try to disprove it using reachability, caller guarantees, handling, version limits, and applicable decisions. Static proof can suffice; severity does not turn an unverified premise into a defect. Report problems introduced, worsened, or made current by the target and explain causation for older locations. Keep unrelated legacy issues separate.
 
-Apply only relevant rules. Treat maintainability smells as leads to investigate, not automatic violations. Prefer explicit project standards. Suggest a cleanup only when it has a concrete benefit and acceptable cost. See [Review Criteria](references/review-criteria.md).
+Merge findings only when they share root cause and fix. Order confirmed defects and explicit standards violations by impact; separate maintenance suggestions and unresolved questions. Report target, locations, triggers, checks and coverage, missing sources, and limits. No findings means none confirmed within the examined scope, not proof of no bugs, full requirements conformance, or manual acceptance.
 
-## 5. Verify Findings and Evidence
+If delegating is useful and authorized, verify that perspectives share the same target, examine evidence and counterexamples, and integrate coverage and limitations rather than pasting reports.
 
-For each candidate, establish the relevant location, rule or contract, triggering input/state/event, and concrete impact. Check reachability, caller guarantees, error handling, version scope, applicable decisions, and counterexamples. Static reasoning is enough when it proves the issue; dynamic reproduction is not mandatory. Do not elevate a speculative premise to a confirmed defect because its possible impact sounds severe.
+## 4. Handle authorized follow-up
 
-Report issues introduced, worsened, or made current by the target change. A finding may point to existing code if the causal relationship is clear. Keep unrelated pre-existing problems separate; do not mix them into the findings or fix them as part of a review without authorization.
+For fixes already authorized, inspect the new diff, verify the original issue is resolved, check for new issues, and run relevant checks against the changed version. Pre-fix evidence does not validate the fix. Ask only when behavior, scope, or a key trade-off needs a decision beyond existing authorization; do not reconfirm settled decisions.
 
-## 6. Report Clearly and by Impact
-
-Verify and deduplicate findings before reporting. Merge items only when they share the same root cause and fix; retain the relevant requirement, standard, or correctness basis. Report confirmed defects and explicit standard violations together, ordered by actual impact. Put maintenance suggestions and questions needing investigation in separate sections, with concrete benefit, cost, or unresolved assumptions. See [Findings and Reporting](references/findings-and-report.md).
-
-State the review target and scope, findings with locations and triggering scenarios, checks run or reused and their coverage, and any missing sources or limitations. If there are no findings, say there were none in the examined scope; do not claim there are no bugs, that all requirements passed, or that manual acceptance is complete. If no target changes exist, say there is no difference under the stated comparison.
-
-If review perspectives are delegated, first confirm that they assessed the same target. Verify their evidence, look for counterexamples, deduplicate the results, and report each perspective's coverage and undecidable areas. Do not paste subreports without checking them.
-
-## 7. Fixes and Follow-up
-
-A standalone review defaults to reporting only. In an implementation task, or after an explicit fix request, handle concrete findings within existing authorization. If the user requested read-only review, reporting first, or discussion, stay within that boundary. Speculation does not authorize a behavior change. Ask the user about changes to behavior, scope, or a key trade-off; do not reconfirm established decisions.
-
-After a fix, inspect the new diff, verify that the finding is resolved and no new issue was introduced, and run relevant checks. Pre-fix evidence does not prove the fixed version. Report accurately what was fixed, remains unverified, or was left untouched and why.
-
-Long-term decisions and ongoing documentation remain owned by `decision-notes` and `maintenance-docs`; do not create a parallel full reporting policy. Follow the project's confirmation rules before committing. Do not automatically commit, push, open a PR, or release. A completed review does not prove real runtime behavior or required manual acceptance.
+Keep long-term decisions and retained documentation in their owning sources rather than duplicating their policies here. After authorized edits, follow project Git rules and current authorization; absent explicit commit authorization for this scope, show the checked work and ask whether the round is ready for a local commit. Honor existing authorization without asking again. Report what changed and what remains unresolved or unverified; review does not prove runtime behavior or required manual acceptance.

@@ -1,56 +1,44 @@
 ---
 name: to-docs
-description: "Turn brainstorming, requirements discussions, or design interviews into human-readable design documents for review, revision, and future reference. Use when the user asks to preserve a design or organize discussion outcomes, or when a discussion produces design worth retaining. By default, use docs/designs/<topic>.md and prefer updating an existing source. Distinguish settled conclusions, recommendations, assumptions, and open questions. Do not implement automatically or require a plan; work with maintenance-docs to keep a single source of truth."
+description: "Turn brainstorming, requirements discussions, and design interviews into readable designs for review and later reference. Use when asked to preserve a design or when a discussion yields design worth retaining; saving it does not authorize implementation."
 ---
 
 # To Docs
 
-## 1. Determine the scope and sources
+## 1. Establish scope and sources
 
-When the user explicitly asks, handle the specified topic. You may also use this skill proactively when a discussion has produced design worth retaining; do not ask for permission to save it each time. Do not mechanically create documents for brief Q&A or repeated content with no independent retention value.
+Handle the requested topic, or proactively preserve a discussion with independent design value. Do not document brief Q&A or repeated content mechanically. Read relevant existing designs, project entry points, requirements, acceptance criteria, subsystem documentation, and decisions; reuse verified context and prefer updating a suitable source.
 
-First read existing designs and relevant project entry points, requirements and acceptance criteria, subsystem documentation, and long-term decisions. Reuse context that has been verified and still applies. Determine what this discussion should preserve and whether an existing source can hold it; prefer updating an existing source rather than creating a new document for every conversation.
+Organize what was actually discussed. Verify discoverable facts selectively; distinguish settled conclusions, recommendations, assumptions, and open questions. Do not invent user rationale, decisions, or implementation facts. Ask about unresolved key conflicts while saving independent material.
 
-- Faithfully organize what was actually discussed. Do not invent the user's reasons, adopted conclusions, implementation facts, or details that were never discussed.
-- When facts can be investigated, verify them selectively and distinguish verified information from assumptions. If a key design conflict is unclear, identify it and ask the user to decide; continue organizing independent material.
-- In-depth interviews remain the responsibility of `grilling`. Do not restart an interview or ask for confirmation of an existing decision just to write a document. If using that interview, follow its shared-understanding confirmation without turning every save into an approval step.
-- Preserve unresolved items and facts that need recording as they arise. Record important, settled conclusions with long-term value under `decision-notes` promptly; do not wait until final wrap-up.
+Use `grilling` for an in-depth interview without restarting settled questions. Its shared-understanding confirmation applies before implementing the resulting design, not before saving settled content and open items. Promptly preserve settled rationale through `decision-notes` when it meets the long-term retention threshold.
 
-Use the skill name actually available in the environment. If it cannot be invoked, read the configured source instead; do not claim to have invoked an unavailable skill. Do not repeatedly load companion skills or rescan the same materials in a cycle.
+Use companion skills when available; otherwise read their configured guidance through the host's supported mechanism. If required guidance is inaccessible, state the gap and continue independent work. Do not claim an unavailable invocation, repeatedly load companions, or introduce circular calls.
 
-## 2. Choose a location and keep one source of truth
+## 2. Choose one owning source
 
-By default, use `docs/designs/<topic>.md` with a clear, stable English kebab-case topic name. Reuse an existing suitable design source or directory when the project has one; do not require migration. Use a topic subdirectory only when multiple documents or images are genuinely needed. Do not pre-create empty directories or a complete file set.
+Default to `docs/designs/<topic>.md` with a stable English kebab-case topic. Prefer existing project locations without migration. Use a topic directory only for genuinely separate documents or images; do not pre-create empty directories or a complete file set.
 
-A human-readable design can be the complete design source; there is no need to first write a copy under `.agents/` and then generate a summary. When requirements, acceptance criteria, shared standards, or detailed designs already have an authoritative source, summarize and link to it rather than copying the full text. Not every design needs a companion Agent document.
+A readable design may be the complete source. Link to existing requirements, acceptance criteria, shared standards, and detailed sources rather than copying them or first creating an Agent version. Not every design needs companion engineering documentation, a README, a plan, or an overall Status. Document maturity is distinct from implementation progress.
 
-Follow `maintenance-docs` for source discovery, organization, verification, and ongoing consistency. These principles apply from the moment a design is saved; implementation does not need to have started. Use an engineering change directory, README, task list, or overall Status only when an engineering change record is actually needed. Do not impose these on human-readable designs. Human-readable designs do not need a separate mandatory state machine, and document maturity is not implementation progress.
+Maintain specific styles with the design; link to established cross-feature standards in their owning source. Do not require a new design system. Use `maintenance-docs` when source organization or ongoing engineering records need attention, preserving these ownership boundaries even before implementation starts.
 
 ## 3. Write a design people can evaluate
 
-Read [Design Content and Expression](references/design-content.md) as needed. The document should help people judge whether the design meets their intent and help later Agents identify settled behavior and constraints.
+When drafting or substantially revising a design, read [Design Content and Expression](references/design-content.md) for content choices, examples, and handling later feedback.
 
-- Use a clear title for the topic and explain why it matters, the goal and scope, key scenarios, and expected behavior.
-- Organize the discussed solution, key mechanisms and interface relationships, necessary constraints, acceptance basis, and unresolved questions. Choose depth based on the topic; do not require every section.
-- Clearly distinguish settled content, recommendations not yet decided, assumptions, and questions to verify. Finishing the document does not mean every proposal in it is approved; adopting a goal does not mean it has been implemented.
-- For visual or interaction design, provide concrete scenarios, examples, sketches, existing components, or style sources as needed. Avoid relying only on vague words such as “modern,” “simple,” or “consistent.” Label examples and explorations so they are not mistaken for confirmed decisions or evidence from a real running system.
-- Keep styles unique to this design here. Maintain established cross-feature standards in an appropriate shared source and have designs link to it. Do not require a `design-system.md` without a real need.
-- Briefly explain the rationale needed to understand the design. `decision-notes` owns complete long-term rationale, rejected alternatives, and evidence that meet its retention threshold; link to it elsewhere. Unresolved comparisons can remain in the design.
+Explain the problem, goal, scope, key scenarios, expected behavior, relevant mechanisms and interfaces, constraints, acceptance basis, and unresolved questions at the depth this topic needs. No fixed section template is required. Make visual and interaction choices concrete with scenarios, components, sketches, or style sources; label explorations and examples accurately.
 
-Do not transcribe Q&A turn by turn. Do not default to a code-change checklist, test commands, or execution progress, and do not prewrite a complete plan just to make the design “implementable.” A design can be saved with open questions; identify important gaps honestly.
+Include concise rationale needed to understand the design. Link to complete long-term rationale and rejected alternatives only when they meet the notes retention threshold; unresolved comparisons remain here. Do not transcribe Q&A, replace behavior with a code-change checklist, or require a complete implementation plan. A design may be saved with honest gaps.
 
-## 4. Support implementation and ongoing maintenance
+## 4. Support later implementation
 
-When the user references a design and explicitly asks for implementation, verify that it still applies against current source code, project constraints, and relevant notes. Carry forward applicable settled goals, behavior, style, and trade-offs without reopening decisions. Keep recommendations and unresolved items in their existing status. Investigate conflicts that affect implementation or ask the user to decide, while continuing authorized independent work.
+Reading, writing, or referencing a design adds no implementation authorization. Carry forward existing task authorization; a discussion-only request stays within discussion. Before authorized implementation, verify the actual design against current code, constraints, and related decisions. Preserve settled behavior and style without reopening them, and keep recommendations unresolved until decided. Investigate material conflicts or ask for a decision while continuing independent work.
 
-An Agent working on an existing task may locate relevant designs without waiting for the user to cite them explicitly. Creating, reading, or merely referencing a design does not add implementation authorization; authorization already granted for the task remains in effect. If the request is only for discussion or design, stay within that scope.
+Add engineering approaches, dependencies, verification, and progress to `.agents/changes/` only when continuity needs them, referencing the design. Update affected subsystem documentation after verified implementation. Revise the original design when it changes; do not silently replace it with an engineering record. Preserve genuine long-term changes of decision under `decision-notes`.
 
-As needed, add engineering approaches, dependencies, verification arrangements, and progress to `.agents/changes/`, referencing the human-readable design rather than copying it in full. After implementation, update affected subsystem descriptions to reflect verified current behavior. When the design changes, update its original source; do not silently overwrite a still-valid human-readable design with an engineering record. Maintain major changes of decision and their historical rationale under `decision-notes`.
+## 5. Check and deliver
 
-## 5. Review and deliver
+Check fidelity to the discussion, distinction between goals and current facts, key scenarios and constraints, source links, style ownership, duplication, and unsupported conclusions. Run applicable existing documentation checks, or review manually; saving a design does not justify adding a toolchain, product tests, or code changes. Keep review within the task.
 
-Review the relevant scope for this task: does the design reflect the actual discussion; are settled and unresolved content, current state, and goals distinguished; are key scenarios and constraints understandable; can sources and materials be found; does each style reference point to the right source; and have duplicate text, unsupported decisions, or unsubstantiated verification claims been introduced?
-
-Use existing, applicable documentation checks to verify links and structure. If no tool is available, review manually. Do not add a toolchain, product tests, or code changes just to save a design. When organizing or maintaining related documents, follow `maintenance-docs` without expanding the review into a repository-wide audit.
-
-Deliver the saved location, main content, and key gaps with a brief explanation and links to the actual files. Update the same source when feedback arrives. Saving a design does not add approval, mean every proposal is approved, prove a feature is complete or verified, or authorize a commit or release. Follow the project's existing commit-confirmation rules; do not commit, push, open a PR, or publish automatically just because a design was written.
+Deliver the actual saved location, main content, and key gaps with links; apply feedback to the same source. Saving does not approve every proposal, prove completion or verification, or authorize external operations. Follow project Git rules and current authorization. Without explicit commit authorization for this scope, show the checked work and ask whether the round is ready for a local commit; do not repeat an authorization already given. Saving alone authorizes no push, PR, or publication.
