@@ -18,9 +18,16 @@ The custom review skill uses `/review-code` to keep Claude Code's bundled `/code
 ## Install
 
 1. Download or clone [Celestia-Milara/skills](https://github.com/Celestia-Milara/skills).
-2. Locate the skill directory already configured for your host. Copy the selected **complete package directories** into it, with one directory per skill. For the full workflow, copy all eight packages listed above.
+2. Choose a host location from the table below. Copy the selected **complete package directories** into it, with one directory per skill. For the full workflow, copy all eight packages listed above; copying this repository itself into a skills directory does not produce that layout.
 3. Preserve all bundled files, including `references/`, `agents/`, `ORIGIN.md`, and `LICENSE` where present. Copying only `SKILL.md` loses guidance or license notices. For a partial installation, also make the companion methods referenced by name available to the host.
-4. Follow the host's own discovery or registration procedure, then verify that the expected skill names are available. Paths, tool names, and metadata support vary by host; `agents/openai.yaml` alone does not install or register a skill.
+4. Start a new session and verify that the expected skill names are available. Paths, tool names, and metadata support vary by host; `agents/openai.yaml` alone does not install or register a skill.
+
+| Host | Personal installation | Project installation | Explicit invocation |
+| --- | --- | --- | --- |
+| Codex | `~/.agents/skills/<name>/` | `.agents/skills/<name>/` | `$grilling`, `$grill-me`, or another installed name |
+| Claude Code | `~/.claude/skills/<name>/` | `.claude/skills/<name>/` | `/grilling`, `/grill-me`, or another installed name |
+
+`~` means your user home directory, such as `C:\Users\<user>` on Windows. Project paths are relative to the project directory. Choose one scope per host to avoid installing the same names twice. In Codex, open the skill picker with `$`; in Claude Code, use `/` and check the available commands. If an existing session still shows the old inventory, restart the host. See the official [Codex skills documentation](https://learn.chatgpt.com/docs/build-skills) and [Claude Code skills documentation](https://code.claude.com/docs/en/skills).
 
 Expected layout, where `<configured-skill-directory>` is your host's actual configured location:
 
@@ -37,7 +44,32 @@ Expected layout, where `<configured-skill-directory>` is your host's actual conf
   ...other files inside each complete package
 ```
 
-Keep `grill-me` and `grilling` together. On a host with a `Skill` tool, the explicit `grill-me` entry delegates to `grilling`. If that tool is unavailable, open the installed `grilling/SKILL.md` through the host's supported file-reading mechanism and follow it directly, resolving any relative references from that package. Do not assume every host supports the same invocation or automatic discovery behavior. Installation and runtime behavior must be checked in the target host; this collection has not been behavior-tested across hosts.
+Keep `grill-me` and `grilling` together. On a host with a `Skill` tool, the explicit `grill-me` entry delegates to `grilling`. If that tool is unavailable, open the installed `grilling/SKILL.md` through the host's supported file-reading mechanism and follow it directly, resolving any relative references from that package.
+
+`grill-me` intentionally requires explicit invocation: Claude Code uses `disable-model-invocation: true`, and Codex uses `policy.allow_implicit_invocation: false` in `agents/openai.yaml`. The other seven skills are eligible for automatic selection from their descriptions. Being discovered does not guarantee that the model will choose a skill for every related prompt or that its tools can read the package.
+
+### Verified host behavior
+
+Checked on Windows on 2026-10-17:
+
+| Check | Codex CLI `0.163.0` / desktop CLI `0.163.0-alpha.10.2` | Claude Code `2.1.302` |
+| --- | --- | --- |
+| Project discovery with all eight complete packages | 8 names found; no loader errors | 8 commands found; bundled `/code-review` retained |
+| Project discovery with only `decision-notes` | Standalone package found; no loader errors | Standalone command found; bundled `/code-review` retained |
+| Personal installation in an empty project | Both CLIs found all 8 as enabled user skills | All 8 found as user commands |
+| Natural-language design interview through Magpie | npm CLI automatically selected and read `grilling`, then returned questions and recommendations in a read-only sandbox | Automatically invoked `Skill(grilling)` and returned questions and recommendations |
+| Explicit `grill-me` entry through Magpie | Loaded the installed `grilling` companion and completed the interview round | `/grill-me` invoked `Skill(grilling)` and completed the interview round |
+| Explicit invocation of the other six workflow skills through Magpie | All six read the synthetic project and returned task-specific results | All six read the synthetic project and returned task-specific results |
+
+The discovery checks used the hosts' actual initialization/skill-list interfaces. All eight skills completed invocation smoke checks on each host, with runtime requests confirmed in Magpie's local routing log with successful HTTP responses. The synthetic project exercised decision retrieval, design and maintenance-document previews, a TDD test-and-patch preview, an intentional review defect, and a handoff preview. Its files remained unchanged: these read-only checks do not establish full document-writing or red/green implementation workflows. Automatic selection was tested for `grilling`; these checks do not claim automatic selection was tested for every skill. Runtime Codex checks used the npm CLI; the desktop CLI was checked for discovery.
+
+### Local gateway and isolated-test troubleshooting
+
+If Claude Code uses a loopback gateway such as Magpie while inheriting `HTTP_PROXY` or `HTTPS_PROXY`, ensure `NO_PROXY` includes `localhost,127.0.0.1,::1`. Preserve existing exclusions when appending these entries; back up configuration before changing it. Claude Code can receive these values through the `env` object in its user settings. In the tested setup, adding both `NO_PROXY` and `no_proxy` resolved HTTP 502 responses without changing the model or gateway credentials. A direct gateway request alone does not establish that the CLI follows the same proxy path.
+
+On Windows, an isolated Codex run using `--ignore-user-config` also discards the user's native sandbox configuration. In the tested setup, this caused a normal skill-file read to be rejected by command policy. Explicitly carrying over the configured `windows.sandbox` option restored file reads while retaining `--sandbox read-only`. Similarly, carry over the selected provider definition and explicitly select Magpie if the isolated test is meant to use that gateway. Keep credentials out of command arguments, reports, and repository files.
+
+For read-only Claude Code invocation tests, retain `Glob` and `Grep` alongside `Read` and `Skill`; history and documentation workflows need to locate files as well as open them. Restricting the test to `Read,Skill` caused a history lookup to stall on guessed paths. With `dontAsk`, also grant access to the installed skills directory using `--add-dir` if bundled reference reads would otherwise require approval outside the working directory. The tested harness added only `~/.claude/skills` and retained its read-only tool set. See [Claude Code working directories](https://code.claude.com/docs/en/permissions#working-directories). These are test access constraints, not package-discovery failures.
 
 ## Project guidance template
 
