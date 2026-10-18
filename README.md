@@ -18,9 +18,16 @@ The custom review skill uses `/review-code` to keep Claude Code's bundled `/code
 ## Install
 
 1. Download or clone [Celestia-Milara/skills](https://github.com/Celestia-Milara/skills).
-2. Locate the skill directory already configured for your host. Copy the selected **complete package directories** into it, with one directory per skill. For the full workflow, copy all eight packages listed above.
+2. Choose a host location from the table below. Copy the selected **complete package directories** into it, with one directory per skill. For the full workflow, copy all eight packages listed above; copying this repository itself into a skills directory does not produce that layout.
 3. Preserve all bundled files, including `references/`, `agents/`, `ORIGIN.md`, and `LICENSE` where present. Copying only `SKILL.md` loses guidance or license notices. For a partial installation, also make the companion methods referenced by name available to the host.
-4. Follow the host's own discovery or registration procedure, then verify that the expected skill names are available. Paths, tool names, and metadata support vary by host; `agents/openai.yaml` alone does not install or register a skill.
+4. Start a new session and verify that the expected skill names are available. Paths, tool names, and metadata support vary by host; `agents/openai.yaml` alone does not install or register a skill.
+
+| Host | Personal installation | Project installation | Explicit invocation |
+| --- | --- | --- | --- |
+| Codex | `~/.agents/skills/<name>/` | `.agents/skills/<name>/` | `$grilling`, `$grill-me`, or another installed name |
+| Claude Code | `~/.claude/skills/<name>/` | `.claude/skills/<name>/` | `/grilling`, `/grill-me`, or another installed name |
+
+`~` means your user home directory, such as `C:\Users\<user>` on Windows. Project paths are relative to the project directory. Choose one scope per host to avoid installing the same names twice. In Codex, open the skill picker with `$`; in Claude Code, use `/` and check the available commands. If an existing session still shows the old inventory, restart the host. See the official [Codex skills documentation](https://learn.chatgpt.com/docs/build-skills) and [Claude Code skills documentation](https://code.claude.com/docs/en/skills).
 
 Expected layout, where `<configured-skill-directory>` is your host's actual configured location:
 
@@ -37,7 +44,22 @@ Expected layout, where `<configured-skill-directory>` is your host's actual conf
   ...other files inside each complete package
 ```
 
-Keep `grill-me` and `grilling` together. On a host with a `Skill` tool, the explicit `grill-me` entry delegates to `grilling`. If that tool is unavailable, open the installed `grilling/SKILL.md` through the host's supported file-reading mechanism and follow it directly, resolving any relative references from that package. Do not assume every host supports the same invocation or automatic discovery behavior. Installation and runtime behavior must be checked in the target host; this collection has not been behavior-tested across hosts.
+Keep `grill-me` and `grilling` together. On a host with a `Skill` tool, the explicit `grill-me` entry delegates to `grilling`. If that tool is unavailable, open the installed `grilling/SKILL.md` through the host's supported file-reading mechanism and follow it directly, resolving any relative references from that package.
+
+`grill-me` intentionally requires explicit invocation: Claude Code uses `disable-model-invocation: true`, and Codex uses `policy.allow_implicit_invocation: false` in `agents/openai.yaml`. The other seven skills are eligible for automatic selection from their descriptions. Being discovered does not guarantee that the model will choose a skill for every related prompt or that its tools can read the package.
+
+### Verified host behavior
+
+Checked on Windows on 2026-10-17:
+
+| Check | Codex CLI `0.163.0` / desktop CLI `0.163.0-alpha.10.2` | Claude Code `2.1.302` |
+| --- | --- | --- |
+| Project discovery with all eight complete packages | 8 names found; no loader errors | 8 commands found; bundled `/code-review` retained |
+| Project discovery with only `decision-notes` | Standalone package found; no loader errors | Standalone command found; bundled `/code-review` retained |
+| Personal installation in an empty project | Both CLIs found all 8 as enabled user skills | All 8 found as user commands |
+| Natural-language design interview | Automatically selected `grilling`; reading its body was blocked by the test environment's command policy | Configured model service returned HTTP 502; model selection could not be verified |
+
+The discovery checks used the hosts' actual initialization/skill-list interfaces. The runtime checks did not establish successful end-to-end execution on both hosts; recheck with your own model service and tool permissions. These checks do not claim automatic selection was tested for every skill.
 
 ## Project guidance template
 
