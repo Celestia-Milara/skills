@@ -1,6 +1,6 @@
 ---
 name: decision-notes
-description: "Search and maintain long-term decision memory to prevent old proposals from being raised again, repeated failed attempts, or loss of non-obvious constraints. Use before proposing a concrete solution, deciding behavior or key trade-offs, changing related implementation or behavioral tests, and writing decision records; also use to look up historical decisions, resolve conflicts, supersede decisions, or organize notes. Coordinate with subsystem documentation and record settled conclusions, rationale, scope, and genuine alternatives that were not chosen."
+description: "Search decision history before proposing solutions, settling behavior or key trade-offs, or changing related implementation or behavioral tests. Maintain lasting conclusions, rationale, and genuine alternatives; use for historical lookup, conflicts, supersession, and notes organization."
 ---
 
 # Decision Notes
@@ -19,12 +19,7 @@ Before starting the following work, consult applicable project-level constraints
 
 When the user asks about history, a decision pointer is found, or a conflict appears, read the relevant record directly. Pure spelling, formatting, and status updates do not require a new search when they do not involve established constraints.
 
-Locate and assess records in this order:
-
-1. Use the project's Agent entry point to find the actual notes location and applicable global constraints. Use subsystem documentation to locate current responsibilities, contracts, source code, tests, and related notes. A subsystem may span packages or repositories, and one note may relate to multiple subsystems.
-2. Follow links, then search by question, mechanism, solution name, and constraint as needed. The absence of a link, corresponding code, or matching name does not prove that there is no relevant history. If no subsystem page exists, locate relevant context from available materials and the task topic; do not create an empty document in advance.
-3. Start with the title, `Status`, `Scope`, and conclusion; read rationale, alternatives, and evidence when relevant. Prefer currently effective records, then trace history according to relevance. Search archived records directly when reconsidering an old option or when current guidance is insufficient. Trace supersession according to the scope in question; do not follow an arbitrary chain to its end.
-4. Confirm the record's applicability and current facts. If the directory truly does not exist, continue; create it only when a record is first needed. A failed read or search with no matches does not prove there is no history.
+When locating or assessing history, read [Finding Applicable Decision History](references/retrieval.md). It covers project entry points, topic searches, archived records, applicability, and missing or inaccessible sources. Search by decision scope, not just matching filenames or existing links.
 
 Within the same task, reuse results already verified and still applicable. Recheck affected parts when scope, a key premise, or a related record changes, or when a conflict appears. Do not rescan everything just because the turn or skill changed.
 
@@ -38,11 +33,7 @@ A new record should meet all of these conditions:
 2. **It has lasting value.** Without the rationale, a future Agent could raise an old option again, repeat a meaningful failed attempt, or accidentally change an important constraint. Merely restating current behavior does not meet this threshold.
 3. **It needs a separate record.** Related history has been searched, and the information cannot be captured by updating facts, adding evidence, or clarifying scope. A genuine change of decision requires a new record under the supersession rules. Do not create records mechanically by date, delivery count, or number of alternatives.
 
-Typical subjects include non-obvious subsystem boundaries, interfaces, or persistence and compatibility choices; important selections and reasons for not choosing alternatives; reasons for deliberately avoiding caching or automatic retries; significant rejections or deferrals that might be raised again; and evidence-backed long-term failure conclusions or cross-task policies.
-
-Usually, do not create notes for formatting, mechanical renames, ordinary implementation or fixes understandable from code and tests, routine dependency upgrades, general troubleshooting attempts, logs, TODOs, or progress. Size is not the criterion. Maintain an existing note if the work makes it inaccurate, and record a new decision if the work produces one that meets the threshold.
-
-If there is no distinct long-term value to preserve, do not create a record just to fill a template. If the user explicitly asks to preserve an important decision, reuse or create an appropriate source; do not silently discard it.
+Apply the threshold to ordinary fixes, formatting, renames, upgrades, troubleshooting, and progress too: they rarely need a new record merely to restate code or tests. Maintain affected existing records. If the user explicitly asks to preserve an important decision, reuse or create an appropriate source rather than silently discarding it.
 
 ## 3. Record Real Conclusions Promptly
 
@@ -56,13 +47,7 @@ Before writing, read [Format and Examples](references/format.md). The default lo
 
 ## 4. Update, Supersede, and Organize
 
-| Status | Meaning |
-| --- | --- |
-| `active` | Explicitly adopted and still applicable within its stated scope; valid rejections and deferrals also use this status |
-| `superseded` | The entire scope has been replaced by one or more new decisions |
-| `retired` | Nothing remains in effect, and no new decision fully takes it over |
-
-Status does not indicate implementation progress or disposition of a candidate solution. If facts, names, paths, or evidence change but the decision does not, update the existing record. Create a new record when a core choice or constraint clearly changes. Reassess when evidence becomes invalid; do not change the decision automatically.
+If facts, names, paths, or evidence change but the decision does not, update the existing record. Create a new record when a core choice or constraint clearly changes. Status describes applicability, not implementation progress or a candidate's feasibility; [Status and Supersession](references/lifecycle.md) owns the status definitions and transition rules. Reassess invalid evidence without automatically changing a decision.
 
 Before changing status, superseding a decision, handling partial supersession, or restoring an old option, read [Status and Supersession](references/lifecycle.md). Cross-link old and new records by scope; preserve remaining constraints after partial supersession. If an old option is adopted again, create a new record rather than erasing the intervening decisions.
 
@@ -70,17 +55,15 @@ Before archiving, merging, or deleting, read [Retention and Organization](refere
 
 ## 5. Check Before Delivery
 
-Check records and related scope relevant to this work. Even if no new note was created, check whether the changes made an existing note inaccurate.
+Check relevant records even when no new note was created:
 
-1. **Omissions and duplication:** Have important conclusions and long-term rationale been saved? Are they only in conversation? Is an existing record already sufficient?
-2. **Truth and evidence:** Do not present a recommendation as a decision, a goal as current state, a failure as permanent rejection, an unchosen option as forbidden, or a deferral as an implementation commitment. State unknown, unprovided, and unverified information accurately.
-3. **Status and scope:** Are scope and conditions accurate? Does partial supersession retain remaining obligations? Are there conflicting effective conclusions for the same scope and conditions? Does archiving hide a current constraint?
-4. **Document ownership:** Update affected subsystem documentation, designs, plans, and notes; each source owns its information, and other locations link to it.
-5. **Links and supersession chain:** Can necessary sources be located? Can conclusions be traced by scope without self-links, broken links, or cycles? Did organization preserve unique rationale, evidence, and meaningful historical references?
-6. **Verification:** Run relevant checks already available in the project and review their results. If none are configured, check manually. Do not automatically add dependencies, scripts, CI, or format migrations. Correct real problems found; do not fabricate content. Reuse successful results when the relevant content has not changed.
+- Preserve important lasting rationale without duplication or content left only in chat. Distinguish recommendations from decisions, goals from current facts, failures from rejections, unchosen options from prohibitions, and deferrals from commitments.
+- Verify status, scope, conditions, and supersession chains against [Status and Supersession](references/lifecycle.md) when they change. Preserve remaining obligations and avoid conflicting effective conclusions, cycles, self-links, or broken links.
+- Synchronize affected subsystem, design, plan, and notes sources without duplicating their owned content. After organization, check that unique evidence and meaningful historical references survived.
+- Run relevant existing checks and inspect results, or review manually. Do not automatically add dependencies, scripts, CI, or format migrations; reuse applicable successful evidence. State unknown, inaccessible, and unverified information honestly.
 
 Passing a format check does not prove that rationale is correct, retrieval is complete, or implementation follows the decision. If current facts conflict with a record, distinguish transition arrangements, stale documentation, incomplete implementation, and actual conflict. Correct verified errors. If a key judgment remains unclear, explain the conflict and ask for a decision; do not override a new user instruction or claim completion. Continue work that does not depend on the answer.
 
 When adding, substantially updating, superseding, or organizing notes, briefly explain what changed, why, and any gaps, with links. Do not emit a fixed “no notes added” message when nothing relevant changed.
 
-Keep code, related documentation, and notes together as one pending deliverable. After completing this round's changes and checks and showing the results, ask whether the work is complete and whether a local commit may be created. If the user gives more feedback, continue editing. Saving or validating notes does not authorize a commit, push, or publication, and does not require committing notes early.
+Keep code, related documentation, and notes together as one pending deliverable. Follow the project's Git rules and current authorization. By default, after completing checks and showing the results, ask whether this round is complete and ready for a local commit; continue editing if feedback arrives. If the user already explicitly authorized a commit for this scope, check and commit without asking again. Saving or validating notes adds no commit, push, PR, or publication authorization and does not require committing notes early.

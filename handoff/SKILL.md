@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: "Prepare a task handoff across sessions, tools, or Agents, or verify sources and the current working context when taking over. Use when the user asks for a handoff, continuation in another session, takeover based on handoff material, or when work genuinely needs to be transferred. Reference existing designs, plans, and decisions; add only session-specific constraints, current-state notes, evidence applicability, and next actions needed for continuity. This is not a mandatory wrap-up step and does not add implementation or external-operation authorization."
+description: "Prepare a task transfer across sessions, tools, or Agents, or verify sources and working context when taking over. Use for requested handoffs, cross-session continuation, or genuine transfer needs; not a mandatory wrap-up or new execution authorization."
 ---
 
 # Handoff
@@ -10,9 +10,9 @@ description: "Prepare a task handoff across sessions, tools, or Agents, or verif
 Confirm who or which environment is receiving the work and what task they should continue. Reuse what is already clear. If the target is unclear, infer it from the current task first; ask only about gaps that would change the handoff scope. Do not block an explicit request to save the handoff just to fill in a recipient.
 
 - Use this skill when the user explicitly asks for a handoff or continuation in another session, or when work genuinely needs to be transferred. The end of an ordinary phase, a general mention of “next time,” or a long context does not automatically require a separate file. Continue in the original environment, compact context, or use branches when those capabilities are sufficient.
-- Follow `maintenance-docs` for long-term project materials and status, `decision-notes` for long-term decisions, and `to-docs` for human-readable designs. A handoff selects sources and fills gaps; it does not introduce another format, status system, or decision lifecycle, and skills should not invoke one another in a cycle.
+- Keep retained project materials, status, decisions, and readable designs in their existing owning sources. A handoff selects sources and fills continuity gaps; it does not create a duplicate format, status system, or decision lifecycle.
 - A handoff does not automatically end the original session, start a new session, assign people, send messages, commit, push, or publish. Follow any existing explicit authorization within its scope; merely generating, reading, or referencing handoff material does not add implementation authorization.
-- Use the skill name actually available in the environment. If it cannot be invoked, read the project's configured guidance instead; do not claim to have used an unavailable capability. Reuse verified context that still applies.
+- Use the skill name actually available in the environment. If it cannot be invoked, read configured guidance through the host's supported mechanism; if inaccessible, state the gap and continue independent work. Do not claim an unavailable invocation. Reuse verified context that still applies.
 
 ## 2. Prepare a handoff
 

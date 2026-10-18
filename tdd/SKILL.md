@@ -1,56 +1,49 @@
 ---
 name: tdd
-description: "Test-driven development: Use when the user requests test-first or red-green-refactor, or when the current work is well served by incremental implementation driven by a failing behavioral test. Advance through red → green with observable interfaces, independent expected values, and discriminating failures; refactor in small steps as needed. Do not force every change into test-first development, add approval steps for ordinary test boundaries, or require a plan first."
+description: "Develop behavior through discriminating failing tests, minimal implementation, and small refactors. Use for requested test-first or red-green-refactor work, or when incremental failure feedback helps; not required for every change or integration-only verification."
 ---
 
 # Test-Driven Development
 
-## 1. Decide whether TDD applies and locate the basis
+## 1. Establish applicability and basis
 
-Use TDD when the user explicitly requests test-first work, or when behavior can be expressed in automated tests and failure feedback will help with the implementation. Ordinary investigation, implementation, and verification remain core Agent capabilities; do not require TDD for every task or mechanically add tests for low-value small changes. If the request is only for integration verification, do not force a test-first process. Adding tests to existing implementation does not count as a complete red → green history.
+Use TDD for requested test-first work or behavior that benefits from automated failure feedback. Do not mechanically add tests for small low-value changes or impose TDD on investigation and integration-only verification. Adding tests after implementation does not establish a test-first history.
 
-Use the project's actual Agent entry point to locate requirements and acceptance criteria, relevant subsystem documentation, source code, tests, and commands. Before proposing a solution, settling a key trade-off, or changing related implementation or behavioral tests, use `decision-notes` to look for applicable decisions. Reuse context already verified and still applicable. Recheck affected areas when the scope, premises, sources, or conflicts change; do not rescan everything just because this skill was invoked.
+Locate requirements, acceptance criteria, subsystem documentation, code, tests, and commands through the actual project entry point. Before proposing solutions, settling key trade-offs, or changing related implementation or behavioral tests, search applicable decision history. Reuse verified context and recheck affected areas when premises, sources, or scope change.
 
-Use the project's terminology and applicable decisions. Do not require a new CONTEXT.md, another ADR system, a plan, or dedicated configuration. When information needs to persist, follow `maintenance-docs` rather than copying its directory, status, or lifecycle scheme. Use skill names actually available in the environment; do not claim to invoke an unavailable skill.
+Use project terminology and constraints without requiring a plan, CONTEXT.md, another ADR system, or dedicated configuration. Retain documentation and long-term decisions in their owning sources. Use available companion skills, or read configured guidance through the host's mechanism; state inaccessible guidance and do not claim an unavailable invocation or load companions cyclically.
 
-## 2. Choose behavior and test boundaries
+## 2. Choose a behavior and boundary
 
-A **test boundary (seam)** is the point where a caller can observe behavior through an interface. A public interface can be a module API, service entry point, command, or UI; it is not limited to end-to-end UI.
+A **test boundary (seam)** is an interface through which a caller observes behavior: a module API, service entry, command, or UI. It need not be an end-to-end application.
 
-- Select the result to protect from settled behavior and acceptance criteria. Identify a callable entry point, input, observable output or side effect, and necessary conditions.
-- Choose ordinary test locations based on the existing structure without asking the user to approve every boundary or test. Investigate and ask only when the choice involves unclear behavior, scope, or a key interface trade-off; do not reconfirm existing decisions.
-- If the interface shape is unclear, inspect actual callers, module responsibilities, and long-term constraints, then make a concrete recommendation. Do not require another domain-modeling or design skill, or a complete plan before starting investigation.
-- Prioritize critical paths, complex logic, and this change's risks. Do not test everything. Handle pure engineering changes to expose interfaces within existing authorization; do not hide behavior or scope changes in test preparation.
+Select a result from settled requirements and acceptance criteria. Identify its entry point, input, observable result or side effect, and conditions. Inspect callers, responsibilities, and historical constraints if the interface is unclear. Choose ordinary test locations and engineering seams autonomously; ask only about unsettled behavior, scope, or key interface trade-offs. Do not require another design skill or approval for every test.
 
-## 3. Write tests worth keeping
+Prioritize critical paths, complex logic, and the change's risks. Do not test everything or conceal behavior and scope changes in test preparation.
 
-Test behavior through stable interfaces visible to callers. Base expectations on requirements, known examples, manual derivation, or other independent reliable evidence. Tests should act as behavioral specifications and should not need frequent changes when internal structure is refactored without changing the contract.
+## 3. Design a discriminating test
 
-When writing tests, read the positive and negative examples in [tests.md](tests.md). For test doubles, external dependencies, or uncontrollable conditions, read [mocking.md](mocking.md).
+When writing tests, read [Good and Bad Tests](tests.md) for stable boundaries, independent expected values, and valid failure evidence. When choosing test doubles or handling external dependencies and uncontrollable conditions, read [When to Mock](mocking.md).
 
-Avoid three anti-patterns:
+Test observable contracts through stable interfaces. Derive expectations independently from requirements, verified examples, manual calculation, or reliable independent evidence. Do not reproduce the implementation's algorithm or copy current output into an expected constant. Avoid private-method and internal-call coupling unless the interaction itself is a contract. Do not expand production interfaces merely to inspect results.
 
-- **Implementation coupling:** testing only private methods, mocking internal collaborators, checking call counts or ordering outside the contract, or bypassing the boundary under test to observe results.
-- **Circular reasoning:** recalculating expected results with the same algorithm as the implementation, asserting a value equals itself, or deriving a baseline from current output without independent verification. The test and implementation could share the same error.
-- **Cross-cutting batches:** writing a complete set of speculative tests first, then implementing all behavior at once. Advance one behavior at a time so each round can incorporate real feedback.
+Preserve real obligations such as idempotent side effects, event ordering, or persistence formats. Advance one behavior at a time rather than batching speculative tests before all implementation. Several assertions may jointly establish one behavior; do not split by assertion count.
 
-When side effects, call order, or storage formats are themselves part of the contract, test those obligations directly. Do not omit a real obligation to comply with “public interface only,” or expand the product interface just to make testing easier. Exceptions should have a concrete basis.
+## 4. Run red → green and refactor
 
-## 4. One result at a time: red → green
+1. **Red:** Write or reuse a test for the current behavior. Run it and confirm the input reaches the target and fails for the missing or incorrect behavior. Import failures, setup errors, unrelated crashes, skips, or empty matches are not a valid red; fix prerequisites first.
+2. **Green:** Add only the implementation needed now. Run the test and verify it passes. Investigate failures without weakening assertions, skipping tests, or changing expectations without evidence.
+3. **Continue:** Choose the next behavior from what was learned. One boundary, one behavioral result, and one small implementation step form a cycle.
+4. **Refactor when useful and authorized:** Improve structure while green, preserving behavior and compatibility. Run relevant guard tests after changes; refactoring is neither mandatory each cycle nor restricted to a final stage. Return to the decision process for new behavioral trade-offs.
 
-1. **Red.** Write a test for one current behavior, run it, and confirm that it fails because of the target behavior. Import errors, missing environment setup, or unrelated crashes are not a valid red; resolve test prerequisites first. Reuse an existing failing test that already catches the behavior instead of duplicating it.
-2. **Green.** Add only the implementation needed for this behavior; do not prebuild future functionality. Run the test and confirm it passes. If it fails, adjust based on evidence rather than weakening assertions, skipping the test, or changing expectations without support.
-3. **Continue or refactor.** One boundary, one behavioral test, and one small implementation step form a cycle. Choose the next behavior based on what was learned. A behavior may need multiple assertions that jointly establish the result; do not split mechanically by assertion count.
-4. **Small refactors.** When useful and already authorized, improve structure while green, preserving behavior and compatibility constraints. Run the relevant guard tests each time. Refactoring need not wait for a single review stage, and is not required every cycle. If a new behavior trade-off emerges, return to the relevant decision process.
+For a bug fix, test the original trigger before fixing and confirm it passes afterward. Where feasible, verify the test catches the unfixed logic for the original reason. Any temporary reversal must be isolated and preserve others' changes. If this evidence is unavailable or tests were added after the fix, state that limit instead of claiming test-first or verified regression coverage.
 
-For a bug fix, first make a test catch the original failure scenario, then fix it and confirm it passes. When relevant and feasible, verify the test fails against the unfixed logic because of the original defect. If temporarily reverting a fix is needed to verify this, isolate that operation and do not overwrite others' changes; explain the evidence limitation if safe verification is not possible. If a test is added after the code already works and its failure was not verified, say so rather than claiming test-first completion.
+## 5. Verify and deliver
 
-## 5. Verify, review, and deliver
+Select necessary tests, type checks, builds, and other checks for the actual changes and callers. Broaden only when impact, failures, or unknowns warrant it; reuse still-applicable evidence rather than rerunning the entire suite for every commit or confirmation.
 
-Use fast, relevant feedback during the cycle. Before delivery, select applicable and necessary tests, type checks, builds, or other checks based on the actual changes, callers, and project configuration. Expand coverage when impact, failures, or unknowns show that local checks are insufficient. Do not require a complete test suite every time, or mechanically rerun unaffected checks because a commit is pending or confirmation is awaited.
+Review this task's actual staged, unstaged, committed, and relevant untracked changes against requirements, constraints, and failures; do not review only HEAD. Use available review capabilities without assuming a similarly named skill is a particular upstream version or requiring a fixed agent count. Correct clear issues within implementation authorization; a standalone review request remains reporting-only by default.
 
-Passing tests prove only the conditions they cover. Obtain integration, real-runtime, or platform evidence when needed. A successful build does not prove the program ran correctly; passing with mocks does not verify an external service. Report what was not run, failed, constrained, or left for manual verification. Do not infer verification merely from the existence of tests.
+Report implemented behavior, checks actually run, results, evidence scope, and gaps. Tests prove covered conditions; mocks do not verify real services, builds do not prove runtime behavior, and code changes do not complete manual acceptance. Obtain integration, runtime, or platform evidence when needed and state unrun, failed, constrained, or pending checks.
 
-Before delivery, review the actual changes in this round against requirements, project constraints, and relevant failure scenarios. Include relevant staged, unstaged, and committed changes in scope; do not inspect only HEAD. Use review capabilities available in the environment. Do not assume the installed `review-code` skill is the upstream `code-review` version, and do not require a fixed number of sub-agents. Fix clear issues within existing authorization and add relevant verification. A review-only request does not expand authorization to modify.
-
-Briefly report behavior implemented, checks actually run and their results, evidence scope, and remaining gaps. Synchronize documents and long-term decisions according to their own rules. Keep the project's commit-confirmation process: complete, verify, and show the work before asking about a commit. Do not commit after each red → green cycle or automatically commit, push, open a PR, or publish.
+Synchronize affected documents and lasting decisions. Keep related work together rather than committing after every red-green cycle. Follow project Git rules and current authorization; absent explicit commit authorization for this scope, show checked work and ask whether this round is ready for a local commit. Do not ask again for existing authorization. TDD adds no push, PR, or publication permission.

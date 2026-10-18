@@ -17,7 +17,7 @@ The custom review skill uses `/review-code` to keep Claude Code's bundled `/code
 
 ## Install
 
-1. Download or clone this collection from its actual repository location.
+1. Download or clone [Celestia-Milara/skills](https://github.com/Celestia-Milara/skills).
 2. Locate the skill directory already configured for your host. Copy the selected **complete package directories** into it, with one directory per skill. For the full workflow, copy all eight packages listed above.
 3. Preserve all bundled files, including `references/`, `agents/`, `ORIGIN.md`, and `LICENSE` where present. Copying only `SKILL.md` loses guidance or license notices. For a partial installation, also make the companion methods referenced by name available to the host.
 4. Follow the host's own discovery or registration procedure, then verify that the expected skill names are available. Paths, tool names, and metadata support vary by host; `agents/openai.yaml` alone does not install or register a skill.
@@ -43,6 +43,12 @@ Keep `grill-me` and `grilling` together. On a host with a `Skill` tool, the expl
 
 [AGENT.example.md](AGENT.example.md) is an optional template, not an active project instruction file or a ninth skill. Follow [Agent Guidance Integration](agent-guidance/README.md) to place it under the name your tool recognizes, such as `AGENTS.md` or `CLAUDE.md`, and copy its three companion files from `agent-guidance/`. Replace placeholders with actual project resources and update skill links to the installed locations. Markdown links provide navigation; they do not automatically load the linked rules.
 
+## Reading and maintenance
+
+Each package's `description` identifies when it applies; `SKILL.md` contains its main workflow and necessary defaults. Read bundled references under the conditions given in the entry point. The purpose table above is navigation, not an overriding policy. A standalone review reports by default; an authorized implementation task or explicit fix request may address confirmed defects within scope.
+
+Project guidance is optional. Skill packages retain essential boundaries locally; where a commit step applies, the standalone fallback is: show checked work and ask by default, honor explicit authorization already given for the same scope, and do not treat saving a document as permission to publish. Companion skill names describe cooperating methods; use installed capabilities or readable configured guidance, state missing dependencies, and do not claim unavailable invocations.
+
 ## Publication scope
 
 Publish only these root entries, including all files inside the listed directories:
@@ -64,7 +70,7 @@ review-code/
 handoff/
 ```
 
-`design/`, `zh-backup/`, the root `handoff.md`, `github-preupload-review.md`, `.claude/`, and local generated artifacts are internal working material and excluded by `.gitignore`. The `handoff/` skill directory is public; the root `handoff.md` working record is excluded.
+The repository contains installable skill packages, optional project guidance, and source/license information; install only the selected skill packages. Internal work and local backups or generated artifacts are excluded by `.gitignore` and are not installation candidates. The `handoff/` package is public; the root working record `handoff.md` is excluded.
 
 `.gitignore` affects Git adding untracked files; it does not remove already tracked files, and GitHub's web upload does not apply it. For web uploads, explicitly select only the public entries listed above. Check the actual staged files or web upload selection before publishing, and retain package `LICENSE` and `ORIGIN.md` files.
 
