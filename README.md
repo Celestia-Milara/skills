@@ -71,9 +71,9 @@ On Windows, an isolated Codex run using `--ignore-user-config` also discards the
 
 For read-only Claude Code invocation tests, retain `Glob` and `Grep` alongside `Read` and `Skill`; history and documentation workflows need to locate files as well as open them. Restricting the test to `Read,Skill` caused a history lookup to stall on guessed paths. With `dontAsk`, also grant access to the installed skills directory using `--add-dir` if bundled reference reads would otherwise require approval outside the working directory. The tested harness added only `~/.claude/skills` and retained its read-only tool set. See [Claude Code working directories](https://code.claude.com/docs/en/permissions#working-directories). These are test access constraints, not package-discovery failures.
 
-## Project guidance template
+## Project agent guidance
 
-[AGENT.example.md](AGENT.example.md) is an optional template, not an active project instruction file or a ninth skill. Follow [Agent Guidance Integration](agent-guidance/README.md) to place it under the name your tool recognizes, such as `AGENTS.md` or `CLAUDE.md`, and copy its three companion files from `agent-guidance/`. Replace placeholders with actual project resources and update skill links to the installed locations. Markdown links provide navigation; they do not automatically load the linked rules.
+[AGENTS.md](AGENTS.md) is the project instruction entry point and also serves as reusable guidance for other projects; it is not a ninth skill. Follow [Agent Guidance Integration](agent-guidance/README.md) to place it under the name your tool recognizes, such as `AGENTS.md` or `CLAUDE.md`, and copy its three companion files from `agent-guidance/`. Replace placeholders with actual project resources and update skill links to the installed locations. Markdown links provide navigation; they do not automatically load the linked rules.
 
 ## Reading and maintenance
 
@@ -88,7 +88,7 @@ Publish only these root entries, including all files inside the listed directori
 ```text
 README.md
 LICENSE
-AGENT.example.md
+AGENTS.md
 .gitignore
 .gitattributes
 agent-guidance/

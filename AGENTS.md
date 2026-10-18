@@ -1,7 +1,7 @@
 # Project Agent Guidance
 
-<!-- When integrating, name this file as recognized by the tool, such as AGENTS.md or CLAUDE.md; fill in real project resource locations and remove placeholders. -->
-<!-- See agent-guidance/README.md for integrating companion files and skill links; this template is not installed or active yet. -->
+<!-- When reusing in another project, keep AGENTS.md or use another name recognized by the target tool, such as CLAUDE.md; fill in real project resource locations and remove placeholders. -->
+<!-- See agent-guidance/README.md for integrating companion files and skill links. This AGENTS.md is the active entry point for this library. -->
 
 Proceed autonomously with authorized work and do not reconfirm established decisions. If behavior, scope, or a key trade-off is unclear, investigate and resolve it with the user. Assess planning, writing a plan, and approving a plan separately; there is no universal start gate.
 
