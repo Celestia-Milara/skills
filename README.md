@@ -63,6 +63,14 @@ Checked on Windows on 2026-10-17:
 
 The discovery checks used the hosts' actual initialization/skill-list interfaces. All eight skills completed invocation smoke checks on each host, with runtime requests confirmed in Magpie's local routing log with successful HTTP responses. The synthetic project exercised decision retrieval, design and maintenance-document previews, a TDD test-and-patch preview, an intentional review defect, and a handoff preview. Its files remained unchanged: these read-only checks do not establish full document-writing or red/green implementation workflows. Automatic selection was tested for `grilling`; these checks do not claim automatic selection was tested for every skill. Runtime Codex checks used the npm CLI; the desktop CLI was checked for discovery.
 
+### Engineering task validation
+
+On 2026-10-22, six fresh-context Agents worked in isolated Python/SQLite projects. Each had the complete skill packages and project guidance at `5555d0c`. Tasks covered an internal refactor, a contract defect, an authorized queued-save change, and a storage change. The other tasks addressed a fake that hid commit timing and a command that ran no tests.
+
+Independent checks confirmed the requested behavior and real database effects. All 52 acceptance checks and 45 project tests passed, with no skips. All six starting projects failed their relevant acceptance checks. A shared Windows connection-cleanup defect was corrected before acceptance; original and corrected baselines were retained. Evidence includes fresh SQLite connections, concurrent retries, event visibility, the shipped client, CSV output, and actual test counts.
+
+This was one controlled diagnostic run, not an old/new skills comparison or proof of general effectiveness. It does not cover production deployment, separate-process stress, crash recovery, or cross-host behavior. Fixtures, patches, commands, and results remain in the separate local test workspace; they are not package dependencies.
+
 ### Local gateway and isolated-test troubleshooting
 
 If Claude Code uses a loopback gateway such as Magpie while inheriting `HTTP_PROXY` or `HTTPS_PROXY`, ensure `NO_PROXY` includes `localhost,127.0.0.1,::1`. Preserve existing exclusions when appending these entries; back up configuration before changing it. Claude Code can receive these values through the `env` object in its user settings. In the tested setup, adding both `NO_PROXY` and `no_proxy` resolved HTTP 502 responses without changing the model or gateway credentials. A direct gateway request alone does not establish that the CLI follows the same proxy path.
