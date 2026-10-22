@@ -22,6 +22,7 @@ Read the applicable guidance before the activity; links do not load its contents
 
 ## Library Constraints
 
+- Use [ASD-STE100](https://www.asd-ste100.org/about_STE.html) as a writing guide. Aim for roughly 80% alignment, not a measured compliance claim. Prefer short, active sentences and consistent terms. Preserve technical terms, scope conditions, and authorization boundaries.
 - Edit the root English packages; `zh-backup/` is a local backup, not a second maintained edition. Keep installation and publication within the [README's scope](README.md#publication-scope).
 - Skills must remain usable without project agent guidance. Keep specialized methods in their packages and common operating rules in `agent-guidance/`; see [ownership](agent-guidance/README.md#ownership).
 - Preserve complete package references and applicable license/origin files when distributing skills; see [licensing and sources](README.md#license-and-upstream-sources).

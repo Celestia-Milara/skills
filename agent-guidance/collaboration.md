@@ -2,7 +2,7 @@
 
 ## Source Ownership
 
-Maintain each fact in one owning source and reference it elsewhere. Use existing project locations: current behavior belongs in subsystem documentation, target behavior in designs, progress in plans, and lasting rationale in decision notes. These are responsibilities, not a required set of files or directories.
+Maintain each fact in one owning source and reference it elsewhere. Use existing project locations. Subsystem documentation maintains or links current contracts, verified implementation facts, and known differences. Designs own target behavior; plans own progress; decision notes own lasting rationale. These responsibilities do not require a fixed set of files or directories.
 
 A human-readable design can be the complete design source. Engineering records add needed detail without duplicating it; do not maintain separate full versions for human and Agent readers. Saving or reading a design does not add implementation authorization.
 

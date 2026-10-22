@@ -2,7 +2,7 @@
 
 ## Requirements and Project Standards
 
-Check the target against the applicable requirements, acceptance criteria, interface contracts, project conventions, and verified decisions. Look for omissions, partial implementation, incorrect behavior, and scope expansion. Use standards from the actual project rather than generic preferences. A missing or stale document is a source limitation to investigate, not permission to invent expected behavior.
+Check the target against applicable requirements, acceptance criteria, contracts, project conventions, and verified decisions. Look for omissions, partial implementation, incorrect behavior, and scope expansion. Use the project's standards, not generic preferences. Investigate missing or stale sources; do not invent expected behavior.
 
 ## Related Correctness
 
@@ -15,14 +15,22 @@ For changed logic, interfaces, and data, follow relevant paths through actual ca
 - Resource limits, security boundaries, and sensitive information.
 - Existing data, versions, clients, or integrations and their compatibility.
 
-These are prompts for relevant investigation, not a mandatory checklist. Stay within the change's impact; do not turn review into an audit of the entire project. Test coverage must distinguish the intended behavior from plausible faulty behavior, but missing tests alone are not necessarily a defect.
+These prompts guide relevant investigation; they are not a mandatory checklist. Stay within the change's impact rather than auditing the whole project. Tests must distinguish intended behavior from plausible faults; missing tests alone do not establish a defect.
+
+Check for new dependencies on another module's internal implementation, owned state, storage, or undefined event and configuration semantics. Check whether unchanged callers still meet their conditions and receive the promised behavior. An unchanged signature alone does not establish compatibility.
+
+Apply boundary rules defined by the project. Without such a rule, report a defect only when evidence establishes incorrect behavior. Keep future maintenance concerns and uncertain dependencies separate from confirmed findings.
 
 ## Maintenance Smells as Leads
 
-Use a smell only to ask whether a concrete problem exists. It is not automatically a violation or a reason to request a refactor. Investigate, for example, tightly coupled responsibilities, unnecessary indirection, duplicated logic that can diverge, large functions or modules, hidden side effects, swallowed errors, misleading names, or brittle tests. Recommend changes only when a specific future cost or risk justifies them and outweighs the cost of change. Prefer established project conventions and consider whether the code is actually in the target scope.
+Use smells to investigate concrete problems, not to declare violations or require refactoring. Examples include tight coupling, unnecessary indirection, divergent copies, large modules, hidden effects, swallowed errors, misleading names, and brittle tests. Recommend changes only when a specific benefit outweighs their cost. Apply project conventions and stay within scope.
 
 ## Tool and Test Evidence
 
-Choose checks appropriate to the actual target and impact. Confirm that a check examined the relevant staged, unstaged, committed, or untracked version; note when the working tree differs from the requested commit or PR target. A configured command or green status alone is not proof that relevant paths were covered. Read the output and tie conclusions to its actual scope.
+Choose checks for the actual target and impact. Confirm the relevant staged, unstaged, committed, or untracked version was checked. State differences between the working tree and requested commit or PR. Read the output for matched tests, skips, and relevant paths. A configured command, zero exit code, or green status alone does not prove coverage.
 
-Re-run checks when target changes or earlier evidence no longer applies. Do not mechanically run every tool or the entire suite when relevant validated evidence is current. Static reasoning can be sufficient for a demonstrable defect; dynamic tests may be needed to establish behavior that cannot be inferred. State checks that were unavailable, not run, or constrained.
+When implementation and verification material both change, check the basis for changed assertions, snapshots, selectors, contracts, and test doubles. Refactoring must preserve valid behavioral obligations. A fix can replace a faulty expectation; an authorized contract change can alter obligations. Require an independent basis for either change. Check that revised tests still distinguish relevant faults; a focused counterexample can resolve a specific doubt.
+
+Check whether a test double replaces the property being verified. Fake success alone cannot establish real persistence, transaction timing, or integration behavior. Obtain relevant real evidence when needed, or state the gap.
+
+Repeat checks when the target changes or prior evidence no longer applies. Reuse current evidence instead of running every tool or the full suite mechanically. Static proof can establish a defect; use runtime checks when necessary facts cannot be inferred. State checks that were unavailable, not run, or constrained.

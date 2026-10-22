@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | `README.md`, `docs/` | Project purpose, usage and operation, requirements and acceptance criteria, necessary architecture or design overviews | Users and project stakeholders |
 | `docs/designs/<topic>.md` | Complete human-readable design deliverables: goals, scenarios, behavior, solutions, style, and unresolved items; existing projects can retain their original sources | Users and Agents carrying out later implementation |
-| `.agents/subsystems/` | Current responsibilities, mechanisms, interfaces, state, failure and compatibility behavior, and navigation to source code and tests | Development and maintenance Agents |
+| `.agents/subsystems/` | Current contracts, verified implementation facts, known differences, actual dependencies, and source and verification links | Development and maintenance Agents |
 | `.agents/changes/` | Goals and designs for specific changes, implementation slices, dependencies, progress, unresolved questions, and verification plans | Agents executing or continuing the work |
 | `.agents/notes/` | Important settled decisions, long-term rationale, rejected options, and evidence | Agents making later decisions |
 | Actual `AGENTS.md`, `CLAUDE.md`, or similar entry points | Brief project constraints, activation guidance, and navigation to real materials | Agents |
@@ -19,7 +19,7 @@ Project entry points should link to the documentation or indexes actually used. 
 
 ## Architecture navigation and diagrams
 
-When first understanding a project, locating responsibility boundaries, or assessing cross-subsystem effects, start from the project entry point and read relevant overviews and subsystem documentation. Follow links to verify implementation sources involved in the current work; reuse content already verified if it still applies. By default, link to a single architecture source from the entry point. Do not assume linked material is automatically loaded or require a new architecture page or fixed directory. A simple project needs no diagram if responsibility descriptions and navigation are sufficient.
+Start from the project entry point when learning the project or locating boundaries. Before behavior changes, read relevant contracts and subsystem sources, then verify affected implementation paths. If documentation is missing, use available requirements, supported entries, and callers. Reuse verified context that still applies. By default, link one architecture source from the entry point. Links do not load their targets automatically. Do not require a new architecture page, fixed directory, or diagram when existing descriptions and navigation suffice.
 
 Put global responsibilities, key components, external boundaries, and main data flows in the existing README or architecture overview; put local calls, state changes, and failure recovery in the relevant subsystem documentation; put proposed structures, migrations, and transitions in the relevant design or change record. Clearly distinguish current, target, and transitional states; do not describe an adopted goal as already implemented.
 
@@ -54,4 +54,4 @@ When centralized navigation is needed, use `.agents/changes/README.md` for chang
 
 Link to specific locations in relevant existing requirements, acceptance criteria, subsystem, and notes sources. Do not create empty links or pages to satisfy a template when no source exists. State unknowns that affect the work and investigate as needed. Designs explain how relevant behavior and constraints will be met; plans explain how they will be verified. Create mappings as needed; a traceability matrix is not mandatory. Do not reproduce full requirements, current system descriptions, or long-term rationale.
 
-When a change spans multiple subsystems, keep its goal and transition arrangements together in one place. Each subsystem page maintains its own verified current state; shared interfaces and constraints each have one source of truth.
+Keep a cross-subsystem change's goal and transition arrangements in one source. Each subsystem page maintains or links its current contracts, verified facts, and known differences. Shared interfaces and constraints each have one source of truth.

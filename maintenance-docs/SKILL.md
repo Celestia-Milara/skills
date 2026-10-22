@@ -30,7 +30,7 @@ Read only the references relevant to the material being maintained:
 | Work | Reference and owning information |
 | --- | --- |
 | Choose sources, organize files, or align readable designs with engineering records | [Organization and Sources](references/organization.md): locations, navigation, source relationships, diagrams |
-| Describe or correct a current subsystem | [Subsystem Documentation](references/subsystems.md): verified responsibilities, runtime paths, contracts, implementation and test links |
+| Describe or correct a current subsystem | [Subsystem Documentation](references/subsystems.md): current contracts, verified implementation facts, known differences, dependencies, and verification links |
 | Preserve change goals, implementation arrangements, or continuation | [Change Designs and Plans](references/changes.md): target design, gap from current state, dependencies, tasks, verification plans |
 | Update status, complete, pause, cancel, resume, or close a record | [Status and Closeout](references/lifecycle.md): status meanings, task markers, completion, acceptance, remaining work |
 

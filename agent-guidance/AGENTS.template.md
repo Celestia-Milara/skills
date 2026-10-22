@@ -12,7 +12,7 @@
 - Decisions and rationale: `<actual path>`
 - Check commands and acceptance requirements: `<actual path>`
 
-For initial orientation or changes across subsystem boundaries, read the relevant overview and subsystem sources linked above.
+For initial orientation, read the relevant overview and subsystem sources. Before behavior changes, read maintained contracts, subsystem sources, and applicable constraints. If these are missing, use available requirements, supported entries, and relevant call paths to establish the task's basis.
 
 ## Task-Specific Rules
 
