@@ -38,7 +38,7 @@ File: `.agents/notes/2026-10-17-config-sync-strategy.md`
 # Merge Configuration During Sync; Defer Full Replacement in the First Release
 
 Status: active
-Scope: [Configuration Sync](../../docs/subsystems/config-sync.md)
+Scope: [Configuration Sync](../subsystems/config-sync.md)
 
 ## Conclusion
 
@@ -58,4 +58,4 @@ If the requirement changes to allow manual confirmation, and recovery has been v
 the full-replacement option can be reconsidered against the original constraints in this record.
 ```
 
-The example Scope link is relative to the target project's `.agents/notes/` directory. When writing an actual note, calculate and verify the relative path. The subsystem page links to this note as the rationale source; it does not maintain a duplicate copy of the text.
+This example uses the default `.agents/subsystems/` layout. If the project instead uses `docs/subsystems/`, the Scope target from this note is `../../docs/subsystems/config-sync.md`. Calculate and verify paths from the actual note location. The subsystem page links to the rationale source rather than copying it.

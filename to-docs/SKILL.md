@@ -11,7 +11,7 @@ Handle the requested topic, or proactively preserve a discussion with independen
 
 Organize what was actually discussed. Verify discoverable facts selectively; distinguish settled conclusions, recommendations, assumptions, and open questions. Do not invent user rationale, decisions, or implementation facts. Ask about unresolved key conflicts while saving independent material.
 
-Use `grilling` for an in-depth interview without restarting settled questions. Its shared-understanding confirmation applies before implementing the resulting design, not before saving settled content and open items. Promptly preserve settled rationale through `decision-notes` when it meets the long-term retention threshold.
+Use `grilling` for an in-depth interview without restarting settled questions. Its shared-understanding confirmation applies before implementation, not before saving content. Use `decision-notes` for settled rationale with lasting value that needs a separate record. If that method is unavailable, retain necessary rationale in the design and state the gap; do not guess its lifecycle rules.
 
 Use companion skills when available; otherwise read their configured guidance through the host's supported mechanism. If required guidance is inaccessible, state the gap and continue independent work. Do not claim an unavailable invocation, repeatedly load companions, or introduce circular calls.
 
@@ -25,7 +25,7 @@ Maintain specific styles with the design; link to established cross-feature stan
 
 ## 3. Write a design people can evaluate
 
-When drafting or substantially revising a design, read [Design Content and Expression](references/design-content.md) for content choices, examples, and handling later feedback.
+When drafting or substantially revising a design, read [Design Content and Expression](references/design-content.md) for content choices and later feedback. Read the [delivery example](references/example.md) when a complete output example would help.
 
 Explain the problem, goal, scope, key scenarios, expected behavior, relevant mechanisms and interfaces, constraints, acceptance basis, and unresolved questions at the depth this topic needs. No fixed section template is required. Make visual and interaction choices concrete with scenarios, components, sketches, or style sources; label explorations and examples accurately.
 
@@ -35,10 +35,10 @@ Include concise rationale needed to understand the design. Link to complete long
 
 Reading, writing, or referencing a design adds no implementation authorization. Carry forward existing task authorization; a discussion-only request stays within discussion. Before authorized implementation, verify the actual design against current code, constraints, and related decisions. Preserve settled behavior and style without reopening them, and keep recommendations unresolved until decided. Investigate material conflicts or ask for a decision while continuing independent work.
 
-Add engineering approaches, dependencies, verification, and progress to `.agents/changes/` only when continuity needs them, referencing the design. Update affected subsystem documentation after verified implementation. Revise the original design when it changes; do not silently replace it with an engineering record. Preserve genuine long-term changes of decision under `decision-notes`.
+When continuity needs a change record, use the project's location or default `.agents/changes/`. Link to this design and add missing execution, migration, verification, and progress details. Without a separate design, one change record may hold necessary design and plan content. Update subsystem facts after verification and revise the owning design when it changes.
 
 ## 5. Check and deliver
 
 Check fidelity to the discussion, distinction between goals and current facts, key scenarios and constraints, source links, style ownership, duplication, and unsupported conclusions. Run applicable existing documentation checks, or review manually; saving a design does not justify adding a toolchain, product tests, or code changes. Keep review within the task.
 
-Deliver the actual saved location, main content, and key gaps with links; apply feedback to the same source. Saving does not approve every proposal, prove completion or verification, or authorize external operations. Follow project Git rules and current authorization. Without explicit commit authorization for this scope, show the checked work and ask whether the round is ready for a local commit; do not repeat an authorization already given. Saving alone authorizes no push, PR, or publication.
+Deliver the saved location, main content, and key gaps; apply feedback to the same source. Saving does not approve proposals or prove implementation. Follow project Git rules: show checked work and ask before committing unless this scope is already authorized. Saving adds no push, PR, or publication permission.

@@ -1,6 +1,6 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+description: "Stress-test a plan, decision, or idea through focused questions in rounds. Use for requests such as 'grill me on this plan' or '帮我质询这个方案'; explore material risks within the agreed scope."
 ---
 
 Stress-test the agreed topic until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it. Preserve the depth of the interview without expanding beyond the user's scope. If the user explicitly wants exhaustive questioning, explore every relevant branch; otherwise focus on material decisions and risks.

@@ -12,6 +12,26 @@
 
 Ordinary Markdown links provide navigation but do not guarantee that files are automatically loaded into context; the entry point specifies when to read the relevant material. Reuse verified context that still applies instead of rereading every file for each operation.
 
+### Skill links in common layouts
+
+Resolve paths from the copied guidance file, not the project root. For a file in root-level `agent-guidance/`, these are example targets:
+
+| Installation | Example target for `decision-notes` |
+| --- | --- |
+| Codex project packages | `../.agents/skills/decision-notes/SKILL.md` |
+| Claude Code project packages | `../.claude/skills/decision-notes/SKILL.md` |
+| Personal packages | Use the host's actual readable installed location; do not assume `~` expands in Markdown links |
+
+Apply the same adjustment to all method links. Verify targets and preserve each complete package. A skill name can aid discovery, but it does not replace a readable-source fallback when invocation is unavailable.
+
+### Host loading and optional history
+
+Keep one owning project instruction source. Preserve an existing `CLAUDE.md` when integrating shared guidance. On supported Claude Code versions, direct `AGENTS.md` loading depends on the file combination and Project instructions setting. An existing `CLAUDE.md` can import a neighboring shared source with `@AGENTS.md`. The [official loading rules](https://code.claude.com/docs/en/memory#agentsmd) describe version and configuration limits; do not infer loading from a filename alone.
+
+Keep conditional history behind a task-specific reading trigger. Do not add a mandatory import of an optional lesson file. If the file does not exist, continue; if access fails, state the gap. Reuse the existing notes, subsystem, or verification source when it already owns the evidence. The `decision-notes` method owns candidate assessment and promotion.
+
+Verify the chosen layout in a fresh session using the [validation procedure](validation.md#host-loading-and-behavior-checks). Record the host version, settings relevant to loading, actual sources read, and observed action. A discovered skill name or instruction filename alone does not prove behavioral reuse.
+
 ## Ownership
 
 Keep the entry point focused on project sources, task-specific reading triggers, and concrete constraints needed before choosing an action. Apply the same standard to companion guidance: retain deliberate engineering conventions and rules addressing demonstrated failures; omit generic coaching about autonomy, clarification, or planning. Link to skill methods instead of restating their procedures. Moving generic prose out of the entry point does not reduce the total instruction burden.

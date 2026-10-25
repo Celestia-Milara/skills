@@ -46,4 +46,4 @@ Review this task's actual staged, unstaged, committed, and relevant untracked ch
 
 Report implemented behavior, checks actually run, results, evidence scope, and gaps. Tests prove covered conditions; mocks do not verify real services, builds do not prove runtime behavior, and code changes do not complete manual acceptance. Obtain integration, runtime, or platform evidence when needed and state unrun, failed, constrained, or pending checks.
 
-Synchronize affected documents and lasting decisions. Keep related work together rather than committing after every red-green cycle. Follow project Git rules and current authorization; absent explicit commit authorization for this scope, show checked work and ask whether this round is ready for a local commit. Do not ask again for existing authorization. TDD adds no push, PR, or publication permission.
+Synchronize affected documents and lasting decisions. Keep related work together. Follow project Git rules: show checked work and ask before committing unless this scope is already authorized. TDD adds no push, PR, or publication permission.

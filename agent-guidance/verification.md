@@ -10,6 +10,8 @@ Behavior tests should use stable, caller-observable interfaces. Derive expectati
 
 Select project checks by the affected promises. Structure, behavior, and real integration checks provide different evidence; use what the risk needs. Build or mocked-test success does not prove runtime, integration, persistence, or platform behavior. Use real checks when a test double replaces the mechanism at issue.
 
+Before checks that use real services, check the environment, account, data scope, and expected side effects against existing authorization. Implementation or verification authorization alone does not permit production deployment, real charges, notifications to real users, or changes to production data. If these effects lack authorization, explain the target and impact and obtain authorization before proceeding. Reuse existing authorization for the same scope without asking again.
+
 Confirm that target checks ran against the relevant version; inspect test matches, skips, and covered paths. A zero exit code alone is insufficient. Report performed checks, failures, and gaps. For pending manual acceptance, provide steps and observable outcomes.
 
 ## Review and Delivery

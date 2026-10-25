@@ -1,12 +1,14 @@
-# Change Designs and Plans
+# Change Records: Design and Plans
 
 ## Responsibilities and Content
 
-A change design describes one identifiable change: its goal, the gap from the current state, affected subsystems, and necessary transition arrangements. A plan describes how to carry it out, including work units, dependencies, progress, and verification. Subsystem documentation owns current behavior; notes own long-term rationale.
+A change record retains the context needed to carry out one identifiable change. Design content explains its target, current gap, affected subsystems, and transition arrangements. Plan content explains work units, dependencies, progress, and verification. Subsystem documentation owns current behavior; notes own long-term rationale.
 
 The change entry point, README, plan, and overall Status rules in this file apply to engineering change records that require ongoing maintenance. When creating or maintaining only a human-readable design, do not require an engineering record or add engineering progress status; keep settled, recommended, and unresolved design content distinct from work progress.
 
-If `docs/designs/` or another existing design source owns the goals, behavior, and solution, summarize and reference it in the engineering design, adding only necessary technical details and transition arrangements. When the user explicitly asks for implementation, verify the design's applicability against current source code, constraints, and notes, and carry forward valid conclusions; an unresolved recommendation does not automatically become a decision. Existing tasks can read relevant designs as needed without waiting for an explicit reference. Creating, reading, or referencing a design does not add implementation authorization; existing authorization remains in effect. Synchronize actual changes to their owning sources; an engineering record must not silently override a still-applicable human-readable design.
+If an existing design owns the goals, behavior, and solution, link to it. Add only missing execution, migration, verification, and progress details to the change record. When no separate design exists and a split has no maintenance value, keep necessary design and plan content in one change record. Do not create a second file just to satisfy a document category.
+
+Before authorized implementation, verify the design against current source, constraints, and notes. Carry forward valid conclusions; keep unresolved recommendations distinct from decisions. Reading or saving a design adds no implementation authorization. Revise the owning design when it changes; a change record must not silently override it.
 
 An engineering change entry must have a title, an overall `Status`, and a clear statement of the goal and scope. By default, combine the design and plan in `README.md`; split them only when needed, following [Organization Rules](organization.md) and keeping the entry point and links intact. Maintain status only at the entry point. See [Status and Closeout](lifecycle.md) for status meanings and completion rules.
 

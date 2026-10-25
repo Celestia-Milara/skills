@@ -71,13 +71,7 @@ Independent checks confirmed the requested behavior and real database effects. A
 
 This was one controlled diagnostic run, not an old/new skills comparison or proof of general effectiveness. It does not cover production deployment, separate-process stress, crash recovery, or cross-host behavior. Fixtures, patches, commands, and results remain in the separate local test workspace; they are not package dependencies.
 
-### Local gateway and isolated-test troubleshooting
-
-If Claude Code uses a loopback gateway such as Magpie while inheriting `HTTP_PROXY` or `HTTPS_PROXY`, ensure `NO_PROXY` includes `localhost,127.0.0.1,::1`. Preserve existing exclusions when appending these entries; back up configuration before changing it. Claude Code can receive these values through the `env` object in its user settings. In the tested setup, adding both `NO_PROXY` and `no_proxy` resolved HTTP 502 responses without changing the model or gateway credentials. A direct gateway request alone does not establish that the CLI follows the same proxy path.
-
-On Windows, an isolated Codex run using `--ignore-user-config` also discards the user's native sandbox configuration. In the tested setup, this caused a normal skill-file read to be rejected by command policy. Explicitly carrying over the configured `windows.sandbox` option restored file reads while retaining `--sandbox read-only`. Similarly, carry over the selected provider definition and explicitly select Magpie if the isolated test is meant to use that gateway. Keep credentials out of command arguments, reports, and repository files.
-
-For read-only Claude Code invocation tests, retain `Glob` and `Grep` alongside `Read` and `Skill`; history and documentation workflows need to locate files as well as open them. Restricting the test to `Read,Skill` caused a history lookup to stall on guessed paths. With `dontAsk`, also grant access to the installed skills directory using `--add-dir` if bundled reference reads would otherwise require approval outside the working directory. The tested harness added only `~/.claude/skills` and retained its read-only tool set. See [Claude Code working directories](https://code.claude.com/docs/en/permissions#working-directories). These are test access constraints, not package-discovery failures.
+Validation procedures and local gateway troubleshooting are maintained in [Validation Methods and Environment Notes](agent-guidance/validation.md).
 
 ## Project agent guidance
 

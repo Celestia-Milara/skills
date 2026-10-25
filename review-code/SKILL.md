@@ -25,7 +25,7 @@ Use capabilities actually available. If needed companion guidance cannot be invo
 
 ## 3. Verify and report
 
-Read [Findings, Reporting, and Fixes](references/findings-and-report.md) when verifying candidates or preparing the report; it owns detailed evidence, counterexample, causation, deduplication, and reporting rules.
+Read [Findings, Reporting, and Fixes](references/findings-and-report.md) when verifying candidates or preparing the report. Read the [delivery example](references/example.md) when a complete report example would help.
 
 Establish a location, applicable rule or contract, trigger, and concrete impact for each finding. Try to disprove it using reachability, caller guarantees, handling, version limits, and applicable decisions. Static proof can suffice; severity does not turn an unverified premise into a defect. Report problems introduced, worsened, or made current by the target and explain causation for older locations. Keep unrelated legacy issues separate.
 
@@ -37,4 +37,4 @@ If delegating is useful and authorized, verify that perspectives share the same 
 
 For fixes already authorized, inspect the new diff, verify the original issue is resolved, check for new issues, and run relevant checks against the changed version. Pre-fix evidence does not validate the fix. Ask only when behavior, scope, or a key trade-off needs a decision beyond existing authorization; do not reconfirm settled decisions.
 
-Keep long-term decisions and retained documentation in their owning sources rather than duplicating their policies here. After authorized edits, follow project Git rules and current authorization; absent explicit commit authorization for this scope, show the checked work and ask whether the round is ready for a local commit. Honor existing authorization without asking again. Report what changed and what remains unresolved or unverified; review does not prove runtime behavior or required manual acceptance.
+Keep decisions and documentation in their owning sources. After edits, follow project Git rules: show checked work and ask before committing unless this scope is already authorized. Review adds no push, PR, or publication permission. Report unresolved and unverified work; review does not complete runtime or manual acceptance.

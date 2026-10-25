@@ -48,3 +48,5 @@ If a generic request entry point forces every test to restate routing and respon
 ## Preserve Verification Boundaries
 
 A substitute should express relevant success, failure, or timing conditions without turning unrelated implementation details into contracts. Check whether assertions would still catch an incorrect real result. Passing mocks do not mean product integration, real runtime, or target-platform behavior passed. When such evidence is needed, verify it using the project's actual approach and report limitations honestly.
+
+Before real-service tests, verify the environment, account, data, and permitted side effects. Obtain missing authorization for charges, customer notifications, or production writes; reuse explicit authorization for the same scope.

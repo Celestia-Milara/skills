@@ -1,6 +1,6 @@
 ---
 name: maintenance-docs
-description: "Create, verify, and maintain subsystem documentation, change designs, plans, status, and source relationships. Use when asked to organize them, when engineering context must persist, or when changes make existing materials inaccurate; not a mandatory phase for every task."
+description: "Create, verify, and maintain subsystem documentation, change records, plans, status, and source relationships. Use when asked to organize them, when engineering context must persist, or when changes make existing materials inaccurate; not a mandatory phase for every task."
 ---
 
 # Maintenance Docs
@@ -11,7 +11,7 @@ Use engineering judgment to retain useful context, verify descriptions, expose g
 
 The task Agent owns technical choices, implementation, debugging, and verification. Use `to-docs` for readable designs, `grilling` for an in-depth discussion, `decision-notes` for lasting decisions and historical search, and `handoff` when a transfer is needed. Continue settled work without reopening decisions, duplicating original sources, or adding approval gates. Search decision history when its triggers apply, even without a direct link.
 
-Use available skills or read configured guidance through the host's supported mechanism. State inaccessible dependencies, continue independent work, and do not claim an unavailable invocation. Reuse verified context; avoid circular loading, duplicate searches, and rescanning the whole repository after a turn or skill change. Recheck affected areas when scope, premises, sources, or conflicts change.
+Use available skills or readable configured guidance. State inaccessible dependencies and continue independent work without claiming an unavailable invocation. Reuse verified context; recheck affected areas when scope, premises, sources, or conflicts change.
 
 Ordinary reading, immediate questions, and small changes that do not affect retained materials do not trigger a full maintenance process. A documentation-only request adds no permission to change product behavior, run unrelated checks, or commit; existing engineering authorization remains valid.
 
@@ -31,7 +31,7 @@ Read only the references relevant to the material being maintained:
 | --- | --- |
 | Choose sources, organize files, or align readable designs with engineering records | [Organization and Sources](references/organization.md): locations, navigation, source relationships, diagrams |
 | Describe or correct a current subsystem | [Subsystem Documentation](references/subsystems.md): current contracts, verified implementation facts, known differences, dependencies, and verification links |
-| Preserve change goals, implementation arrangements, or continuation | [Change Designs and Plans](references/changes.md): target design, gap from current state, dependencies, tasks, verification plans |
+| Preserve change goals, implementation arrangements, or continuation | [Change Records](references/changes.md): design content or links, current gap, dependencies, tasks, verification plans |
 | Update status, complete, pause, cancel, resume, or close a record | [Status and Closeout](references/lifecycle.md): status meanings, task markers, completion, acceptance, remaining work |
 
 Maintain each fact in one place; summarize and link elsewhere. A readable design can be the complete source. Engineering records supplement it only as needed; their entry-point, plan, and overall Status rules do not apply automatically to standalone designs. Notes own long-term rationale. An index provides navigation rather than a second progress record.
@@ -54,4 +54,4 @@ Check retention and ownership, accuracy, links, and continuation. If an engineer
 
 Run relevant existing checks and inspect results, or review manually if no dedicated tool exists. Do not impose a new toolchain, unrelated checks, or a full suite for documentation alone; reuse still-applicable evidence. Report unavailable, failed, unrun, or manual checks precisely. Completing a documentation task means its agreed information is accurate and usable; it does not prove implementation or acceptance.
 
-Deliver links, substantive changes, remaining gaps, and the next action when needed. Continue feedback in the original sources. Follow project Git rules and current authorization; absent explicit commit authorization, show the checked changes and ask whether this round is ready for a local commit. Do not repeat existing authorization. Saving records or completing this task adds no push, PR, merge, or release permission.
+Deliver links, substantive changes, remaining gaps, and any next action. Apply feedback to the owning sources. Follow project Git rules: show checked work and ask before committing unless this scope is already authorized. Saving records adds no push, PR, merge, or release permission.
