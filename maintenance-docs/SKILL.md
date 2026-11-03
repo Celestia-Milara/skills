@@ -9,7 +9,7 @@ description: "Create, verify, and maintain subsystem documentation, change recor
 
 Use engineering judgment to retain useful context, verify descriptions, expose gaps, and maintain ownership and navigation. Investigate actual paths when describing current mechanisms; filling a template does not establish facts. Targeted documentation investigation does not require a separate design process.
 
-The task Agent owns technical choices, implementation, debugging, and verification. Use `to-docs` for readable designs, `grilling` for an in-depth discussion, `decision-notes` for lasting decisions and historical search, and `handoff` when a transfer is needed. Continue settled work without reopening decisions, duplicating original sources, or adding approval gates. Search decision history when its triggers apply, even without a direct link.
+The task Agent owns technical choices, implementation, debugging, and verification. Use `to-docs` for readable designs, `grilling` for an in-depth discussion, and `decision-notes` for lasting decisions and historical search. For a genuine transfer, use pstack's session-pickup or pause-safely playbook when available; otherwise preserve the goal, current evidence, and next step in the existing project source. Continue settled work without reopening decisions, duplicating original sources, or adding approval gates. Search decision history when its triggers apply, even without a direct link.
 
 Use available skills or readable configured guidance. State inaccessible dependencies and continue independent work without claiming an unavailable invocation. Reuse verified context; recheck affected areas when scope, premises, sources, or conflicts change.
 

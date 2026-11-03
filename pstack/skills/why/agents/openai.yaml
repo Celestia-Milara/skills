@@ -1,0 +1,5 @@
+interface:
+  display_name: "why"
+  short_description: "Why workflow for pstack engineering"
+policy:
+  allow_implicit_invocation: false

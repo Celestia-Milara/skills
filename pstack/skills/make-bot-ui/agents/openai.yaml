@@ -1,0 +1,5 @@
+interface:
+  display_name: "make-bot-ui"
+  short_description: "Make bot ui workflow for pstack"
+policy:
+  allow_implicit_invocation: false

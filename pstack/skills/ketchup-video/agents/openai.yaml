@@ -1,0 +1,5 @@
+interface:
+  display_name: "ketchup-video"
+  short_description: "Ketchup video workflow for pstack"
+policy:
+  allow_implicit_invocation: false

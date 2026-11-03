@@ -19,8 +19,12 @@ Update affected sources when verified behavior or settled decisions change. Use 
 | Organize or update subsystem documentation, change designs, and plans | [maintenance-docs](../maintenance-docs/SKILL.md) |
 | Search prior decisions before concrete proposals, behavior or key trade-off decisions, related implementation or behavioral test changes | [decision-notes](../decision-notes/SKILL.md) |
 | Assess corrections or rework that could help later tasks | [decision-notes](../decision-notes/SKILL.md): candidate lessons, evidence, and prevention |
-| Prepare a task transfer or continue from handoff materials | [handoff](../handoff/SKILL.md) |
+| Prepare a task transfer or continue prior work | pstack [session pickup](../pstack/skills/poteto-mode/playbooks/session-pickup.md) or [pause safely](../pstack/skills/poteto-mode/playbooks/pause-safely.md), under its [host adapter](../pstack/skills/poteto-mode/references/host.md) |
 
 These are task-specific methods, not a sequence of required phases. Their packages own the procedures and criteria for creating records.
+
+[pstack](../pstack/skills/poteto-mode/SKILL.md) owns the main engineering workflow.
+The five local skills supplement interviews, designs, document maintenance, and
+long-term decisions. Do not run both sets as competing mandatory workflows.
 
 Create decision notes only for settled, non-trivial decisions whose lasting rationale needs a separate record; see the skill's [recording threshold](../decision-notes/SKILL.md#3-decide-whether-to-create-a-record). Routine fixes, formatting, renames, and local UI edits do not need new notes unless they involve such a decision. Judge significance by the decision, not diff size; keep affected existing records accurate.

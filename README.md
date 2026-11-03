@@ -1,117 +1,155 @@
-# Agent Skills
+# Engineering Skills
 
-A reusable collection of personal engineering conventions: eight skills for design discussions, engineering documentation, implementation, review, and handoff, plus project agent guidance. The root-level packages are the maintained English edition. `zh-backup/` is a local Chinese backup, excluded from publication; do not install it alongside the root packages because their skill names overlap.
+Complete [pstack 0.15.36](pstack/README.md), adapted for Codex and Claude Code,
+with five local supplements. pstack is the main engineering workflow. The
+supplements retain design interviews, readable designs, document maintenance,
+and long-term decisions without adding a second mandatory workflow.
 
-| Skill | Purpose |
+The portable baseline is [backnotprop/pstack](https://github.com/backnotprop/pstack)
+at `6c75f4e`. It preserves every file in Cursor's original pstack snapshot.
+Exact revisions, hashes, and local changes are in [source-lock.json](pstack/source-lock.json)
+and [ORIGIN.md](pstack/ORIGIN.md). See [adaptation](docs/adaptation.md) for ownership
+and update rules.
+
+## Packages
+
+| Source | Role |
 | --- | --- |
-| [grilling](grilling/SKILL.md) | Stress-test an idea or design through questions grouped by settled prerequisites. |
-| [grill-me](grill-me/SKILL.md) | Explicit entry point for the grilling interview; install with `grilling`. |
-| [to-docs](to-docs/SKILL.md) | Turn discussion outcomes into human-readable design documents. |
-| [maintenance-docs](maintenance-docs/SKILL.md) | Maintain subsystem documentation, change designs, plans, and their source relationships. |
-| [decision-notes](decision-notes/SKILL.md) | Find and maintain long-term decisions, rationale, and rejected or superseded approaches. |
-| [tdd](tdd/SKILL.md) | Develop behavior incrementally through discriminating failing tests, minimal implementation, and refactoring. |
-| [review-code](review-code/SKILL.md) | Review requirements, project standards, and correctness against the actual change scope. |
-| [handoff](handoff/SKILL.md) | Prepare a context transfer or verify a handoff before continuing work. |
+| [pstack/](pstack/README.md) | All 58 upstream skills, 24 principle skills included; 23 playbooks, agents, scripts, documentation, assets, and Benny automation resources |
+| [grilling](grilling/SKILL.md) | Focused design/requirements interview |
+| [grill-me](grill-me/SKILL.md) | Explicit interview entry; keep with grilling |
+| [to-docs](to-docs/SKILL.md) | Preserve a discussion as a readable design |
+| [maintenance-docs](maintenance-docs/SKILL.md) | Maintain current facts, designs, plans, and source ownership |
+| [decision-notes](decision-notes/SKILL.md) | Retrieve and maintain durable decisions and their rationale |
 
-The custom review skill uses `/review-code` to keep Claude Code's bundled `/code-review` available. A custom skill with the same name replaces the bundled command; see [Resolve skills that share a name](https://code.claude.com/docs/en/skills#resolve-skills-that-share-a-name).
+The default bundle contains **63 skill names**. Benny's three automation-only
+skills remain in their original resource tree; they are not global skill entries.
+Installation does not create or enable automations.
+
+The former local `tdd`, `review-code`, and `handoff` are retired from default
+installation. All eight original complete packages are preserved in the verified
+[legacy archive](legacy/README.md). Keep backups outside active skill directories.
+`zh-backup/` remains a local, unmaintained backup.
 
 ## Install
 
-1. Download or clone [Celestia-Milara/skills](https://github.com/Celestia-Milara/skills).
-2. Choose a host location from the table below. Copy the selected **complete package directories** into it, with one directory per skill. For the full workflow, copy all eight packages listed above; copying this repository itself into a skills directory does not produce that layout.
-3. Preserve all bundled files, including `references/`, `agents/`, `ORIGIN.md`, and `LICENSE` where present. Copying only `SKILL.md` loses guidance or license notices. For a partial installation, also make the companion methods referenced by name available to the host.
-4. Start a new session and verify that the expected skill names are available. Paths, tool names, and metadata support vary by host; `agents/openai.yaml` alone does not install or register a skill.
+Requirements: Python 3.10+ and Git. The source and adapters are plain files.
+Individual upstream tools can require Node, Bun, Java/TLC, or Git Bash; check the
+workflow before running it. Installing the bundle does not install these tools.
 
-| Host | Personal installation | Project installation | Explicit invocation |
-| --- | --- | --- | --- |
-| Codex | `~/.agents/skills/<name>/` | `.agents/skills/<name>/` | `$grilling`, `$grill-me`, or another installed name |
-| Claude Code | `~/.claude/skills/<name>/` | `.claude/skills/<name>/` | `/grilling`, `/grill-me`, or another installed name |
+Install into a project, using the actual checkout path:
 
-`~` means your user home directory, such as `C:\Users\<user>` on Windows. Project paths are relative to the project directory. Choose one scope per host to avoid installing the same names twice. In Codex, open the skill picker with `$`; in Claude Code, use `/` and check the available commands. If an existing session still shows the old inventory, restart the host. See the official [Codex skills documentation](https://learn.chatgpt.com/docs/build-skills) and [Claude Code skills documentation](https://code.claude.com/docs/en/skills).
-
-Expected layout, where `<configured-skill-directory>` is your host's actual configured location:
-
-```text
-<configured-skill-directory>/
-  grilling/SKILL.md
-  grill-me/SKILL.md
-  to-docs/SKILL.md
-  maintenance-docs/SKILL.md
-  decision-notes/SKILL.md
-  tdd/SKILL.md
-  review-code/SKILL.md
-  handoff/SKILL.md
-  ...other files inside each complete package
+```powershell
+python scripts/install.py --host codex --project D:/path/to/project --dry-run
+python scripts/install.py --host codex --project D:/path/to/project
+python scripts/install.py --host claude-code --project D:/path/to/project
 ```
 
-Keep `grill-me` and `grilling` together. On a host with a `Skill` tool, the explicit `grill-me` entry delegates to `grilling`. If that tool is unavailable, open the installed `grilling/SKILL.md` through the host's supported file-reading mechanism and follow it directly, resolving any relative references from that package.
+The installer copies a complete bundle into `<project>/.agents/pstack/` or
+`<project>/.claude/pstack/`. It copies the 63 active packages into the host's
+`skills/` folder and redirects package-external documentation links to the full
+bundle. It requires no symlink privileges. Claude Code also receives two agents.
 
-`grill-me` intentionally requires explicit invocation: Claude Code uses `disable-model-invocation: true`, and Codex uses `policy.allow_implicit_invocation: false` in `agents/openai.yaml`. The other seven skills are eligible for automatic selection from their descriptions. Being discovered does not guarantee that the model will choose a skill for every related prompt or that its tools can read the package.
+Existing skills, agents, or unmanaged bundles cause a preflight failure. The
+installer does not merge or overwrite them. `--replace-managed` updates a previous
+managed install only when its recorded files remain unchanged; it retains the
+previous bundle and active packages under `pstack-backups/`. Reconcile modified
+installed files first. Keep the active packages and complete bundle together.
 
-### Verified host behavior
+The installer leaves user settings, model files, permissions, `AGENTS.md`, and
+`CLAUDE.md` unchanged. It does not install globally or update other projects.
+Start a new host session after installation and inspect its skill inventory.
 
-Checked on Windows on 2026-10-17:
-
-| Check | Codex CLI `0.163.0` / desktop CLI `0.163.0-alpha.10.2` | Claude Code `2.1.302` |
+| Host | Entry | Adapter |
 | --- | --- | --- |
-| Project discovery with all eight complete packages | 8 names found; no loader errors | 8 commands found; bundled `/code-review` retained |
-| Project discovery with only `decision-notes` | Standalone package found; no loader errors | Standalone command found; bundled `/code-review` retained |
-| Personal installation in an empty project | Both CLIs found all 8 as enabled user skills | All 8 found as user commands |
-| Natural-language design interview through Magpie | npm CLI automatically selected and read `grilling`, then returned questions and recommendations in a read-only sandbox | Automatically invoked `Skill(grilling)` and returned questions and recommendations |
-| Explicit `grill-me` entry through Magpie | Loaded the installed `grilling` companion and completed the interview round | `/grill-me` invoked `Skill(grilling)` and completed the interview round |
-| Explicit invocation of the other six workflow skills through Magpie | All six read the synthetic project and returned task-specific results | All six read the synthetic project and returned task-specific results |
+| Codex project install | `$poteto-mode` | [Codex](pstack/docs/harness/codex.md) |
+| Claude Code project install | `/poteto-mode` | [Claude Code](pstack/docs/harness/claude-code-local.md) |
 
-The discovery checks used the hosts' actual initialization/skill-list interfaces. All eight skills completed invocation smoke checks on each host, with runtime requests confirmed in Magpie's local routing log with successful HTTP responses. The synthetic project exercised decision retrieval, design and maintenance-document previews, a TDD test-and-patch preview, an intentional review defect, and a handoff preview. Its files remained unchanged: these read-only checks do not establish full document-writing or red/green implementation workflows. Automatic selection was tested for `grilling`; these checks do not claim automatic selection was tested for every skill. Runtime Codex checks used the npm CLI; the desktop CLI was checked for discovery.
+Use the installed `setup-pstack` only when you want to configure role models.
+Without configured, supported models, adapters inherit the session model and
+disclose missing diversity. Skills cannot make an unavailable model/tool exist.
+Project authorization still governs commits, PRs, messages, deployment, and data.
 
-### Engineering task validation
+### Native plugin bundle
 
-On 2026-10-22, six fresh-context Agents worked in isolated Python/SQLite projects. Each had the complete skill packages and project guidance at `5555d0c`. Tasks covered an internal refactor, a contract defect, an authorized queued-save change, and a storage change. The other tasks addressed a fake that hid commit timing and a command that ran no tests.
+Build a portable bundle that includes all five supplements:
 
-Independent checks confirmed the requested behavior and real database effects. All 52 acceptance checks and 45 project tests passed, with no skips. All six starting projects failed their relevant acceptance checks. A shared Windows connection-cleanup defect was corrected before acceptance; original and corrected baselines were retained. Evidence includes fresh SQLite connections, concurrent retries, event visibility, the shipped client, CSV output, and actual test counts.
+```powershell
+python scripts/package.py --output .dist/pstack
+claude --plugin-dir D:/path/to/skills/.dist/pstack
+```
 
-This was one controlled diagnostic run, not an old/new skills comparison or proof of general effectiveness. It does not cover production deployment, separate-process stress, crash recovery, or cross-host behavior. Fixtures, patches, commands, and results remain in the separate local test workspace; they are not package dependencies.
+Choose a new output directory for each rebuild; the packager never overwrites an
+existing output. Generated bundles are local and are not included in the checkout.
 
-Validation procedures and local gateway troubleshooting are maintained in [Validation Methods and Environment Notes](agent-guidance/validation.md).
+For Claude plugin loading use `/pstack:poteto-mode`; for a project installation use
+the unprefixed command. Choose one mode to avoid duplicates. The bundle contains
+the root portable manifest and a Claude compatibility manifest. Codex can also
+consume portable plugin packages through its supported plugin installation flow;
+the project installer above is this library's directly tested local path.
+Do not use an upstream marketplace command to install these local adaptations.
 
 ## Project agent guidance
 
-[AGENTS.md](AGENTS.md) is the active instruction entry point for maintaining this library. For other projects, start with [AGENTS.template.md](agent-guidance/AGENTS.template.md) and the three companion files in `agent-guidance/`; these are engineering conventions, not a ninth skill. [Agent Guidance Integration](agent-guidance/README.md) owns the setup, link adjustment, and source-version workflow. Each project keeps a reviewable copy with its own resources and constraints, adopting source updates explicitly rather than following a live global file. Markdown links provide navigation; they do not automatically load the linked rules.
+[AGENTS.md](AGENTS.md) is this library's instruction entry. For other projects,
+follow [integration instructions](agent-guidance/README.md) and the
+[template](agent-guidance/AGENTS.template.md). Guidance is optional; skill packages
+do not depend on installing project instructions.
+
+Keep project constraints and resource navigation. pstack owns execution methods;
+the five supplements own document and decision methods. Remove copied method
+steps when adopting pstack, without discarding project-specific obligations.
+Each project owns its guidance copy and explicitly adopts updates. Existing
+project copies and unrelated user installations do not change with this checkout.
 
 ## Reading and maintenance
 
-Each package's `description` identifies when it applies; `SKILL.md` contains its main workflow and necessary defaults. Read bundled references under the conditions given in the entry point. The purpose table above is navigation, not an overriding policy. A standalone review reports by default; an authorized implementation task or explicit fix request may address confirmed defects within scope.
+Read the applicable root guidance before changes. Every imported skill links to
+the [host router](pstack/skills/poteto-mode/references/host.md), including standalone
+leaf invocations. Host mappings take precedence over retained Cursor examples.
+Keep complete packages, licenses, origins, and referenced resources together.
 
-Project guidance is optional. Skill packages retain essential boundaries locally; where a commit step applies, the standalone fallback is: show checked work and ask by default, honor explicit authorization already given for the same scope, and do not treat saving a document as permission to publish. Companion skill names describe cooperating methods; use installed capabilities or readable configured guidance, state missing dependencies, and do not claim unavailable invocations.
+Run these checks from the repository root:
 
-For guidance-only changes, check Markdown links and anchors, reading triggers, source ownership, and the template after adapting its paths to a target project. Use `git diff --check` for tracked changes and include new files in the review. For package or installation changes, also check affected package metadata and references; use host checks when discovery or invocation behavior is affected, and report their limits separately from static checks. Preserve complete package contents and license/origin notices; keep publication selection within the scope below.
+```powershell
+python scripts/verify.py
+python -m unittest discover -s tests -v
+git diff --check
+```
+
+For host/installation changes, also run actual host discovery and invocation
+checks in isolated projects, following [validation methods](agent-guidance/validation.md).
+Check file reads, covered paths, and side effects. Metadata validation does not
+prove runtime behavior, model diversity, or Cursor-only integrations.
+Use the staged file list and diff before any authorized commit.
+
+## Verified host behavior
+
+Current adaptation results and their limits are maintained in
+[validation evidence](docs/validation.md). Earlier eight-skill discovery and
+invocation results from 2026-10-17 and the controlled engineering run from
+2026-10-22 apply to the old snapshot. They do not validate this adaptation.
+The original descriptions remain in Git at `61c9e1f:README.md`.
 
 ## Publication scope
 
-Publish only these root entries, including all files inside the listed directories:
+Public sources are `README.md`, `LICENSE`, `AGENTS.md`, `.gitignore`,
+`.gitattributes`, `pstack/`, the five root supplement directories,
+`agent-guidance/`, `docs/`, `scripts/`, `tests/`, and `legacy/`.
+Keep the archive's licenses and origin files intact. `legacy/` is a backup,
+not an installation source. Preserve the complete `pstack/` tree, including
+upstream tests, assets, and automation resources.
 
-```text
-README.md
-LICENSE
-AGENTS.md
-.gitignore
-.gitattributes
-agent-guidance/
-grilling/
-grill-me/
-to-docs/
-maintenance-docs/
-decision-notes/
-tdd/
-review-code/
-handoff/
-```
-
-The repository contains installable skill packages, optional project guidance, and source/license information; install only the selected skill packages. Internal work and local backups or generated artifacts are excluded by `.gitignore` and are not installation candidates. The `handoff/` package is public; the root working record `handoff.md` is excluded.
-
-`.gitignore` affects Git adding untracked files; it does not remove already tracked files, and GitHub's web upload does not apply it. For web uploads, explicitly select only the public entries listed above. Check the actual staged files or web upload selection before publishing, and retain package `LICENSE` and `ORIGIN.md` files.
+Exclude `design/`, `zh-backup/`, local installations in `.agents/` and `.claude/`,
+`.dist/`, `.tmp/`, caches, dependencies, and generated media. Git ignore rules do
+not remove tracked files or filter web uploads. Inspect the actual publication
+selection. No publication operation is implied by packaging or installing.
 
 ## License and upstream sources
 
-Locally authored material is licensed under the [MIT License](LICENSE), with Copyright (c) 2026 skills contributors. This covers the project template, companion guidance, this README, and the locally authored packages, which also retain their own copies: [decision-notes/LICENSE](decision-notes/LICENSE), [maintenance-docs/LICENSE](maintenance-docs/LICENSE), and [to-docs/LICENSE](to-docs/LICENSE).
-
-The upstream and adapted packages retain Copyright (c) 2026 Matt Pocock and their original MIT notices: [grilling/LICENSE](grilling/LICENSE), [grill-me/LICENSE](grill-me/LICENSE), [tdd/LICENSE](tdd/LICENSE), [review-code/LICENSE](review-code/LICENSE), and [handoff/LICENSE](handoff/LICENSE). Their upstream is [mattpocock/skills](https://github.com/mattpocock/skills), using source revision [`c55ee46073ed923f86ce59a5eb3b6d895095d1b7`](https://github.com/mattpocock/skills/tree/c55ee46073ed923f86ce59a5eb3b6d895095d1b7). Local adaptations are documented in [grill-me/ORIGIN.md](grill-me/ORIGIN.md), [tdd/ORIGIN.md](tdd/ORIGIN.md), [review-code/ORIGIN.md](review-code/ORIGIN.md), and [handoff/ORIGIN.md](handoff/ORIGIN.md). Retain the applicable copyright, license, and origin notices when redistributing these packages; the root license does not replace their notices.
+Local work uses the root [MIT license](LICENSE). pstack retains
+[Lauren Tan's MIT notice](pstack/LICENSE), its original source files, and
+[mirror provenance](pstack/ORIGIN.md). Each installed pstack skill also carries
+its license and origin notice. Five supplements retain their existing licenses
+and applicable origin files. The legacy archive preserves those of all eight
+old packages. Do not replace upstream copyright notices with the local notice.
