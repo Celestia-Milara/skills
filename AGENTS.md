@@ -1,6 +1,9 @@
 # Skills Library
 
-This repository maintains reusable personal engineering conventions: standalone skills and project agent guidance.
+This repository maintains the complete adapted pstack distribution, five local
+supplementary skills, and optional project guidance. pstack owns the main
+engineering workflow. Read [adaptation and source ownership](docs/adaptation.md)
+before changing host behavior or updating the imported source.
 
 ## Project Sources
 
@@ -23,6 +26,6 @@ Read the applicable guidance before the activity; links do not load its contents
 ## Library Constraints
 
 - Use [ASD-STE100](https://www.asd-ste100.org/about_STE.html) as a writing guide. Aim for roughly 80% alignment, not a measured compliance claim. Prefer short, active sentences and consistent terms. Preserve technical terms, scope conditions, and authorization boundaries.
-- Edit the root English packages; `zh-backup/` is a local backup, not a second maintained edition. Keep installation and publication within the [README's scope](README.md#publication-scope).
+- Maintain the five root English supplements and the adapted `pstack/` tree. `legacy/` and `zh-backup/` are backups, not active editions. Keep installation and publication within the [README's scope](README.md#publication-scope).
 - Skills must remain usable without project agent guidance. Keep specialized methods in their packages and common operating rules in `agent-guidance/`; see [ownership](agent-guidance/README.md#ownership).
 - Preserve complete package references and applicable license/origin files when distributing skills; see [licensing and sources](README.md#license-and-upstream-sources).

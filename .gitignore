@@ -4,6 +4,9 @@
 /handoff.md
 /github-preupload-review.md
 /.claude/
+/.agents/skills/
+/.agents/pstack/
+/.agents/pstack-backups/
 
 # Local generated artifacts and scratch output (root only).
 /.dist/
@@ -12,6 +15,9 @@
 /tmp/
 /.tmp/
 /.cache/
+__pycache__/
+*.pyc
+node_modules/
 
 # Operating-system metadata.
 .DS_Store

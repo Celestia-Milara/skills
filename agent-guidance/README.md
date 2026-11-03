@@ -4,6 +4,12 @@
 
 ## Integration steps
 
+For this distribution, install pstack and the five supplements with the root
+installer first. pstack owns the main execution methods. When copying these
+rules, adapt pstack method links to the installed `poteto-mode`, `tdd`, and
+`interrogate` files. Preserve the project's real constraints and authorization;
+do not duplicate full pstack playbooks in project guidance.
+
 1. Copy [AGENTS.template.md](AGENTS.template.md), rather than this library's root entry, to the target project's instruction entry point under a name recognized by its tool, such as `AGENTS.md` or `CLAUDE.md`. Merge into an existing entry without overwriting project constraints. Do not assume that singular `AGENT.md` is loaded automatically.
 2. Copy [collaboration.md](collaboration.md), [verification.md](verification.md), and [git.md](git.md) from this directory into the target project. By default, keep them in the root-level `agent-guidance/`. The template's three guidance links are relative to its source directory: when the entry is at the project root, change `(collaboration.md)`, `(verification.md)`, and `(git.md)` to `(agent-guidance/collaboration.md)`, `(agent-guidance/verification.md)`, and `(agent-guidance/git.md)`. If using another layout, resolve links from each destination file.
 3. Configure the skills actually used, and update the skill links in `collaboration.md` and `verification.md` to point to real, readable entry points. The relative paths in this library are valid only in its current layout. When distributing a skill, retain the entire package and its license rather than copying only `SKILL.md`. These integration instructions do not perform installation.
