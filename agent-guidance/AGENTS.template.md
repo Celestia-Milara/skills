@@ -22,7 +22,7 @@ Read the applicable guidance before the activity; links do not load its contents
 | --- | --- |
 | Propose solutions, decide behavior or scope, change implementation or behavioral tests, or organize project documentation | [Collaboration, decision history, and document ownership](collaboration.md) |
 | Implement, change tests, verify, review, or deliver changes | [Verification and delivery](verification.md) |
-| Edit repository files, coordinate parallel work, or perform Git and publication operations | [Change ownership and Git authorization](git.md) |
+| Edit repository files, coordinate parallel work, or perform Git and publication operations | [Change protection and Git authorization](git.md) |
 
 ## Project Constraints
 

@@ -47,15 +47,17 @@ class CompositionReferences(unittest.TestCase):
                 composition = self.composition_from(router)
                 self.assertEqual(composition, (base / 'pstack/docs/composition.md').resolve())
                 self.check_companions(composition, base / 'pstack/skills', project)
-                guidance = (ROOT / 'agent-guidance/collaboration.md').read_text(encoding='utf-8')
-                guidance = guidance.replace('../pstack/skills/', f'../{folder}/skills/')
-                guidance = guidance.replace('../pstack/docs/', f'../{folder}/pstack/docs/')
-                for name in SUPPLEMENTS:
-                    guidance = guidance.replace(f'../{name}/', f'../{folder}/skills/{name}/')
-                target = project / 'agent-guidance/collaboration.md'
-                target.parent.mkdir()
-                target.write_text(guidance, encoding='utf-8')
-                self.assertEqual(links(target, project), [])
+                for companion in ('collaboration', 'verification', 'git'):
+                    guidance = (ROOT / f'agent-guidance/{companion}.md').read_text(encoding='utf-8')
+                    guidance = guidance.replace('../pstack/skills/', f'../{folder}/skills/')
+                    guidance = guidance.replace('../pstack/docs/', f'../{folder}/pstack/docs/')
+                    for name in SUPPLEMENTS:
+                        guidance = guidance.replace(f'../{name}/', f'../{folder}/skills/{name}/')
+                    target = project / f'agent-guidance/{companion}.md'
+                    target.parent.mkdir(exist_ok=True)
+                    target.write_text(guidance, encoding='utf-8')
+                for target in (project / 'agent-guidance').glob('*.md'):
+                    self.assertEqual(links(target, project), [])
                 for name in ('architect', 'reflect', 'poteto-mode'):
                     for path in (base / 'skills' / name).rglob('*.md'):
                         self.assertEqual(links(path, project), [])

@@ -165,3 +165,66 @@ the selected publication snapshot passed its 12 tests and source/reference check
 in a separate directory. Its composition skills and packaged resources match the
 behavior-tested versions. No native model cases were repeated for this publication
 selection. Unrelated local changes and raw host evidence remain uncommitted.
+
+## Git workflow ownership follow-up on 2026-11-03
+
+The user authorized rule changes and verification, with no commit this round.
+The [adaptation audit](adaptation.md#original-guidance-conflict-audit) records the
+active original-guidance comparison and resulting ownership. Pre-existing installer
+and backup migration edits remain outside this round's changes.
+
+- All 18 local tests passed after the route changes. The installed-guidance test
+  now resolves collaboration, verification, and Git links on both hosts.
+- Source checks passed with 63 active skills, 573 original paths, 582 mirror files,
+  and 77 adapted source files. No broken references or invocation errors were found.
+- The four changed skill entry points passed Skill Creator validation on normalized
+  Codex copies. The later Interrogate wording clarification retains the same scope.
+- Diff whitespace checks passed. The real repository index stayed empty and HEAD
+  stayed at `c22500affd1ae57c15cf764b61ec6888b9ef966f`. No push or merge ran.
+
+### Native behavior and independent review
+
+[Git validation procedures](../agent-guidance/validation.md#git-protection-and-pickup-checks)
+provide the runner commands. Four native runs used complete project installations
+in separate temporary fixtures, with no optional project guidance or delegation.
+Hosts were Codex CLI 0.166.0-alpha.5.1 and Claude Code 2.1.310. Seed history was
+created only in those fixtures; model tasks were instructed not to commit or publish. Both hosts exited normally and all artifact assertions passed.
+
+| Case | Observed result |
+| --- | --- |
+| Codex and Claude Code: pickup with stale success report | Read the current code, found the reported fix absent, reproduced and corrected zero handling without another implementation approval. Preserved adjacent behavior. |
+| Same pickup fixtures: staged and mixed-file work | Retained HEAD, the complete index, unrelated user-file bytes, and staged plus unstaged comments in the edited file. Left the fix uncommitted. |
+| Codex and Claude Code: obsolete worktree with user files | Inspected untracked and ignored files; held the candidate because disposal authority and active-use evidence were missing. Retained both files and worktree registrations. |
+| Fresh-context independent static review | Reported a workflow event trigger that contradicted the fixture requirements in a separate static-evidence section. Reported no run-proven findings with GitHub execution unavailable; made no edits. |
+
+Actual events show each native host reading its adapter, composition rules, and
+matching pickup or cleanup playbook. Codex also read the Git method owner. Commands,
+source changes, and post-run probes support the reported outcomes; final replies
+alone were not treated as proof. Claude refreshed stat data in the cleanup
+candidate's index, but did not change its tracked content or remove user files.
+
+The first three cases used bundle manifest SHA-256
+`4ef1621539a1d6e48a6ad252cf993f74f7a86e99b41634140ed9c44e09ab96fe`.
+Codex cleanup used
+`ae8ee2e1eb85f93f65d70b9a85bff24b41fca50dd4b9474d543c448c4ff28b06`.
+The difference includes the delivery clarification that failing-before evidence
+need not be a separately failing commit. That delivery choice was reviewed, not
+executed in these local-only cases. The later Interrogate description clarification
+also did not trigger another native run. Raw prompts, events, fixture locations,
+and checks remain local under `.tmp/git-ownership-round/`; do not publish raw logs.
+
+Authorized commit, amend, push, PR creation, shared-history rewrite, actual deletion,
+and merge paths were not exercised. Independent review was a single fresh-context
+pass, not a diverse-model panel. These cases test specific behaviors, not a
+permission enforcement mechanism. Personal installations and other project copies
+were not updated.
+
+### Git ownership publication snapshot
+
+The user subsequently authorized committing and pushing this round to the current
+feature branch, without merging into main. The selected snapshot excludes the
+previous installation migration. It passed all 12 tests available without that
+migration and the source/reference verifier. The 18-test result above belongs to
+the full local worktree. Native behavior evidence was reused; publication selection
+did not change the tested workflow rules. Installation migration edits and raw
+host logs remain outside this commit.

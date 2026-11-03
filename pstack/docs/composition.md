@@ -53,6 +53,15 @@ list, saved design, or skill name does not expand that scope.
   that authority, omit that action and report the local result. Do not stop safe
   implementation work to ask early. A pause can leave an uncommitted checkpoint.
 
+## Keep Git methods in pstack
+
+[Opening a PR](../skills/poteto-mode/playbooks/opening-a-pr.md) owns worktree,
+staging, commit, and PR methods. [Shipping](../skills/poteto-mode/playbooks/shipping.md)
+owns merge delivery. Use only the sections needed for the authorized task.
+Project guidance retains change protection and authorization boundaries, not a
+second commit format, commit-size policy, or branch procedure. A local-only task
+can finish with checked, uncommitted changes.
+
 ## Keep one source for each fact
 
 Locate the existing owning sources before creating artifacts. Apply the lifecycle

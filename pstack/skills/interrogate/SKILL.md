@@ -1,6 +1,6 @@
 ---
 name: interrogate
-description: "Use for \"interrogate\", \"adversarial review\", \"multi-model review\", \"challenge this\", \"stress test this code\", \"find blind spots\", or \"tear this apart\". Adversaries try to break a change or design, and only findings proven by a run survive."
+description: "Use for \"interrogate\", \"adversarial review\", \"multi-model review\", \"challenge this\", \"stress test this code\", \"find blind spots\", or \"tear this apart\". Adversaries try to break a change or design, and executable findings require proof from a run."
 disable-model-invocation: true
 ---
 
@@ -12,7 +12,14 @@ read this session. It maps the tools, models, paths, and authorization for this 
 
 # Interrogate
 
-Adversaries try to break a change or a design. A finding survives only when a run proves it. Report the findings. Do not apply fixes.
+Adversaries try to break a change or a design. An executable finding survives only when a run proves it. Report the findings. Do not apply fixes.
+
+This method owns executable adversarial evidence. It is not the whole review.
+When the task also requires a requirements, authorization, or static correctness
+review, report directly supported conclusions separately with source locations
+and reasoning. Do not label them run-proven or discard them solely because no
+runtime reproduction applies. Unproven runtime risks remain hypotheses. An empty
+executable result does not establish that all project constraints are satisfied.
 
 ## Frame
 
@@ -34,4 +41,5 @@ Skip arena Phases C, D, and E. Adversaries find different failures, so the verdi
 
 - **Intent**: the restatement.
 - **Findings**: for each verified finding, the command, its output, how it breaks the intent, and the adversaries that found it. Say "no verified findings" when none survive.
+- **Other review evidence**: when required by the task, separately report directly supported static or requirements findings, with source locations and limits.
 - **Dropped**: for each adversary, the count of dropped findings and why.

@@ -12,7 +12,7 @@ identify the running host. Reuse an adapter already read this session. These
 mappings apply to this skill, its references, and routed playbooks.
 
 Before proposals, design, planning, implementation, review, document maintenance,
-or task handoff, read [workflow composition](../../../docs/composition.md).
+task handoff, or Git operations, read [workflow composition](../../../docs/composition.md).
 Reuse it within the same task. It owns supplement triggers, authorization handoffs,
 artifact ownership, and plan scope for this distribution. Apply it before imported
 workflow defaults. Help and model setup alone do not require those methods.
@@ -22,6 +22,12 @@ A workflow step does not authorize a commit, push, PR, merge, deployment, messag
 data deletion, or paid job. Reuse existing task authorization without asking
 again. Continue independent work when a step cannot run. Name the missing
 capability and its effect on the result.
+
+Preserve existing staged, unstaged, untracked, and ignored work. Do not infer
+ownership or disposal permission from Git status, filenames, or age. Destructive
+actions and shared-history rewrites require authority covering their effects.
+For Git methods, read the applicable parts of [Opening a PR](../playbooks/opening-a-pr.md).
+Its workflow does not require creating a PR for a commit-only task.
 
 Invoke companions through a supported skill mechanism or read their installed
 `SKILL.md`. Resolve siblings from this installed tree. Do not fetch a different

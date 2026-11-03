@@ -60,6 +60,31 @@ collisions before writing and does not overwrite
 global skills, settings, or another project's guidance. Managed updates retain
 the previous complete bundle. Unrecognized or modified files need reconciliation.
 
+## Original guidance conflict audit
+
+The 2026-11-03 follow-up assigns Git methods to pstack. Project Git guidance now
+retains only protection of existing work, authorization for destructive effects,
+and the task's commit/push/PR/merge limits. The former feature-round commit unit
+and new-commit default no longer compete with pstack's small ordered commits and
+scoped amendments. Index and committed-version checks live in its Git playbook.
+
+| Original guidance or supplement | Resolution with pstack |
+| --- | --- |
+| Git format, commit units, worktrees, and checks | pstack owns the method; project guidance links to it. Existing staged and mixed-file work stays protected. |
+| Authorization reuse | Mode and the autonomy principle reuse permission for the same effects, while preserving explicit checkpoints. Workflow steps add no authority. |
+| Cleanup and dirty worktrees | Remove automatic reset and throwaway-file assumptions. Untracked and ignored state needs ownership and deletion-scope evidence. |
+| Verification and TDD | Compatible: practical failing-before checks, independent expectations, and risk-based evidence. Required project gates remain effective; test-first evidence does not require a separately failing delivery commit. |
+| Static review and `interrogate` | Separate source-supported static findings from run-proven adversarial findings; neither substitutes for the other. |
+| Decision history and session pickup | History informs continuation. Reuse applicable checks; recheck drift and missing evidence. Past notes do not grant new authority. |
+| `grilling` and `grill-me` | One interview method with a wrapper; reuse settled understanding and implementation approval. No new conflict found. |
+| `to-docs`, `maintenance-docs`, and collaboration guidance | Designs, progress, current facts, and rationale retain their owning sources. Saving adds no implementation or Git permission. No new conflict found. |
+| `decision-notes` | Search relevant history and retain lasting rationale when warranted. No mandatory record for each task or imported workflow. |
+
+The audit covers active project guidance and the five supplements, not retired
+`legacy/` or `zh-backup/` editions. Local historical records retain rationale and
+mark superseded choices; they are not runtime rules. See [validation](validation.md)
+for observed host behavior and limits. Installed copies need a separate update.
+
 ## Updating source
 
 1. Read the locked original and mirror revisions, then inspect new upstream changes.
