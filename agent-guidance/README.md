@@ -30,6 +30,13 @@ Resolve paths from the copied guidance file, not the project root. For a file in
 
 Apply the same adjustment to all method links. Verify targets and preserve each complete package. A skill name can aid discovery, but it does not replace a readable-source fallback when invocation is unavailable.
 
+Also adapt the composition link in `collaboration.md` to the installed bundle's
+`docs/composition.md`. From root-level project guidance, this is
+`../.agents/pstack/docs/composition.md` for Codex or
+`../.claude/pstack/docs/composition.md` for Claude Code. Personal installations
+need the actual readable bundle path. That file owns cross-package routing;
+keep project-specific constraints here without copying its table.
+
 ### Host loading and optional history
 
 Keep one owning project instruction source. Preserve an existing `CLAUDE.md` when integrating shared guidance. On supported Claude Code versions, direct `AGENTS.md` loading depends on the file combination and Project instructions setting. An existing `CLAUDE.md` can import a neighboring shared source with `@AGENTS.md`. The [official loading rules](https://code.claude.com/docs/en/memory#agentsmd) describe version and configuration limits; do not infer loading from a filename alone.

@@ -70,6 +70,14 @@ Without configured, supported models, adapters inherit the session model and
 disclose missing diversity. Skills cannot make an unavailable model/tool exist.
 Project authorization still governs commits, PRs, messages, deployment, and data.
 
+Installation alone does not activate `poteto-mode` for every request. Select it
+for an engineering workflow, or select a leaf skill for a focused task. Its host
+adapter reads the [composition rules](pstack/docs/composition.md) before combining
+methods. These rules apply without optional project guidance: reuse prior decisions,
+add interviews or documentation work only when needed, preserve authorization at
+each handoff, and keep one owning design and plan. Saving a design does not start
+implementation. Existing implementation approval does not need to be repeated.
+
 ### Native plugin bundle
 
 Build a portable bundle that includes all five supplements:

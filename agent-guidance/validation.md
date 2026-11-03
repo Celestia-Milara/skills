@@ -22,6 +22,35 @@ Real-service checks follow [verification authorization](verification.md). Isolat
 
 Report failed, unrun, and constrained cases. Static links, metadata, scenario walkthroughs, fresh-context model runs, and real host checks do not substitute for one another. One successful task is not proof of general reliability.
 
+## Combined workflow checks
+
+Run the bounded native-host scenarios against the current source with a fresh
+output directory under `.tmp/` for each run:
+
+```powershell
+python scripts/check_composition_behavior.py --host codex --output .tmp/composition-codex
+python scripts/check_composition_behavior.py --host claude-code --output .tmp/composition-claude
+```
+
+The runner installs complete project packages in fresh temporary projects outside
+this repository. It uses the existing host account and no optional project guidance.
+It does not update personal installations. The three cases cover design-only work,
+approved implementation, and an ordinary plan. Each request excludes delegation and
+Git writes. A manifest hash identifies the tested bundle; raw host logs stay local.
+
+Review the event log as well as the artifact checks. Confirm reads of the project
+entry, shared and matching host adapters, composition guide, and applicable history
+or document methods. Check that implementation uses the existing approval, ordinary
+plans do not run the full-program checker, and designs/plans keep their owning
+paths. Inspect actual edits, test output, and Git state. A final reply claiming these
+actions is not sufficient. Record missing capabilities and any skipped workflow
+steps separately from the composition result.
+
+Use separate fresh-context forward tests for interview-to-document and safe-pause
+handoffs. Give each a realistic request and raw fixture, without the desired result
+or implementation rationale. Verify the files and Git state afterward. These are
+independent model tests, not native-host discovery evidence or cross-model review.
+
 ## Local gateway and isolated-test troubleshooting
 
 If Claude Code uses a loopback gateway such as Magpie while inheriting `HTTP_PROXY` or `HTTPS_PROXY`, ensure `NO_PROXY` includes `localhost,127.0.0.1,::1`. Preserve existing exclusions when appending these entries; back up configuration before changing it. Claude Code can receive these values through the `env` object in its user settings. In the tested setup, adding both `NO_PROXY` and `no_proxy` resolved HTTP 502 responses without changing the model or gateway credentials. A direct gateway request alone does not establish that the CLI follows the same proxy path.

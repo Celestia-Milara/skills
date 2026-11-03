@@ -11,6 +11,7 @@ backed up before retiring its `tdd`, `review-code`, and `handoff` directories.
 | pstack workflows, principles, agents, resources | `pstack/`, imported from the complete portable mirror |
 | Original/mirror revisions and hashes | [source-lock.json](../pstack/source-lock.json) |
 | Common host boundaries and Windows substitutions | [host.md](../pstack/skills/poteto-mode/references/host.md) |
+| Supplement routing, authorization handoffs, artifact roles, and plan scope | [Workflow composition](../pstack/docs/composition.md) |
 | Codex tools, role models, history, services | [Codex adapter](../pstack/skills/poteto-mode/references/codex.md) |
 | Claude Code tools, roles, plugin names, history | [Claude adapter](../pstack/skills/poteto-mode/references/claude-code.md) |
 | Five document/interview/decision methods | Root skill packages |
@@ -33,6 +34,18 @@ all original file paths. Its Comment Sicko fix preserves uncertain outside-rule
 comments for review instead of deleting them. Local adapters use live tool schemas,
 avoid inventing model names, and distinguish same-model independent review from
 cross-model evidence. They preserve project authorization over workflow defaults.
+
+The host router loads [workflow composition](../pstack/docs/composition.md) for
+engineering and document tasks. This keeps the five supplements available without
+optional project guidance. It defines when to route, how to retain authorization,
+and which artifact owns each fact. Design-only work stops before implementation;
+approved implementation does not need another approval. Ordinary plans use the
+project's existing source and risk-based checks. The retained full-program template
+and checker apply only when that format is adopted, with its required gates intact.
+
+The packager relocates composition links to the bundled supplement copies. Host
+projections resolve the composition guide through their complete resource bundle.
+Source, plugin, and installed-path checks cover this route.
 
 Windows gets a TSV logger, a metadata-scoped session selector, and a read-only Git
 worktree audit. The audit deliberately does not claim remote PR or session safety.

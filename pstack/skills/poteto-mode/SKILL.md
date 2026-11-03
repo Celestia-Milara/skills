@@ -87,7 +87,10 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Autonomy
 
-**Just do it.** Use any MCP tool. Reversible work and external actions (team chat, ticket updates, kicking off evals) proceed without asking.
+**Act within the task.** Continue authorized work without repeated confirmation.
+Use the host adapter's composition rules when routing to another skill or phase.
+External actions, Git operations, messages, and paid jobs need applicable authority;
+a workflow default does not grant it.
 
 **Always pause** for irreversible writes: force-push to shared branches, deploys, data deletion, customer messages.
 

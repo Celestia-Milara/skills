@@ -11,6 +11,12 @@ Use the supplied host identity and live tool schema. Installed folders do not
 identify the running host. Reuse an adapter already read this session. These
 mappings apply to this skill, its references, and routed playbooks.
 
+Before proposals, design, planning, implementation, review, document maintenance,
+or task handoff, read [workflow composition](../../../docs/composition.md).
+Reuse it within the same task. It owns supplement triggers, authorization handoffs,
+artifact ownership, and plan scope for this distribution. Apply it before imported
+workflow defaults. Help and model setup alone do not require those methods.
+
 User instructions, project constraints, and tool permissions take precedence.
 A workflow step does not authorize a commit, push, PR, merge, deployment, message,
 data deletion, or paid job. Reuse existing task authorization without asking
