@@ -3,6 +3,10 @@
 > project installer or its built local plugin. Marketplace commands below install
 > other distributions. Start with the [Codex notes](docs/harness/codex.md) or
 > [local Claude Code notes](docs/harness/claude-code-local.md).
+>
+> Local maintenance uses the root library's `scripts/package.py` and
+> `scripts/verify.py`. The `harness/pstack/` generator and CI instructions below
+> describe the Cursor source repository. They do not apply to this distribution.
 
 <h1 align="center">pstack — standalone mirror</h1>
 
@@ -48,11 +52,13 @@ The CLI shows every skill in a list you can search. Select the skills you want, 
 
 Cursor's original README is [further down this page](#pstack).
 
-These skills don't call other pstack skills, so each one works alone:
+These skills support focused invocation within a complete installed bundle:
 
 `unslop`, `bro`, `how`, `tdd`, `typescript-best-practices`, `arena`, `swarm`, `interrogate`, `reflect`, `show-me-your-work`, `figure-it-out`, `automate-me`, `correct`, `benchmark-checklist`, `in-your-own-words`, `sharpen`, `statechart`
 
-Some skills call other skills. Install these together:
+The table lists direct workflow dependencies. Local host routers also need
+shared adapters, documentation, and supplements. Use the complete library
+installation instead of copying individual skill files.
 
 | Skill | Also install |
 |---|---|

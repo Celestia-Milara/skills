@@ -1,6 +1,6 @@
 # Validation Methods and Environment Notes
 
-The root [README](../README.md#verified-host-behavior) owns dated host results. This page owns validation procedures and environment troubleshooting. Past runs do not validate later package changes.
+[Validation evidence](../docs/validation.md) owns dated host results. This page owns validation procedures and environment troubleshooting. Past runs do not validate later package changes.
 
 ## Host loading and behavior checks
 

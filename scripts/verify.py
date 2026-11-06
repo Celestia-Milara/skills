@@ -103,7 +103,8 @@ def verify(root=ROOT):
     # are warnings; every local/new broken link is an error.
     paths = [root / 'README.md', root / 'AGENTS.md']
     for directory in ['agent-guidance', 'docs', *SUPPLEMENTS, 'pstack', 'legacy']:
-        paths.extend((root / directory).rglob('*.md'))
+        paths.extend(path for path in (root / directory).rglob('*.md')
+                     if 'node_modules' not in path.relative_to(root).parts)
     baseline_failures = set(lock.get('baseline_link_errors', []))
     for path in paths:
         for failure in links(path, root):

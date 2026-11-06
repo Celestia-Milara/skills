@@ -125,6 +125,10 @@ python -m unittest discover -s tests -v
 git diff --check
 ```
 
+The [CI workflow](docs/ci.md) runs library checks on Windows and Linux. It also
+tests the PR watcher and plan checker with Bun. The CI guide lists local commands,
+coverage limits, dependency updates, and recommended merge rules.
+
 For host/installation changes, also run actual host discovery and invocation
 checks in isolated projects, following [validation methods](agent-guidance/validation.md).
 Check file reads, covered paths, and side effects. Metadata validation does not
@@ -142,7 +146,7 @@ The original descriptions remain in Git at `61c9e1f:README.md`.
 ## Publication scope
 
 Public sources are `README.md`, `LICENSE`, `AGENTS.md`, `.gitignore`,
-`.gitattributes`, `pstack/`, the five root supplement directories,
+`.gitattributes`, `.github/`, `pstack/`, the five root supplement directories,
 `agent-guidance/`, `docs/`, `scripts/`, `tests/`, and `legacy/`.
 Keep the archive's licenses and origin files intact. `legacy/` is a backup,
 not an installation source. Preserve the complete `pstack/` tree, including
