@@ -6,6 +6,13 @@ import path from "node:path";
 import { parseArgs } from "node:util";
 import { killGroup, messageOf } from "./run.ts";
 
+if (process.platform === "win32") {
+  console.error(
+    "statechart does not support native Windows. It requires a POSIX environment with /bin/sh and process-group signals.",
+  );
+  process.exit(2);
+}
+
 const USAGE = `Usage: statechart SPEC.tla [--config FILE] [--view FILE] [--out DIR]
 
 Checks SPEC.tla with TLC and draws its state graph as Mermaid. Above 500 states, the chart

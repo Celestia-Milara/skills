@@ -1,27 +1,18 @@
 """Ask an installed host for its actual skill/command inventory without a model call."""
 import argparse
+from collections import Counter
 import json
-import os
 from pathlib import Path
 import queue
-import shutil
 import subprocess
 import threading
 import time
 
+from host_process import host_command, managed_process
 
-def inventory(host, project, plugin=None):
-    executable = shutil.which('codex' if host == 'codex' else 'claude')
-    if not executable:
-        raise FileNotFoundError(f'{host} executable is unavailable')
-    # Resolve the package's declared executable instead of composing shell code.
-    if host == 'claude-code' and Path(executable).suffix.lower() in ('.cmd', '.ps1'):
-        package = Path(executable).parent / 'node_modules/@anthropic-ai/claude-code'
-        manifest = json.loads((package / 'package.json').read_text(encoding='utf-8'))
-        entry = package / manifest['bin']['claude']
-        command = [shutil.which('node'), str(entry)] if entry.suffix in ('.js', '.cjs', '.mjs') else [str(entry)]
-    else:
-        command = [executable]
+
+def inventory(host, project, plugin=None, timeout=45):
+    command = host_command(host)
     if host == 'codex':
         command += ['app-server', '--stdio']
     else:
@@ -30,54 +21,86 @@ def inventory(host, project, plugin=None):
             command += ['--plugin-dir', str(Path(plugin).resolve())]
     events = queue.Queue()
     stderr_lines = []
-    process = subprocess.Popen(command, cwd=project, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               encoding='utf-8', creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
-    def reader(stream, target):
-        for line in stream:
-            target(line)
-    threading.Thread(target=reader, args=(process.stdout, events.put), daemon=True).start()
-    threading.Thread(target=reader, args=(process.stderr, stderr_lines.append), daemon=True).start()
-    def send(value):
-        process.stdin.write(json.dumps(value) + '\n')
-        process.stdin.flush()
-    def receive(predicate):
-        deadline = time.monotonic() + 45
-        while time.monotonic() < deadline:
-            try:
-                line = events.get(timeout=1)
-            except queue.Empty:
-                if process.poll() is not None:
-                    break
-                continue
-            try:
-                item = json.loads(line)
-            except ValueError:
-                continue
-            if predicate(item):
-                return item
-        detail = ''.join(stderr_lines)[-1200:]
-        raise RuntimeError(f'{host} inventory timed out or exited ({process.poll()}): {detail}')
-    try:
-        if host == 'codex':
-            send({'id': 1, 'method': 'initialize', 'params': {'clientInfo': {'name': 'pstack-inventory', 'version': '1'}, 'capabilities': {'experimentalApi': True}}})
-            initialized = receive(lambda item: item.get('id') == 1)
-            if 'error' in initialized:
-                raise RuntimeError(initialized['error'])
-            send({'method': 'initialized'})
-            send({'id': 2, 'method': 'skills/list', 'params': {'cwds': [str(Path(project).resolve())], 'forceReload': True}})
-            return receive(lambda item: item.get('id') == 2)
-        send({'type': 'control_request', 'request_id': 'inventory', 'request': {'subtype': 'initialize'}})
-        result = receive(lambda item: item.get('type') == 'control_response' and item.get('response', {}).get('request_id') == 'inventory')
-        response = result.get('response', {}).get('response', {})
-        result.get('response', {})['response'] = {k: response[k] for k in ('commands', 'agents', 'models', 'claude_code_version') if k in response}
-        return result
-    finally:
-        process.terminate()
+    readers = []
+    deadline = time.monotonic() + timeout
+
+    def reader(stream, target, eof=False):
         try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait()
+            for line in stream:
+                target(line)
+        finally:
+            if eof:
+                events.put(None)
+
+    try:
+        with managed_process(command, cwd=project, stdin=subprocess.PIPE,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             encoding='utf-8', errors='replace') as process:
+            for stream, target, eof in ((process.stdout, events.put, True),
+                                        (process.stderr, stderr_lines.append, False)):
+                thread = threading.Thread(target=reader, args=(stream, target, eof), daemon=True)
+                thread.start()
+                readers.append(thread)
+
+            def send(value):
+                try:
+                    process.stdin.write(json.dumps(value) + '\n')
+                    process.stdin.flush()
+                except (BrokenPipeError, OSError) as error:
+                    raise RuntimeError(f'{host} inventory input closed: {error}') from error
+
+            def receive(predicate):
+                while True:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        reason = f'timed out after {timeout}s'
+                        break
+                    try:
+                        line = events.get(timeout=remaining)
+                    except queue.Empty:
+                        reason = f'timed out after {timeout}s'
+                        break
+                    if line is None:
+                        reason = f'closed stdout (exit code {process.poll()})'
+                        break
+                    try:
+                        item = json.loads(line)
+                    except ValueError:
+                        continue
+                    if isinstance(item, dict) and predicate(item):
+                        return item
+                readers[1].join(timeout=0.1)
+                detail = ''.join(stderr_lines)[-1200:]
+                raise RuntimeError(f'{host} inventory {reason}: {detail}')
+
+            if host == 'codex':
+                send({'id': 1, 'method': 'initialize', 'params': {'clientInfo': {'name': 'pstack-inventory', 'version': '1'}, 'capabilities': {'experimentalApi': True}}})
+                initialized = receive(lambda item: item.get('id') == 1)
+                if 'error' in initialized:
+                    raise RuntimeError(f'{host} initialize failed: {initialized["error"]}')
+                send({'method': 'initialized'})
+                send({'id': 2, 'method': 'skills/list', 'params': {'cwds': [str(Path(project).resolve())], 'forceReload': True}})
+                result = receive(lambda item: item.get('id') == 2)
+                if 'error' in result:
+                    raise RuntimeError(f'{host} skills/list failed: {result["error"]}')
+                if not isinstance(result.get('result'), dict) or not isinstance(result['result'].get('data'), list):
+                    raise RuntimeError(f'{host} skills/list returned an invalid result')
+                return result
+            send({'type': 'control_request', 'request_id': 'inventory', 'request': {'subtype': 'initialize'}})
+            result = receive(lambda item: item.get('type') == 'control_response'
+                             and isinstance(item.get('response'), dict)
+                             and item['response'].get('request_id') == 'inventory')
+            envelope = result['response']
+            if envelope.get('subtype') == 'error' or envelope.get('error'):
+                raise RuntimeError(f'{host} initialize failed: {envelope.get("error", envelope)}')
+            response = envelope.get('response')
+            if not isinstance(response, dict):
+                raise RuntimeError(f'{host} initialize returned an invalid result')
+            envelope['response'] = {k: response[k] for k in ('commands', 'agents', 'models', 'claude_code_version') if k in response}
+            return result
+    finally:
+        for thread in readers:
+            thread.join(timeout=5)
 
 
 def main():
@@ -93,9 +116,15 @@ def main():
     target.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     if args.host == 'codex':
         entries = result.get('result', {}).get('data', [])
-        local = [skill for item in entries for skill in item.get('skills', []) if str(Path(args.project).resolve()).casefold() in skill.get('path', '').casefold()]
+        all_skills = [skill for item in entries for skill in item.get('skills', [])]
+        project = Path(args.project).resolve()
+        local = [skill for skill in all_skills if skill.get('path')
+                 and Path(skill['path']).resolve().is_relative_to(project)]
         errors = [error for item in entries for error in item.get('errors', [])]
-        print(json.dumps({'project_skills': len(local), 'names': sorted(s['name'] for s in local), 'errors': errors}, indent=2))
+        print(json.dumps({'project_skills': len(local), 'names': sorted(s['name'] for s in local),
+                          'skills_by_scope': dict(Counter(s.get('scope') for s in all_skills)), 'errors': errors}, indent=2))
+        if errors:
+            raise SystemExit(1)
     else:
         response = result.get('response', {})
         body = response.get('response', {})

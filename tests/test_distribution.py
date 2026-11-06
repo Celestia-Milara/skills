@@ -8,7 +8,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from package import build, digest
-from install import install
+from install import install, retire_project
 
 
 class Distribution(unittest.TestCase):
@@ -71,6 +71,57 @@ class Distribution(unittest.TestCase):
             plan = install('codex', project, dry_run=True)
             self.assertEqual(plan['skills'], 63)
             self.assertFalse(project.exists())
+
+    def test_user_scope_preserves_existing_config_and_unrelated_skills(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory) / 'account'
+            (home / '.codex').mkdir(parents=True)
+            (home / '.agents/skills/personal').mkdir(parents=True)
+            config = home / '.codex/config.toml'
+            config.write_bytes(b'model = "keep-me"\r\n')
+            personal = home / '.agents/skills/personal/SKILL.md'
+            personal.write_text('personal method', encoding='utf-8')
+            result = install('codex', scope='user', home=home)
+            self.assertEqual(result['scope'], 'user')
+            self.assertEqual(config.read_bytes(), b'model = "keep-me"\r\n')
+            self.assertEqual(personal.read_text(), 'personal method')
+            self.assertTrue((home / '.agents/skills/tdd/SKILL.md').is_file())
+            self.assertFalse((home / '.codex/skills/tdd').exists())
+
+    def test_retirement_keeps_user_skills_and_archives_only_managed_project_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home, project = Path(directory) / 'account', Path(directory) / 'project'
+            install('claude-code', project)
+            original = (project / '.claude/skills/tdd/SKILL.md').read_bytes()
+            (project / '.claude/skills/project-specific').mkdir()
+            custom = project / '.claude/skills/project-specific/SKILL.md'
+            custom.write_text('project-owned', encoding='utf-8')
+            install('claude-code', scope='user', home=home)
+            result = retire_project('claude-code', project, home)
+            self.assertFalse((project / '.claude/pstack').exists())
+            self.assertFalse((project / '.claude/skills/tdd').exists())
+            self.assertEqual(custom.read_text(), 'project-owned')
+            self.assertEqual((Path(result['archive']) / 'skills/tdd/SKILL.md').read_bytes(), original)
+            self.assertTrue((home / '.claude/skills/tdd/SKILL.md').is_file())
+            self.assertTrue((home / '.claude/agents/poteto-agent.md').is_file())
+
+    def test_retirement_refuses_modified_project_and_missing_user_install(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home, project = Path(directory) / 'account', Path(directory) / 'project'
+            install('codex', project)
+            with self.assertRaises(FileExistsError):
+                retire_project('codex', project, home)
+            install('codex', scope='user', home=home)
+            modified = project / '.agents/skills/tdd/SKILL.md'
+            modified.write_text('unrelated edit', encoding='utf-8')
+            with self.assertRaises(FileExistsError):
+                retire_project('codex', project, home)
+            self.assertEqual(modified.read_text(), 'unrelated edit')
+            self.assertTrue((project / '.agents/pstack').is_dir())
+
+    def test_user_scope_rejects_a_project_argument(self):
+        with self.assertRaises(ValueError):
+            install('codex', '.', scope='user')
 
 
 if __name__ == '__main__':

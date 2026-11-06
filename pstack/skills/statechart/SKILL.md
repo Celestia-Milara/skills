@@ -24,7 +24,13 @@ Work in a scratch folder outside the repo. Write a TLA+ spec and its config. The
 
 `scripts/statechart.ts` is TypeScript, so run it with a runtime that can execute TypeScript.
 
-The first run installs TLC and Java with mise and needs the network.
+The CLI requires POSIX process supervision. Run it with a Linux or macOS runtime,
+including a configured Linux runtime inside WSL. Native Windows Node is not
+supported; Git Bash alone does not change that. On native Windows, stop before
+launching a check and report the missing runtime rather than claiming a result.
+
+Set `TLA2TOOLS` to an existing TLC JAR and optionally `JAVA` to its Java executable.
+Otherwise the command uses mise and can install TLC and Java over the network.
 
 ## Write the spec
 

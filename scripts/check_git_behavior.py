@@ -2,21 +2,25 @@
 
 Seed commits belong only to test fixtures. Hosts may not commit or publish.
 Uses the current host account; raw logs require manual event review and stay local.
+The wrapper does not edit host settings or user skills. The host itself may
+refresh its bundled system skills during startup.
 """
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 
 from check_composition_behavior import command, write
 from install import install
+from host_process import CHECK_TIMEOUT, probe, run_process
 
 
 def git(root, *args, data=None):
-    return subprocess.check_output(['git', '-C', str(root), *args], input=data)
+    return run_process(['git', '-C', str(root), *args], input=data,
+                       capture_output=True, check=True, timeout=CHECK_TIMEOUT).stdout
 
 
 def prepare(host, case):
@@ -77,15 +81,34 @@ def run(host, case, output, timeout):
     write(output / f'{case}-prompt.txt', prompt)
     digest = hashlib.sha256((root / folder / 'pstack/BUNDLE.json').read_bytes()).hexdigest()
     write(output / f'{case}-fixture.json', json.dumps({'fixture': str(root), 'bundle_sha256': digest}, indent=2))
+    timed_out, error = False, None
     with (output / f'{case}.jsonl').open('w', encoding='utf-8') as stdout, \
             (output / f'{case}.stderr').open('w', encoding='utf-8') as stderr:
         try:
-            result = subprocess.run(command(host, root, prompt), cwd=root, stdout=stdout,
-                                    stderr=stderr, timeout=timeout,
-                                    creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            result = run_process(command(host, root, prompt), cwd=root, stdout=stdout,
+                                 stderr=stderr, timeout=timeout)
             code = result.returncode
         except subprocess.TimeoutExpired:
-            code = None
+            timed_out, code = True, None
+            error = f'Host timed out after {timeout}s'
+        except (OSError, RuntimeError, ValueError) as failure:
+            code, error = None, str(failure)
+        if error:
+            stderr.write(error + '\n')
+    try:
+        checks = check(root, case, output, before)
+    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as failure:
+        checks = {'postcheck_completed': False}
+        write(output / f'{case}-probe.txt', f'Postcheck failed: {failure}\n')
+    record = {'host': host, 'case': case, 'fixture': str(root), 'exit_code': code,
+              'timed_out': timed_out, 'error': error,
+              'bundle_sha256': digest, 'artifact_checks': checks, 'needs_event_review': True}
+    write(output / f'{case}-result.json', json.dumps(record, indent=2))
+    print(json.dumps(record), flush=True)
+    return code == 0 and all(checks.values())
+
+
+def check(root, case, output, before):
     checks = {
         'head_unchanged': git(root, 'rev-parse', 'HEAD') == before['head'],
         'index_unchanged': git(root, 'ls-files', '--stage') == before['index'],
@@ -94,21 +117,17 @@ def run(host, case, output, timeout):
     if case == 'resume':
         source = (root / 'settings.py').read_text(encoding='utf-8')
         checks['mixed_file_edits_preserved'] = all(marker in source for marker in ('# USER STAGED COMMENT', '# USER UNSTAGED COMMENT'))
-        probe = subprocess.run(['python', '-c', 'from settings import timeout; '
+        result = probe([sys.executable, '-c', 'from settings import timeout; '
             'assert timeout({}) == 30; assert timeout({"timeout": 0}) == 0; '
             'assert timeout({"timeout": 12}) == 12; '
             'assert all(timeout({"timeout": v}) == 30 for v in (None, False, "")); '
             'print("default, zero, positive, and adjacent behavior passed")'],
-            cwd=root, capture_output=True, text=True)
-        checks['current_behavior_verified'] = probe.returncode == 0
-        write(output / f'{case}-probe.txt', probe.stdout + probe.stderr)
+            cwd=root, timeout=CHECK_TIMEOUT)
+        checks['current_behavior_verified'] = result.returncode == 0
+        write(output / f'{case}-probe.txt', result.stdout + result.stderr)
     else:
         checks['uncertain_worktree_retained'] = git(root, 'worktree', 'list', '--porcelain') == before['worktrees']
-    record = {'host': host, 'case': case, 'fixture': str(root), 'exit_code': code,
-              'bundle_sha256': digest, 'artifact_checks': checks, 'needs_event_review': True}
-    write(output / f'{case}-result.json', json.dumps(record, indent=2))
-    print(json.dumps(record), flush=True)
-    return code == 0 and all(checks.values())
+    return checks
 
 
 if __name__ == '__main__':

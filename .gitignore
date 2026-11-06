@@ -7,6 +7,8 @@
 /.agents/skills/
 /.agents/pstack/
 /.agents/pstack-backups/
+/.agents/.pstack-install.lock
+/.agents/.pstack-stage-*/
 
 # Local generated artifacts and scratch output (root only).
 /.dist/

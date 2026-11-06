@@ -93,11 +93,10 @@ const runChild = (file: string, args: string[], options: { cwd: string; env: Nod
   });
 
 export const killGroup = (pid: number) =>
-  new Promise((resolve) =>
-    spawn("/bin/sh", ["-c", 'kill -s KILL -- "-$1"', "sh", String(pid)], { stdio: "ignore" }).on(
-      "exit",
-      resolve,
-    ),
+  new Promise((resolve, reject) =>
+    spawn("/bin/sh", ["-c", 'kill -s KILL -- "-$1"', "sh", String(pid)], { stdio: "ignore" })
+      .on("error", reject)
+      .on("exit", resolve),
   );
 
 export const messageOf = (error: unknown) =>

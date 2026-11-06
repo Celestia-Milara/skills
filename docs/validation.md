@@ -1,5 +1,74 @@
 # Adaptation validation
 
+## Windows and script audit on 2026-11-06
+
+The user requested a full library review, fixes, and a commit and push. This round
+includes the previously uncommitted user-installation and backup support. Four
+independent inherited-model passes reviewed package/backup behavior, host process
+management, all 63 active skill entries and the five supplements, and retained
+TypeScript/JavaScript/Bash tools. This is not cross-model review.
+
+Executable probes reproduced these defects before correction:
+
+- An installation move failure left active files archived; a removed managed skill
+  remained active after an update. Further fault injection checked copy damage,
+  interrupted publication, concurrent edits, and backup-name collisions.
+- Backup output reachable through a nested directory link could recurse into its
+  own archive. Empty directories were lost. Failed backup/build operations left
+  incomplete output, and packaging did not reject several missing resources.
+- Host wrappers mishandled npm shims, RPC errors, timeouts, descendant processes,
+  and failed postchecks. The old inventory could return while a child held its cwd.
+- Git status configuration hid untracked files from the Python audit. Malformed
+  session records aborted history discovery; equivalent Claude workspace paths
+  missed matching archives.
+- The retained Bash audit truncated paths with spaces, fetched tracking refs
+  despite its read-only description, and labeled unowned content or closed,
+  unmerged PRs as safe. The watcher exposed raw missing-executable errors.
+- The statechart CLI crashed on native Windows when it spawned `/bin/sh`.
+  It now rejects that platform before starting a worker. This fixes the uncontrolled
+  failure; it does not port POSIX process supervision to Windows.
+
+Static review also found that help recommended upstream installation commands and
+public URLs for locally adapted files. Help and setup now route to this distribution
+and its host-specific commands, model fallback, and authorization boundaries.
+
+The new tests use disposable filesystem and process fixtures. Fault injection
+establishes the tested failure paths, not crash consistency after power loss.
+Windows jobs clean up ordinary descendants; assignment follows process creation,
+so this is not atomic process containment or a sandbox. Backups preserve file
+contents and directory/link records, not ACLs or an atomic filesystem snapshot.
+
+Native initialization, without a model request, found all 63 project skills in
+Codex with no loader errors and all 63 target commands in Claude Code 2.1.318.
+Both temporary projects were released after the process checks. This establishes
+loading and process cleanup, not execution of every skill or playbook.
+
+Final frozen-source acceptance ran 90 Python tests: 89 passed and one test for
+tab/newline filenames was skipped on Windows. The separate Node regression run
+passed four checks and skipped one POSIX-only check. Source/reference validation
+passed with 63 active skills and 82 adapted imported files. All 821 source/test
+files in the acceptance snapshot remained unchanged during the suite; staged
+bytes matched the tested working files. Diff whitespace checks passed.
+
+The Codex user installation was then updated with the verified installer. All
+63 entries passed managed-integrity checks and native user-scope discovery without
+duplicates or loader errors. Its updated portable helpers match the source bytes.
+The previous bundle and active packages remain in the host's managed backup.
+
+The retained statechart offline pass reported 67 tests passed and 59 dependency
+skips across seven test files. Four direct check-plan probes passed. Bun was not
+available and no TLC JAR was configured. Bun suites/typechecking, actual TLC,
+rendering installs, bootstrap downloads, live GitHub, POSIX process cleanup, and
+full model-driven workflow acceptance remain unrun in this round. Initial Windows
+CLI failure evidence is retained; the platform diagnostic has its own regression.
+
+Raw local probes and native inventories remain under `.tmp/audit-*` and are not
+part of publication. Current failure contracts belong in
+[adaptation](adaptation.md); installation and recovery usage belongs in the root
+[README](../README.md).
+
+## Initial adaptation on 2026-11-03
+
 Checked on Windows on 2026-11-03 against the local adaptation on
 `codex/pstack-host-adaptation`, based on library commit `61c9e1f`, pstack 0.15.36,
 Cursor snapshot `ae5650f`, and portable mirror `6c75f4e`.
@@ -49,10 +118,9 @@ cover those packaging changes. No model rerun was needed for unchanged tdd logic
 
 ## Scope and limits
 
-The checked bundle is installed for `D:/03_work/skills` only, in its ignored
-`.agents/` and `.claude/` project locations. This does not update global skills,
-model settings, other projects, or already-running skill catalogs. Open a new
-session to use the project entries. The five supplements retain their methods;
+The initial check used project installations in `D:/03_work/skills`. The later
+user-scope migration below supersedes that installation state. Model settings
+and other projects were not changed. The five supplements retain their methods;
 maintenance-docs now routes transfers to pstack when available.
 
 We did not execute every playbook, the original Bun/TypeScript suites, formal
@@ -69,6 +137,44 @@ Reproduction commands and boundary checks are in the root scripts/tests.
 Earlier eight-skill results from 2026-10-17 and the controlled engineering run
 from 2026-10-22 remain in Git at `61c9e1f:README.md`. They do not validate this
 63-skill adaptation.
+
+## User-scope migration on 2026-11-03
+
+The user authorized global installation for Codex and Claude Code after checking
+ordinary context overhead, with prior-state backup and project deduplication.
+
+- Backup: 3,503 files verified in a local archive of configuration, existing user
+  skills, and the current project's active packages. Five directory-link targets
+  are recorded. Raw account paths and configuration stay outside publication.
+- All original user files in that snapshot retain their bytes, including the two
+  existing configuration files. Original user skills and native commands remain.
+- User installation: 63 skills in `~/.agents/skills/` and 63 in
+  `~/.claude/skills/`, plus two Claude agents. Complete resources remain in each
+  host's user `pstack/` bundle.
+- Native discovery from a neutral directory outside this repository finds every
+  target name once. Codex reports all 63 in user scope, with no loader errors.
+- Managed project duplicates are archived under each host's project
+  `pstack-backups/project-to-user-*`. They are absent from active project skill
+  directories; unrelated project files are preserved.
+- After retirement, native discovery from this repository reports zero project
+  skill entries and the same 63 user entries. Claude's built-in code-review remains.
+- The expanded local suite passes 15 tests without skips, covering user scope,
+  original-file preservation, retirement protection, backup recovery, and the
+  prior project/helper cases.
+
+Context metadata was counted, not benchmarked in tokens. There are 58 explicit-only
+skills and five implicit candidates. The five eligible names/descriptions total
+1,326 source characters; all 63 names total 1,259 characters. Paths, formatting,
+and agent descriptions are additional. Full bodies enter context when invoked;
+a large workflow can still use substantial context. These facts support low
+ordinary incremental overhead, not zero overhead or an exact token estimate.
+
+Direct poteto-help invocation passed in both hosts from the neutral directory.
+Actual read events show the shared router, the matching host adapter, and the
+bundled first guide under the user installation. No project copy was used.
+This establishes user discovery, routing, and package-external documentation;
+the earlier tdd runs remain the behavioral implementation smoke. It does not
+establish every playbook or a token-level before/after benchmark.
 
 ## Combined workflows on 2026-11-03
 
@@ -165,6 +271,7 @@ the selected publication snapshot passed its 12 tests and source/reference check
 in a separate directory. Its composition skills and packaged resources match the
 behavior-tested versions. No native model cases were repeated for this publication
 selection. Unrelated local changes and raw host evidence remain uncommitted.
+
 
 ## Git workflow ownership follow-up on 2026-11-03
 

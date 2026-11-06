@@ -47,3 +47,8 @@ helpers. Do not mistake Windows WSL `bash.exe` for Git Bash.
 The portable [worktree_audit.py](../scripts/worktree_audit.py) reports local Git
 facts on Windows. It does not establish PR state, transcript activity, simulator
 safety, or deletion authorization. Unknown evidence must remain unknown.
+
+The statechart CLI retains POSIX process supervision. Native Windows Node cannot
+run that workflow; Git Bash is not a substitute for a POSIX runtime. Follow the
+[statechart requirements](../../statechart/SKILL.md#run) and report a blocked check
+when the required runtime or TLC is unavailable.

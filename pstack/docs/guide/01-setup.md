@@ -1,18 +1,21 @@
 # Set up pstack
 
-In this page you install the plugin, pick which models pstack uses, and run your first task. Setup is one command plus a short conversation.
+This page explains installation, model setup, and a first task. Use the instructions for the host running the session.
 
-## Install the plugin
+## Install the adapted distribution
 
-In a Cursor chat, run:
+For Codex and Claude Code, use this library's source tree. Its root README owns backup, update, and scope options. Preview a user installation before writing:
 
-```text
-/add-plugin pstack
+```powershell
+python scripts/install.py --host codex --scope user --dry-run
+python scripts/install.py --host codex --scope user
 ```
 
-Cursor confirms the plugin is installed.
+For Claude Code, replace `codex` with `claude-code`. To update an existing managed installation, add `--replace-managed` to both commands. Keep the complete resource bundle with its 63 active packages. Upstream marketplace and mirror installers do not include this library's adaptations.
 
-In Claude Code, run `/plugin marketplace add cursor/plugins`, then `/plugin install pstack@cursor-plugins`. Claude Code prefixes plugin commands, so each command in this guide takes a `pstack:` prefix there, such as `/pstack:setup-pstack`, which writes its model rule to `~/.claude/rules/pstack-models.md`. The [Claude Code adapter](../harness/claude-code.md) covers the other differences.
+Codex uses `$poteto-mode` and `$setup-pstack`. Claude Code user and project installations use `/poteto-mode` and `/setup-pstack`. A locally packaged Claude plugin uses the `pstack:` prefix. See the [Codex guide](../harness/codex.md) or [local Claude Code guide](../harness/claude-code-local.md). Do not load duplicate user, project, and plugin copies.
+
+The rest of this guide retains upstream Cursor examples. Read the [host adapter](../../skills/poteto-mode/references/host.md) before applying model names, tool names, paths, or Custom Mode shortcuts. In Codex and Claude Code, missing or unsupported role models inherit the session model; setup is optional and requires an explicit request.
 
 ## Pick your models
 

@@ -54,11 +54,38 @@ cloud services, Bugbot launch controls, and persistent event supervision are not
 silently recreated in another host.
 
 The installer copies one complete bundle and the 63 discoverable active packages.
+It supports project scope and personal user scope. User scope uses Codex's
+`.agents/` and Claude Code's `.claude/` directories under the selected account.
 It redirects root documentation references to that bundle. A junction-based
 prototype failed Windows relative-path resolution and was replaced. It checks
 collisions before writing and does not overwrite
-global skills, settings, or another project's guidance. Managed updates retain
+unmanaged skills, host settings, or another project's guidance. Managed updates retain
 the previous complete bundle. Unrecognized or modified files need reconciliation.
+
+Installation now prepares both the bundle and projected packages before moving
+active paths. A host-local exclusive lock serializes installers and retirement.
+Preflight runs again after preparation to preserve edits made during the build.
+The move journal restores earlier paths on an ordinary failure; if restoration
+fails, the error identifies retained staging and backup directories. Removed
+managed entries are archived too. A forced process exit or power loss can leave
+a lock or partial switch. Recovery is manual, and readers can observe the short
+switch interval. The installer does not claim a filesystem-wide transaction.
+
+Packaging validates required resources and skill identities before copying,
+rejects linked package sources, and removes its own incomplete output on failure.
+Backup supports linked skill trees, checks every resolved directory before
+creating output, and retains empty directories and link targets in its manifest.
+Both tools refuse existing output paths, including dangling links. Backups remain
+private because configuration and skill files can contain account information.
+
+Before a user-scope migration, `scripts/backup_installation.py` records existing
+configuration and skills in a local, hash-verified archive. It materializes linked
+files and records link targets without modifying those targets. Auth stores and
+chat history are not selected as roots; content reached through a selected skill
+tree is included. Project retirement verifies user
+coverage and project ownership before archiving the managed bundle, packages,
+and agent files. It rolls back moved paths if a move fails. Unrelated project
+skills stay active.
 
 ## Original guidance conflict audit
 

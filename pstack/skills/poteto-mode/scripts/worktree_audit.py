@@ -6,7 +6,7 @@ import subprocess
 
 
 def git(repo, *args):
-    return subprocess.run(['git', '-C', str(repo), *args], capture_output=True, text=True, encoding='utf-8')
+    return subprocess.run(['git', '--no-optional-locks', '-C', str(repo), *args], capture_output=True, text=True, encoding='utf-8')
 
 
 def audit(repo, base=None):
@@ -28,7 +28,7 @@ def audit(repo, base=None):
     known_base = git(repo, 'rev-parse', '--verify', base).returncode == 0
     for row in records:
         path = row['worktree']
-        status = git(path, 'status', '--porcelain') if Path(path).is_dir() else None
+        status = git(path, 'status', '--porcelain', '--untracked-files=all') if Path(path).is_dir() else None
         row['clean'] = not bool(status.stdout) if status is not None and status.returncode == 0 else None
         row['base'] = base
         merge = git(repo, 'merge-base', '--is-ancestor', str(row.get('HEAD', '')), base) if known_base else None
