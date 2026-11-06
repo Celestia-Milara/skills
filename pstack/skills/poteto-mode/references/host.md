@@ -32,6 +32,10 @@ and Python's `tempfile` for temporary directories. `/tmp`, Bash heredocs, `ls -t
 `df`, and `printf` are examples, not PowerShell syntax. Prefer supplied portable
 helpers. Do not mistake Windows WSL `bash.exe` for Git Bash.
 
+Windows does not read the `#!/usr/bin/env bun` line of
+`scripts/watch-pr/watch-pr`. Run it as `bun <absolute path to watch-pr>` with Bun
+1.3 or later on PATH. If Bun is missing, report that the watcher is unavailable.
+
 The portable [worktree_audit.py](../scripts/worktree_audit.py) reports local Git
 facts on Windows. It does not establish PR state, transcript activity, simulator
 safety, or deletion authorization. Unknown evidence must remain unknown.

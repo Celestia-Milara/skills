@@ -36,6 +36,8 @@ cross-model evidence. They preserve project authorization over workflow defaults
 
 Windows gets a TSV logger, a metadata-scoped session selector, and a read-only Git
 worktree audit. The audit deliberately does not claim remote PR or session safety.
+On Windows, agents start the PR watcher through `bun` because Windows does not
+read its `#!` line.
 The original Bash and TypeScript tooling remains available. Cursor Automations,
 cloud services, Bugbot launch controls, and persistent event supervision are not
 silently recreated in another host.
