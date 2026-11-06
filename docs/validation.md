@@ -248,12 +248,12 @@ the full local worktree. Native behavior evidence was reused; publication select
 did not change the tested workflow rules. Installation migration edits and raw
 host logs remain outside this commit.
 
-## Repository CI checks on 2026-11-05
+## Repository checks on 2026-11-05
 
-The maintenance candidate uses merged main `cfd8c0f` plus the local CI,
-documentation, and verifier changes. It excludes the original checkout's pending
-installation and backup migration. The [CI guide](ci.md) owns the automated
-coverage and local commands.
+The maintenance candidate uses merged main `cfd8c0f` plus documentation and
+verifier changes. It excludes the original checkout's pending installation and
+backup migration. The [local verification guide](checks.md) owns the commands
+and their coverage limits.
 
 | Check | Observed result |
 | --- | --- |
@@ -263,15 +263,16 @@ coverage and local commands.
 | Linux tool suite | All 61 watcher and plan tests pass with Bun 1.3.14 and Node 24.20.0; typecheck and CLI help pass |
 | Windows selected tool suites | All 34 CLI, policy, and plan tests pass; typecheck and CLI help pass |
 | Statechart messages | All 8 tests pass on Windows and Linux with Node 24.20.0, including CRLF output |
-| Workflow and whitespace | actionlint 1.7.12 and `git diff --check` pass |
+| Whitespace | `git diff --check` passes |
 
 The complete Windows tool suite also ran. It passed 60 tests and failed one
-POSIX-only fake-`gh` fixture. The CI guide names that limitation and the Windows
+POSIX-only fake-`gh` fixture. The local guide names that limitation and the Windows
 selection. The helper package was unchanged by the intervening PR merges; its
 earlier tool runs remain applicable. The statechart checks above cover message
 parsing, not the full formal-verification toolchain.
 
-At this local validation checkpoint, hosted Actions execution and the Python
-3.10 lane remained pending. The workflow's existence and local results do not
-establish a successful hosted run. Native model behavior cases and personal
-installation migrations were not repeated for this CI change.
+An initial workflow passed actionlint 1.7.12. Its hosted attempt was blocked
+before runner allocation and executed no tests. The user then requested removal
+of CI. The workflow and its Actions-only Dependabot configuration were removed.
+Python 3.10 was not exercised locally. Native model behavior cases and personal
+installation migrations were not repeated for this maintenance change.
