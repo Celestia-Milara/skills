@@ -1,31 +1,19 @@
-# Git Commits and Collaboration
+# Change Protection and Git Authorization
 
-## Change Ownership and Parallel Work
+pstack owns the Git workflow. Use [Opening a PR](../pstack/skills/poteto-mode/playbooks/opening-a-pr.md)
+for worktrees, staging, commits, and PRs, and [Shipping](../pstack/skills/poteto-mode/playbooks/shipping.md)
+for merge delivery. Read only the parts needed for the authorized operation.
+These links do not authorize a PR or merge.
 
-Before editing, check the repository, branch, working tree, and index; follow project branch conventions. Preserve unrelated work, including staged content. Do not infer ownership from filenames, authors, or timestamps, or automatically stash, reset, or overwrite existing changes. A clean tree is not required.
+Project guidance retains three boundaries:
 
-Stage authorized paths or separable hunks. If mixed edits cannot be separated safely, pause only the affected staging or commit.
-
-Prefer separate working directories for parallel tasks; a branch alone does not isolate a shared checkout, and worktree creation follows project and environment conventions. In shared checkouts, coordinate file, index, and branch writes and recheck affected results after concurrent changes.
-
-## Commit Checks
-
-Before committing, review the entire staged diff and file list, including pre-existing entries; coordinate before including or altering unrelated content or content whose ownership is unclear. Exclude credentials and unrelated temporary or generated files.
-
-Run required checks without bypassing hooks; reuse applicable results. Checks must cover the indexed version: if unstaged differences could affect results, verify that version separately and disclose remaining gaps.
-
-After committing, verify the identifier, message, and file scope, and report remaining changes.
-
-## Commit Organization and Format
-
-Commit one completed feature or feedback round with its related code, tests, configuration, documentation, and notes. Split independently verifiable goals when useful, not individual files or tool steps.
-
-Use `type(scope): imperative subject`, optional scope, and English subject and body. Choose type by primary purpose and scope by feature or subsystem. Mark breaking changes with `!` and explain the break and migration. Repository conventions and validation take precedence.
-
-## Authorization
-
-Implementation authorization does not include committing. Show verified changes and ask before a local commit unless an existing request authorizes that operation and scope. Reuse authorization for ordinary corrections and checks; seek renewed authorization only when scope or behavior materially exceeds it.
-
-Local commits do not authorize push, PR, merge, or release. Execute explicitly combined requests without repeated confirmation; verify each operation's branch, remote, and contents.
-
-Create new commits by default. History rewrites or discarding changes require authorization covering their impact. Ordinary conflict resolution follows task authorization; it does not permit overwriting others' or unclear-ownership work.
+- Preserve user and other tasks' changes, including staged, unstaged, untracked,
+  and ignored files. Unclear ownership is not permission to overwrite, discard,
+  move, or include the content in a commit.
+- Destructive actions and shared-history rewrites need authorization that covers
+  their targets and effects. Ordinary conflict resolution does not permit loss
+  of others' work. Pause only the affected operation when its scope is unclear.
+- Honor the current task's commit, push, PR, merge, and release limits. Permission
+  for one does not imply the others. Reuse authorization for the same operation
+  and scope; do not request it again. A request to implement does not authorize
+  a commit, and a request to defer commits remains in force across skill handoffs.
