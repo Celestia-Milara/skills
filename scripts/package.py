@@ -23,6 +23,11 @@ def build(output):
     shutil.copytree(ROOT / 'pstack', output, ignore=IGNORED)
     for name in SUPPLEMENTS:
         shutil.copytree(ROOT / name, output / 'skills' / name, ignore=IGNORED)
+    composition = output / 'docs/composition.md'
+    value = composition.read_text(encoding='utf-8')
+    for name in SUPPLEMENTS:
+        value = value.replace(f'../../{name}/SKILL.md', f'../skills/{name}/SKILL.md')
+    composition.write_text(value, encoding='utf-8', newline='\n')
     # Relocate source-library links without changing the standalone source packages.
     for name in SUPPLEMENTS:
         for path in (output / 'skills' / name).rglob('*.md'):

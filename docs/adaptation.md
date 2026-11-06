@@ -11,6 +11,7 @@ backed up before retiring its `tdd`, `review-code`, and `handoff` directories.
 | pstack workflows, principles, agents, resources | `pstack/`, imported from the complete portable mirror |
 | Original/mirror revisions and hashes | [source-lock.json](../pstack/source-lock.json) |
 | Common host boundaries and Windows substitutions | [host.md](../pstack/skills/poteto-mode/references/host.md) |
+| Supplement routing, authorization handoffs, artifact roles, and plan scope | [Workflow composition](../pstack/docs/composition.md) |
 | Codex tools, role models, history, services | [Codex adapter](../pstack/skills/poteto-mode/references/codex.md) |
 | Claude Code tools, roles, plugin names, history | [Claude adapter](../pstack/skills/poteto-mode/references/claude-code.md) |
 | Five document/interview/decision methods | Root skill packages |
@@ -34,6 +35,18 @@ comments for review instead of deleting them. Local adapters use live tool schem
 avoid inventing model names, and distinguish same-model independent review from
 cross-model evidence. They preserve project authorization over workflow defaults.
 
+The host router loads [workflow composition](../pstack/docs/composition.md) for
+engineering and document tasks. This keeps the five supplements available without
+optional project guidance. It defines when to route, how to retain authorization,
+and which artifact owns each fact. Design-only work stops before implementation;
+approved implementation does not need another approval. Ordinary plans use the
+project's existing source and risk-based checks. The retained full-program template
+and checker apply only when that format is adopted, with its required gates intact.
+
+The packager relocates composition links to the bundled supplement copies. Host
+projections resolve the composition guide through their complete resource bundle.
+Source, plugin, and installed-path checks cover this route.
+
 Windows gets a TSV logger, a metadata-scoped session selector, and a read-only Git
 worktree audit. The audit deliberately does not claim remote PR or session safety.
 The original Bash and TypeScript tooling remains available. Cursor Automations,
@@ -46,6 +59,31 @@ prototype failed Windows relative-path resolution and was replaced. It checks
 collisions before writing and does not overwrite
 global skills, settings, or another project's guidance. Managed updates retain
 the previous complete bundle. Unrecognized or modified files need reconciliation.
+
+## Original guidance conflict audit
+
+The 2026-11-03 follow-up assigns Git methods to pstack. Project Git guidance now
+retains only protection of existing work, authorization for destructive effects,
+and the task's commit/push/PR/merge limits. The former feature-round commit unit
+and new-commit default no longer compete with pstack's small ordered commits and
+scoped amendments. Index and committed-version checks live in its Git playbook.
+
+| Original guidance or supplement | Resolution with pstack |
+| --- | --- |
+| Git format, commit units, worktrees, and checks | pstack owns the method; project guidance links to it. Existing staged and mixed-file work stays protected. |
+| Authorization reuse | Mode and the autonomy principle reuse permission for the same effects, while preserving explicit checkpoints. Workflow steps add no authority. |
+| Cleanup and dirty worktrees | Remove automatic reset and throwaway-file assumptions. Untracked and ignored state needs ownership and deletion-scope evidence. |
+| Verification and TDD | Compatible: practical failing-before checks, independent expectations, and risk-based evidence. Required project gates remain effective; test-first evidence does not require a separately failing delivery commit. |
+| Static review and `interrogate` | Separate source-supported static findings from run-proven adversarial findings; neither substitutes for the other. |
+| Decision history and session pickup | History informs continuation. Reuse applicable checks; recheck drift and missing evidence. Past notes do not grant new authority. |
+| `grilling` and `grill-me` | One interview method with a wrapper; reuse settled understanding and implementation approval. No new conflict found. |
+| `to-docs`, `maintenance-docs`, and collaboration guidance | Designs, progress, current facts, and rationale retain their owning sources. Saving adds no implementation or Git permission. No new conflict found. |
+| `decision-notes` | Search relevant history and retain lasting rationale when warranted. No mandatory record for each task or imported workflow. |
+
+The audit covers active project guidance and the five supplements, not retired
+`legacy/` or `zh-backup/` editions. Local historical records retain rationale and
+mark superseded choices; they are not runtime rules. See [validation](validation.md)
+for observed host behavior and limits. Installed copies need a separate update.
 
 ## Updating source
 

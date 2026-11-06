@@ -2,6 +2,22 @@
 
 **You own the plan, not the code. The plan is a checklist an owner runs box by box and the operator audits from the evidence.** The plan is the deliverable. Do not implement.
 
+## Select the plan scope
+
+Apply [workflow composition](../../../docs/composition.md#scale-plans-and-verification-to-the-task)
+first. Use the full program format below only when the user or project has adopted
+it. Otherwise update the existing plan with the affected steps, dependencies,
+acceptance evidence, and open risks; stop after delivering that plan. Reuse existing
+design and investigation evidence. Do not run `check-plan.mjs` on this ordinary
+plan or create PR, ten-lane, or perf obligations it does not need.
+
+For a read-only planning request, investigate facts with read-only tools. A prototype
+that writes code or creates Git history needs authorization for those effects.
+Name unresolved empirical questions and their proposed checks when they cannot be
+settled within scope. An authorized prototype does not authorize implementation.
+
+## Full program format
+
 1. When the change is one or two files with an obvious approach, skip the plan. Say so and stop.
 2. Settle open questions by prototype before you write. Run `playbooks/prototype.md` for each. Keep the branch, the SHA, and the screenshots for Appendix A. Ask the operator only about a product or preference call that no run can settle. Give options (the **never-block-on-the-human** principle skill).
 3. Explore in subagents with `subagent_type: "poteto-agent"` and an explicit model per the Subagents section (the **guard-the-context-window** principle skill). Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section. Each returns file pointers, conventions, test commands, and entry points. No inlined dumps.

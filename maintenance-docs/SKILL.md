@@ -36,6 +36,11 @@ Read only the references relevant to the material being maintained:
 
 Maintain each fact in one place; summarize and link elsewhere. A readable design can be the complete source. Engineering records supplement it only as needed; their entry-point, plan, and overall Status rules do not apply automatically to standalone designs. Notes own long-term rationale. An index provides navigation rather than a second progress record.
 
+When an execution workflow already owns a plan or technical sketch, maintain that
+artifact or link its distinct detail. Do not create another full plan or design to
+fit this skill's default layout. A run log records execution evidence; it does not
+replace the owning design, current subsystem facts, or lasting decision notes.
+
 Distinguish settled conclusions, recommendations, assumptions, current source-code facts, test coverage, actual runtime checks, and manual acceptance. An existing test is not a successful run; adopting a goal does not implement it or remove transition and compatibility obligations.
 
 When documents and implementation disagree, check relevant code, tests, requirements, decisions, and progress. Determine whether documentation is stale, implementation diverges, or a transition is incomplete. Correct verified documentation errors and implementation errors within authorization. Do not normalize a defect or use old documents to override a new user instruction. Ask about unresolved key behavior or trade-offs while continuing independent work.

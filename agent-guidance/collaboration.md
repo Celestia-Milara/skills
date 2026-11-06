@@ -26,5 +26,9 @@ These are task-specific methods, not a sequence of required phases. Their packag
 [pstack](../pstack/skills/poteto-mode/SKILL.md) owns the main engineering workflow.
 The five local skills supplement interviews, designs, document maintenance, and
 long-term decisions. Do not run both sets as competing mandatory workflows.
+When combining them, read pstack's
+[workflow composition](../pstack/docs/composition.md) for method triggers,
+authorization handoffs, and artifact ownership. Reuse existing findings and
+confirmed understanding rather than restarting earlier phases.
 
 Create decision notes only for settled, non-trivial decisions whose lasting rationale needs a separate record; see the skill's [recording threshold](../decision-notes/SKILL.md#3-decide-whether-to-create-a-record). Routine fixes, formatting, renames, and local UI edits do not need new notes unless they involve such a decision. Judge significance by the decision, not diff size; keep affected existing records accurate.

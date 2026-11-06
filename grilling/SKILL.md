@@ -28,3 +28,8 @@ Investigate discoverable _facts_ yourself. Delegate when useful, available, and 
 Ask the user to settle product behavior, scope, and key trade-offs that remain unclear. Handle routine engineering details within existing authorization and explain relevant assumptions; do not turn every implementation choice into an interview question or reopen settled decisions.
 
 Finish when material questions in the agreed scope are resolved, or when the user stops, defers, or narrows the discussion. Summarize the shared understanding and retain open questions and their consequences. Confirm shared understanding before implementing the resulting design; reuse an explicit confirmation already given. Saving settled conclusions and unresolved items does not need to wait for that confirmation and adds no implementation authorization.
+
+If implementation is already authorized and the understanding is confirmed, hand
+the outcome to the available engineering workflow with the agreed behavior, open
+constraints, and acceptance criteria. Do not restart the interview or request the
+same approval. A discussion-only task ends with the discussion or requested design.
