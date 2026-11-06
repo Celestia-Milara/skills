@@ -35,6 +35,23 @@ The behavior runs preceded final frontmatter projection and help-text cleanup.
 Subsequent native discovery, metadata, installed-reference, and installer checks
 cover those packaging changes. No model rerun was needed for unchanged tdd logic.
 
+## Statechart on Windows
+
+Checked on Windows 11 on 2026-11-05 with Node 24.20, mise 2026.11.2, Temurin 25,
+and TLC 1.7.4. The command found TLC and Java through mise, with no overrides.
+
+| Check | Observed result |
+| --- | --- |
+| Real check | A 32-state spec with two broken rules exits 1 and draws the chart; repeated runs give the same `chart.mmd` |
+| Stop mid-run | Killing the command stops TLC and removes its stage and temporary folders; nothing is written |
+| Console windows | A hidden run opens no console window for its worker, janitor, mise, Java, or `taskkill` |
+| CRLF output | The new `messages.test.ts` case fails before the fix and passes after it |
+| Linux regression | WSL Ubuntu 24.04: the patched and original suites both fail only `render.test.ts`; 194 and 193 tests pass |
+
+The suite's fake `java` is a `.ts` file. Windows cannot run it directly, so the
+CLI and corpus tests fail there with `spawn EFTYPE` before and after this change.
+The signal tests use POSIX signals and do not apply to Windows.
+
 ## Corrections found during validation
 
 - Directory junctions did not preserve lexical `../../docs` resolution on Windows.

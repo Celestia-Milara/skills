@@ -36,6 +36,8 @@ cross-model evidence. They preserve project authorization over workflow defaults
 
 Windows gets a TSV logger, a metadata-scoped session selector, and a read-only Git
 worktree audit. The audit deliberately does not claim remote PR or session safety.
+The statechart runner stops TLC with `taskkill` and cleans up through a Node
+process instead of `/bin/sh`, and it reads TLC's CRLF output.
 The original Bash and TypeScript tooling remains available. Cursor Automations,
 cloud services, Bugbot launch controls, and persistent event supervision are not
 silently recreated in another host.
