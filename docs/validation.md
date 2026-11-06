@@ -62,7 +62,9 @@ The signal tests use POSIX signals and do not apply to Windows.
   Project projections omit it, while its description retains the intended scope.
 - The generic Skill Creator validator rejects Claude/Cursor header extensions.
   Codex projections remove them and keep explicit policy in `agents/openai.yaml`.
-- Source locks now hash Git blobs, avoiding CRLF checkout differences.
+- Reference hashes were recorded from Git blobs. The verifier hashes working-file
+  bytes. The root `.gitattributes` keeps text checkouts in LF form, so line-ending
+  changes or other byte-changing filters can affect verification.
 
 ## Scope and limits
 
@@ -245,3 +247,32 @@ migration and the source/reference verifier. The 18-test result above belongs to
 the full local worktree. Native behavior evidence was reused; publication selection
 did not change the tested workflow rules. Installation migration edits and raw
 host logs remain outside this commit.
+
+## Repository checks on 2026-11-05
+
+The maintenance candidate uses merged main `cfd8c0f` plus documentation and
+verifier changes. It excludes the original checkout's pending installation and
+backup migration. The [local verification guide](checks.md) owns the commands
+and their coverage limits.
+
+| Check | Observed result |
+| --- | --- |
+| Source and reference verification | 63 active names, 573 original paths, 582 mirror files, 80 adapted paths, and no errors or link warnings |
+| Library suite | 13 tests pass on Windows with Python 3.12.8 and WSL Ubuntu 24.04 with Python 3.12.3 |
+| Verifier regression | A dependency README with a broken link fails before the fix and passes afterward; a broken maintained document still fails |
+| Linux tool suite | All 61 watcher and plan tests pass with Bun 1.3.14 and Node 24.20.0; typecheck and CLI help pass |
+| Windows selected tool suites | All 34 CLI, policy, and plan tests pass; typecheck and CLI help pass |
+| Statechart messages | All 8 tests pass on Windows and Linux with Node 24.20.0, including CRLF output |
+| Whitespace | `git diff --check` passes |
+
+The complete Windows tool suite also ran. It passed 60 tests and failed one
+POSIX-only fake-`gh` fixture. The local guide names that limitation and the Windows
+selection. The helper package was unchanged by the intervening PR merges; its
+earlier tool runs remain applicable. The statechart checks above cover message
+parsing, not the full formal-verification toolchain.
+
+An initial workflow passed actionlint 1.7.12. Its hosted attempt was blocked
+before runner allocation and executed no tests. The user then requested removal
+of CI. The workflow and its Actions-only Dependabot configuration were removed.
+Python 3.10 was not exercised locally. Native model behavior cases and personal
+installation migrations were not repeated for this maintenance change.

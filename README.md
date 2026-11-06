@@ -125,6 +125,9 @@ python -m unittest discover -s tests -v
 git diff --check
 ```
 
+The [local verification guide](docs/checks.md) lists manual Bun and Node checks
+for the PR watcher, plan checker, and statechart messages, with their limits.
+
 For host/installation changes, also run actual host discovery and invocation
 checks in isolated projects, following [validation methods](agent-guidance/validation.md).
 Check file reads, covered paths, and side effects. Metadata validation does not
