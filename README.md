@@ -73,6 +73,51 @@ files. Use a three-way comparison when importing a new official revision.
 
 ## Windows
 
+### Shared resources with Junctions
+
+Copy storage remains the default. On native Windows CPython, test the shared
+layout with an isolated home before converting an existing installation:
+
+```powershell
+python -B scripts/install.py --host codex --scope user --home .tmp/junction-home --storage junction --store .tmp/junction-store --dry-run
+python -B scripts/install.py --host codex --scope user --home .tmp/junction-home --storage junction --store .tmp/junction-store
+```
+
+Use the same home and store arguments for other host profiles. Each complete
+public resource version is stored once under `store/versions/<content-hash>`.
+Every version includes the 58 official skills and five supplement resources;
+only the requested 58 or 63 host entries are exposed. The host's `pstack` is a
+Junction. Host ownership is recorded in `.pstack-install.json` beside it, not
+inside the shared target. UNC stores are not supported.
+
+Entries and metadata stay host-specific. Read-only resource directories share
+Junctions only when Markdown links retain correct host targets. Script directories
+stay private because tools may install dependencies beside themselves. Documents
+with cross-skill references also stay private to retain adapted entry targets
+after realpath resolution. This saves repeated complete resource bundles but does
+not claim zero copied files or shared writable dependency trees.
+
+To convert an unchanged copy or update a Junction installation, add
+`--replace-managed`. Preview first. Modified entries or public contents are refused.
+Versions are verified and never overwritten; no automatic store garbage collection
+is performed. A failed host switch restores old paths and retains published shared
+versions. For a failed rollback, preserve the reported staging and backup paths.
+
+Archive an installation with `--storage junction --uninstall`. This moves active
+entries to a host-local backup. Restore an archived Junction version with
+`--storage junction --restore <host-backup-path>`. Restore works after uninstall or
+replaces a valid current Junction version, retaining that version as another backup.
+Copy-install backups require manual recovery; they are not Junction receipts.
+
+Cleanup unlinks Junctions rather than traversing targets. Public resources remain
+available to other hosts and backups. Backups include the external receipt and
+materialize linked contents. Inspect link records before restoring elsewhere.
+
+The public resource tree is reference material, not a writable tool workspace.
+It is hash-checked, not protected by filesystem ACLs. Running raw self-installing
+scripts directly from that tree can invalidate it; use the host entry's private
+scripts directory. No Bun dependency installation is part of installer validation.
+
 The upstream tree includes POSIX scripts. Installation and discovery do not prove
 those scripts work on Windows. Native script compatibility and WSL workflows are
 separate acceptance work. No experimental Windows Job patch is included here.

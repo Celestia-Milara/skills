@@ -8,6 +8,13 @@ Installed folders do not establish runtime capabilities. Read companion SKILL.md
 files through this installed tree if native invocation is unavailable. Resolve
 dependencies relative to the file that references them.
 
+Use the host's advertised skill entry path for execution and delegation, not the
+raw SKILL.md inside the resource bundle. If reading a bundled source, return to
+the corresponding `<host-root>/skills/<name>/SKILL.md` entry before running tools.
+The bundle is reference material. Scripts that install dependencies or write
+beside themselves run from the host entry's private scripts directory. Never use
+the shared resource bundle as a mutable tool working directory.
+
 Task instructions, project constraints and host permissions still apply. A skill
 step does not grant permission to commit, publish, delete data or contact people.
 Reuse authorization covering the same operation. Preserve unrelated changes.

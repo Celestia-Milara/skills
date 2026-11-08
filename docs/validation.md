@@ -1,5 +1,38 @@
 # Adaptation validation
 
+## Junction installer sandbox validation
+
+Junction mode is opt-in. Existing user installations remain copy installations;
+all four resource manifests, skill hashes and agent hashes were checked unchanged.
+The official source still matches the same 573-file Git blob inventory.
+
+- Full suite: 66 unittest checks pass, including 16 Junction-specific cases.
+- Real Windows Junctions tested on one volume and across C: host entries to D: resources.
+- Four isolated hosts share one content-addressed resource version while retaining
+  host-specific invocation metadata and private script directories.
+- Existing valid Markdown references are readable through logical and resolved
+  paths. The architect-to-arena link resolves to the adapted host entry.
+- Copy migration, repeated install, version update/restore, uninstall/restore,
+  receipt publish failure, link creation failure, lock conflict and changed-target
+  refusal pass. Cleanup removes links without deleting their shared targets.
+- Backups include the external receipt and materialize shared resource contents.
+- Codex app-server finds 58 isolated user skills with no loader errors. Claude SDK
+  initialization lists 58 commands and the two named agents. Pi's installed loader
+  and dsh's installed filesystem provider each read 58 entries without diagnostics.
+  dsh also loads the projected how body. No model workflow/API call was made.
+
+Review found that poteto-mode tools install dependencies beside bootstrap.ts.
+All scripts directories therefore remain private. A fixture writes the expected
+node_modules cache and verifies update archives it without changing public content.
+This fixture does not run Bun or install dependencies. Cross-skill document
+references remain private when sharing would change the resolved target.
+
+The public store is hash-checked, not ACL-protected. Direct execution of mutable
+raw bundled scripts is unsupported; use the private host entry paths. Public
+versions are retained after uninstall and failed installs; there is no automatic GC.
+Copy storage remains the default and no current user installation was converted.
+
+
 ## Official-source reset on 2026-11-07
 
 The source now matches all 573 Git blobs from official cursor/plugins commit

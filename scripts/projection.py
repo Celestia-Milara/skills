@@ -76,9 +76,9 @@ def project_skill(host, bundle, host_root, name, names):
                 metadata.write_text(invocation_metadata(original, explicit), encoding='utf-8')
         path.write_text(value, encoding='utf-8', newline='\n')
 
-def project_agent(value, host, final_root):
+def project_agent(value, host, final_root, skill_root=None):
     value = re.sub(r'^is_background:[^\n]*\n?', '', value, flags=re.M)
-    mode = (final_root / 'pstack/skills/poteto-mode/SKILL.md').as_posix()
+    mode = ((skill_root or final_root / 'pstack/skills') / 'poteto-mode/SKILL.md').as_posix()
     adapter = (final_root / f'pstack/adapters/{host}.md').as_posix()
     instruction = f'Read `{adapter}` before work. For poteto-mode use the parent-provided absolute path, or `{mode}` when none is provided.'
     return re.sub(r'^(# .*)\n+', lambda m: m[1] + '\n\n' + instruction + '\n\n', value, count=1, flags=re.M)

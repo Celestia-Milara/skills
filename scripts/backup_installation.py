@@ -13,13 +13,18 @@ CONFIG_FILES = (
     '.codex/config.toml', '.codex/config.json', '.codex/AGENTS.md',
     '.claude/settings.json', '.claude/settings.local.json', '.claude/CLAUDE.md',
     '.agents/pstack-models.md',
+    '.codex/.pstack-install.json', '.agents/.pstack-install.json', '.claude/.pstack-install.json',
+    '.pi/agent/.pstack-install.json', '.dsh/.pstack-install.json',
 )
 SKILL_TREES = (
     '.agents/skills', '.agents/pstack', '.codex/skills', '.codex/pstack',
     '.claude/skills', '.claude/agents', '.claude/pstack', '.claude/rules',
     '.pi/agent/skills', '.pi/agent/pstack', '.dsh/skills', '.dsh/pstack',
 )
-PROJECT_TREES = ('.agents/skills', '.agents/pstack', '.claude/skills', '.claude/agents', '.claude/pstack')
+PROJECT_TREES = ('.agents/skills', '.agents/pstack', '.claude/skills', '.claude/agents', '.claude/pstack',
+                 '.agents/.pstack-install.json', '.claude/.pstack-install.json',
+                 '.pi/agent/.pstack-install.json', '.pi/agent/skills', '.pi/agent/pstack',
+                 '.dsh/.pstack-install.json', '.dsh/skills', '.dsh/pstack')
 
 
 def digest(data):

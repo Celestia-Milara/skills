@@ -53,3 +53,17 @@ normal updates still refuse such files.
 The source and adapters are portable distribution content. Actual Windows script
 execution and WSL fallback remain separate validation. No process-tree or model
 capability claim follows from successful installation.
+
+## Optional Junction storage
+
+The [Junction mode](../README.md#shared-resources-with-junctions) keeps public
+versions in a separate content-addressed store. Public resources and ownership
+receipts are separate. The host receipt records exact link targets and local entry
+hashes. Scripts and cross-skill documents remain private when they cannot safely
+share the public path. Known local dependency caches are preserved in backups.
+
+Updates and restores use the same host-local rename rollback mechanism as copy
+storage. No shared target is deleted during host cleanup. Immutable version
+validation rejects edited public content; store garbage collection is deliberately
+not automated. Backups record links and materialize their contents, including the
+external receipt required to identify the generated installation.

@@ -185,7 +185,13 @@ def project_packages(host, base, host_root, names, agent_names, scope):
     (bundle / '.library-install.json').write_text(json.dumps(marker, indent=2) + '\n', encoding='utf-8')
 
 
-def install(host, project=None, dry_run=False, replace=False, *, scope='project', home=None, with_supplements=False):
+def install(host, project=None, dry_run=False, replace=False, *, scope='project', home=None, with_supplements=False, storage='copy', store=None):
+    if storage == 'junction':
+        from junction_install import install as install_shared
+        return install_shared(host, project, dry_run, replace, scope=scope, home=home,
+                              with_supplements=with_supplements, store=store)
+    if storage != 'copy' or store is not None:
+        raise ValueError('--store requires --storage junction')
     base, host_root, bundle = layout(host, project, scope, home)
     if (bundle / '.library-install.json').is_file():
         previous = json.loads((bundle / '.library-install.json').read_text(encoding='utf-8'))
@@ -290,15 +296,32 @@ def main():
     parser.add_argument('--home', help='User home; defaults to the current account')
     parser.add_argument('--retire-project', help='With user scope, archive this managed project install instead of installing')
     parser.add_argument('--with-supplements', action='store_true')
+    parser.add_argument('--storage', choices=['copy', 'junction'], default='copy')
+    parser.add_argument('--store', help='Public Junction resource store, outside the host directory')
+    parser.add_argument('--uninstall', action='store_true', help='Archive a Junction installation, retaining public resources')
+    parser.add_argument('--restore', help='Restore a verified Junction version from this host\'s backup directory')
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--replace-managed', action='store_true')
     args = parser.parse_args()
-    if args.retire_project:
+    if args.restore:
+        if args.storage != 'junction' or args.uninstall or args.store or args.replace_managed or args.retire_project:
+            parser.error('--restore requires --storage junction and uses its recorded store')
+        from junction_install import restore
+        result = restore(args.host, args.restore, args.project, scope=args.scope, home=args.home, dry_run=args.dry_run)
+    elif args.uninstall:
+        if args.storage != 'junction' or args.store or args.replace_managed or args.retire_project:
+            parser.error('--uninstall requires --storage junction and uses its recorded store')
+        from junction_install import uninstall
+        result = uninstall(args.host, args.project, scope=args.scope, home=args.home, dry_run=args.dry_run)
+    elif args.retire_project:
+        if args.storage != 'copy' or args.store:
+            parser.error('--retire-project currently requires copy storage')
         if args.scope != 'user' or args.project or args.replace_managed:
             parser.error('--retire-project requires user scope and cannot combine with --project/--replace-managed')
         result = retire_project(args.host, args.retire_project, args.home, args.dry_run)
     else:
-        result = install(args.host, args.project, args.dry_run, args.replace_managed, scope=args.scope, home=args.home, with_supplements=args.with_supplements)
+        result = install(args.host, args.project, args.dry_run, args.replace_managed, scope=args.scope,
+                         home=args.home, with_supplements=args.with_supplements, storage=args.storage, store=args.store)
     print(json.dumps(result, indent=2))
 
 

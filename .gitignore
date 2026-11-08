@@ -10,6 +10,7 @@
 
 # Local generated artifacts and scratch output (root only).
 /.dist/
+/.pstack-store/
 /generated-images/
 /generated-videos/
 /tmp/
