@@ -4,15 +4,25 @@
 
 Bun 1.4.4 was installed from its official pinned release and verified with
 `--version` and `--revision`. Seven upstream plan-checker cases ran successfully
-with Bun in a disposable private skill directory. The installer regression suite
+with Bun in a disposable private skill directory. The full library regression suite
 passed 78 checks, followed by 8 platform checks after diagnostic-report changes.
 
-Native CLI event streams show Codex, Claude Code and Pi reading the installed
+Native CLI event streams show all four hosts reading the installed
 skill, host adapter and platform contract, then invoking the mapped log command.
 The resulting TSV retains the requested leading dash, literal quotes and field
 values. An earlier generic request permitted manual output under the upstream
 skill. The final request explicitly asks for its installed logging command.
 Earlier failed runs remain in the private evidence directory; they are not passes.
+
+The Codex, Claude Code and Pi native samples used a pre-commit platform build.
+Their runtime `report()` fields, statechart scope text and diagnostic README
+paragraph predate the committed build. They are not current-byte native samples.
+Their validation function, command dispatcher and log helper are unchanged.
+Only the dsh native sample used the committed platform bytes at bd04b21.
+Per-workspace BUNDLE.json and platform-file SHA256 values are recorded in
+`.tmp/platform-rollout/native-summary.json`. Independent direct checks of the
+four current user installations used the committed bytes; these are distinct
+from the native model-run samples.
 
 Native Codex workspace-write initially failed to read skills because staging used
 owner-only Windows temporary ACLs. A regression probe fails with the old staging
@@ -25,11 +35,32 @@ with a matching UTC timestamp format. Git Bash required its own `usr/bin` in the
 child PATH to find `dirname`; its absolute executable path alone was insufficient.
 This does not validate the networked worktree audit or statechart process cleanup.
 
-The dsh headless invocation failed with `MISSING_CREDENTIAL` for its existing
-`deepseek-official` route. Its web and headless profiles select the same route.
-This is a CLI credential-resolution gap, not proof that the user's account has no
-key. It does not count as native workflow acceptance. No credentials or provider
-settings were changed.
+The initial dsh headless invocation could not resolve its existing
+`deepseek-official` credential. Passing the existing stored reference through the
+documented child-process environment allowed the same route to serve the request.
+No credential value was printed or persisted, and no account or provider settings
+were changed. Its shell tool then failed before execution with
+`SetNamedSecurityInfoW failed (Win32 5): grantWrite(...)`. A fresh workspace outside
+this repository reproduced the failure. The tool refused full-access escalation
+without an approval channel; no bypass was used.
+
+Granting explicit FullControl only to the current owner of that disposable
+workspace allowed its unchanged sandbox to start PowerShell. No global ACL,
+SandboxUsers grant, real project ACL, or sandbox mode was changed. Within that
+sandbox, Git Bash still failed to create its MSYS signal pipe with Win32 error 5.
+The agent then used its existing bundled Python to run the installed platform
+logger and produced the exact requested fields. dsh passed this logging-command
+case with these environment prerequisites. Its default headless credential lookup
+and other D-drive workspaces were not permanently repaired by this validation.
+
+All four current user installations were updated with copy storage and verified
+against their ownership receipts. Codex and Claude retain 63 managed skills;
+Pi and dsh retain 58. Claude retains its two named agents. Native discovery confirms
+the managed entries, with no loader diagnostics. Selected configuration hashes
+match the verified pre-update backup. Each host has an installer rollback backup.
+The native Codex CLI also refreshed two SDK-owned system-skill files at startup.
+This was separate from the installer's managed-entry updates. Their previous
+hashes and paths remain in the private backup and rollout evidence.
 
 Local event streams, run requests, staging regression output and backup receipts
 are in `.tmp/platform-rollout/`. These can contain local host information and stay
@@ -73,8 +104,9 @@ and the [platform tests](../tests/test_platforms.py) for the runnable checks.
 
 ## Junction installer sandbox validation
 
-Junction mode is opt-in. Existing user installations remain copy installations;
-all four resource manifests, skill hashes and agent hashes were checked unchanged.
+This earlier validation did not update current user installations. The later
+copy rollout is recorded above. Junction mode remains opt-in. At this earlier
+checkpoint, all four resource manifests, skill hashes and agent hashes were unchanged.
 The official source still matches the same 573-file Git blob inventory.
 
 - Full suite: 66 unittest checks pass, including 16 Junction-specific cases.
