@@ -35,6 +35,30 @@ def _inventory(include_supplements=False):
     upstream = {p.relative_to(ROOT / 'pstack').as_posix(): p for p in _source_files(ROOT / 'pstack')}
     if {name: digest(p) for name, p in upstream.items()} != lock['upstream']['files']:
         raise ValueError('Official pstack differs from source-lock.json; update the pinned source deliberately.')
+    platform = json.loads((ROOT / 'adapters/platforms/manifest.json').read_text(encoding='utf-8'))
+    if platform['format'] != 1 or platform['upstream'] != lock['upstream']['commit']:
+        raise ValueError('Platform mappings must match the pinned upstream revision.')
+    covered = set()
+    for name, tool in platform['tools'].items():
+        if not tool['sources']:
+            raise ValueError(f'Platform mapping has no pinned sources: {name}')
+        for relative, expected in tool['sources'].items():
+            if relative not in lock['upstream']['files'] or lock['upstream']['files'][relative] != expected:
+                raise ValueError(f'Platform mapping is stale: {name}: {relative}')
+        if tool.get('helper'):
+            helper = ROOT / 'adapters/platforms' / tool['helper']
+            if not helper.resolve().is_relative_to((ROOT / 'adapters').resolve()) or not helper.is_file():
+                raise ValueError(f'Platform mapping has an invalid helper: {name}')
+        if tool.get('entry') and 'skills/' + tool['entry'] not in tool['sources']:
+            raise ValueError(f'Platform mapping has an unpinned entry: {name}')
+        covered.update(tool['sources'])
+        covered.update(tool.get('coverage', []))
+    unmapped = sorted(relative for relative in upstream
+                      if re.fullmatch(r'skills/[^/]+/scripts/.+', relative)
+                      and not any(relative == pattern or pattern.endswith('/') and relative.startswith(pattern)
+                                  for pattern in covered))
+    if unmapped:
+        raise ValueError('Unmapped platform script resources: ' + ', '.join(unmapped))
     files = dict(upstream)
     for path in _source_files(ROOT / 'adapters'):
         files['adapters/' + path.relative_to(ROOT / 'adapters').as_posix()] = path

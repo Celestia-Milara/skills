@@ -73,6 +73,13 @@ files. Use a three-way comparison when importing a new official revision.
 
 ## Windows
 
+[Execution platforms](adapters/platforms/README.md) defines the common script layer
+used by all four hosts. It includes a read-only dependency/hash check and portable
+commands for logging, local worktree facts and plan checking. Platform mappings
+are pinned to upstream hashes. The launcher refuses unverified workflows and does
+not select WSL or install tools automatically. Current user installations are not
+updated by a repository change; verify an isolated installation before migration.
+
 ### Shared resources with Junctions
 
 Copy storage remains the default. On native Windows CPython, test the shared

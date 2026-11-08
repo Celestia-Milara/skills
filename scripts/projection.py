@@ -52,6 +52,8 @@ def entry(value, host, adapter):
         cleaned = re.sub(r'^(?:' + fields + r'):[^\n]*\n?', '', header[2], flags=re.M)
         value = header[1] + cleaned.rstrip() + header[3] + value[header.end():]
     instruction = f'Read [the {host} adapter]({adapter}) before this workflow. It maps tools, models and paths for this installation.'
+    platform = adapter.rsplit('/', 1)[0] + '/platforms/README.md'
+    instruction += f' Read [the execution platform contract]({platform}) before running scripts.'
     value, count = re.subn(r'^(# .*)\n+', lambda m: m[1] + '\n\n' + instruction + '\n\n', value, count=1, flags=re.M)
     if count != 1:
         frontmatter = re.match(r'^---\s*\n.*?\n---', value, re.S)

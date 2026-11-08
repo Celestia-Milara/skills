@@ -13,6 +13,7 @@ workflow baseline. Its policy edits and Windows patch are not silently merged.
 | --- | --- |
 | Official workflows, principles, agents and resources | pstack/ |
 | Runtime tools and installation mapping | adapters/ |
+| Script platform mappings, pinned inventory and launcher | adapters/platforms/ |
 | Projection and metadata generation | scripts/projection.py |
 | Complete assembly and hashes | scripts/package.py |
 | Ownership, conflicts, staging and rollback | scripts/install.py |
@@ -51,8 +52,11 @@ archives stay untouched. Modified generated files are retained in the reset back
 normal updates still refuse such files.
 
 The source and adapters are portable distribution content. Actual Windows script
-execution and WSL fallback remain separate validation. No process-tree or model
-capability claim follows from successful installation.
+execution is scoped by [the execution platform contract](../adapters/platforms/README.md).
+The launcher exposes the portable log helper, reduced local worktree audit and
+unchanged private check-plan script. Both storage modes generate the same contract
+link. WSL fallback and the remaining workflows need separate validation. No
+process-tree or model capability claim follows from successful installation.
 
 ## Optional Junction storage
 

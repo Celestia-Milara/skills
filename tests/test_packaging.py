@@ -39,6 +39,7 @@ class Packaging(unittest.TestCase):
         imported = {p.relative_to(self.pstack).as_posix(): package.digest(p)
                     for p in self.pstack.rglob('*') if p.is_file()}
         self.write('source-lock.json', json.dumps({'upstream': {'commit': 'fixture', 'files': imported}}))
+        self.write('adapters/platforms/manifest.json', json.dumps({'format': 1, 'upstream': 'fixture', 'tools': {}}))
         root_patch = patch.object(package, 'ROOT', self.root)
         root_patch.start()
         self.addCleanup(root_patch.stop)
@@ -92,6 +93,52 @@ class Packaging(unittest.TestCase):
         with self.assertRaises(ValueError):
             package.build(self.output, include_supplements=True)
         self.assertFalse(self.output.exists())
+
+    def test_stale_platform_mapping_is_rejected_before_output(self):
+        for upstream, sources in [('old-revision', {}), ('fixture', {'LICENSE': 'wrong-hash'}),
+                                  ('fixture', {}), ('fixture', {'missing-file': None})]:
+            self.write('adapters/platforms/manifest.json', json.dumps({
+                'format': 1, 'upstream': upstream, 'tools': {'example': {'sources': sources}}}))
+            with self.assertRaisesRegex(ValueError, 'Platform mapping'):
+                package.build(self.output)
+            self.assertFalse(self.output.exists())
+
+    def test_platform_helper_must_exist_inside_the_adapter_tree(self):
+        for helper in ['missing.py', '../../pstack/LICENSE']:
+            self.write('adapters/platforms/manifest.json', json.dumps({
+                'format': 1, 'upstream': 'fixture', 'tools': {'example': {
+                    'sources': {'LICENSE': package.digest(self.pstack / 'LICENSE')}, 'helper': helper}}}))
+            with self.assertRaisesRegex(ValueError, 'invalid helper'):
+                package.build(self.output)
+            self.assertFalse(self.output.exists())
+
+    def test_new_script_requires_an_explicit_platform_assignment(self):
+        relative = 'skills/skill-0/scripts/new-tool.py'
+        self.write('pstack/' + relative, 'print("fixture")\n')
+        lock = json.loads((self.root / 'source-lock.json').read_text())
+        checksum = package.digest(self.pstack / relative)
+        lock['upstream']['files'][relative] = checksum
+        self.write('source-lock.json', json.dumps(lock))
+        with self.assertRaisesRegex(ValueError, 'Unmapped platform script resources: ' + relative):
+            package.build(self.output)
+        self.assertFalse(self.output.exists())
+        self.write('adapters/platforms/manifest.json', json.dumps({
+            'format': 1, 'upstream': 'fixture', 'tools': {'example': {'sources': {relative: checksum}}}}))
+        package.build(self.output)
+        self.assertTrue((self.output / relative).is_file())
+
+    def test_existing_tool_directory_covers_its_unhashed_test_resources(self):
+        relative = 'skills/skill-0/scripts/fixtures/example.txt'
+        self.write('pstack/' + relative, 'fixture\n')
+        lock = json.loads((self.root / 'source-lock.json').read_text())
+        lock['upstream']['files'][relative] = package.digest(self.pstack / relative)
+        self.write('source-lock.json', json.dumps(lock))
+        self.write('adapters/platforms/manifest.json', json.dumps({
+            'format': 1, 'upstream': 'fixture', 'tools': {'example': {
+                'sources': {'LICENSE': package.digest(self.pstack / 'LICENSE')},
+                'coverage': ['skills/skill-0/scripts/fixtures/']}}}))
+        package.build(self.output)
+        self.assertTrue((self.output / relative).is_file())
 
     def test_skill_identity_must_match_its_directory(self):
         self.write('grilling/SKILL.md', '---\nname: grill-me\ndescription: duplicate\n---\n')

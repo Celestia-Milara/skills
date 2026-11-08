@@ -25,7 +25,7 @@ cross-model evidence. Enumerate available models before setup. Unknown role
 overrides inherit the current model with the limitation reported. Keep role
 settings outside the shared source; do not change accounts to satisfy a workflow.
 
-Installation does not establish Windows compatibility. Use native scripts only
-when dependencies and process behavior are verified. Otherwise report the missing
-capability or use a configured WSL execution path. Do not silently translate paths
-or install tools.
+Read [the execution platform contract](platforms/README.md) before running scripts.
+It maps the portable subset for all hosts and lists unverified workflows. Platform
+selection follows the actual execution environment. Installation does not establish
+Windows compatibility. Do not silently translate paths or install tools.

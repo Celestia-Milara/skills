@@ -23,6 +23,8 @@ class HostProjection(unittest.TestCase):
                 mode = base / 'skills/poteto-mode/SKILL.md'
                 text = mode.read_text(encoding='utf-8')
                 self.assertIn(f'the {host} adapter', text)
+                self.assertIn('[the execution platform contract](../../pstack/adapters/platforms/README.md)', text)
+                self.assertEqual(links(bundle / 'adapters/platforms/README.md', project), [])
                 self.assertEqual('disable-model-invocation: true' in text, host != 'codex')
                 for adapter in (bundle / 'adapters').glob('*.md'):
                     self.assertEqual(links(adapter, project), [], adapter)

@@ -1,5 +1,41 @@
 # Adaptation validation
 
+## Common platform layer on 2026-11-07
+
+The platform registry and launcher are outside the official source. The source
+verifier still finds 573 matching files and 58 official skills.
+
+- The full regression run passed 74 tests. After the final review fixes, the
+  affected suites passed again: 7 platform tests, 4 portable-helper tests and
+  20 packaging tests. The focused tests include the added log regression case
+  and script-coverage cases.
+- All four host projections link to the same execution contract in copy and
+  Junction storage. Tests execute the installed launcher in isolated copy and
+  Junction homes, including paths with spaces. No current user install is changed.
+- The portable log command appends sanitized TSV. Values beginning with `-h`,
+  `-x` and `--foo` remain data. Literal quotes and UTC second timestamps match the
+  shell log format. Claude Opus 5.5 review exposed the option-parsing defect;
+  the parent reran the regression against the corrected helper.
+- The unchanged private Node plan checker succeeds on a valid fixture, reports
+  an invalid fixture and preserves exit codes. Public bundle execution is refused.
+- The reduced worktree audit reports unknown merge/deletion facts without writing
+  the repository. It is not the full upstream shell audit.
+- Stale upstream/hash mappings and missing or escaped helper paths stop packaging.
+  The runtime also refuses changed mapped source files and unverified workflows.
+- New script paths outside mapped files or declared tool directories stop
+  packaging even when source-lock already records their correct hashes. Tests
+  show assignment allows the build and tool directories cover unhashed fixtures.
+
+The manifest binds adaptation targets and critical launch/process files. It does
+not duplicate the full source inventory or bind every upstream test fixture.
+The complete official tree remains checked by source-lock and packaging.
+
+The check command reports executable locations, not runtime compatibility proof.
+No watcher, TLC/Java process lifecycle, WSL workflow, GitHub operation or model
+business workflow was run for this validation. Those remain separate acceptance
+work. See the [platform contract](../adapters/platforms/README.md) for commands
+and the [platform tests](../tests/test_platforms.py) for the runnable checks.
+
 ## Junction installer sandbox validation
 
 Junction mode is opt-in. Existing user installations remain copy installations;

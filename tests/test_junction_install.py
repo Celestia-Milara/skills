@@ -40,6 +40,7 @@ class JunctionInstall(unittest.TestCase):
             self.assertFalse((root / 'pstack/.library-install.json').exists())
             text = (root / 'skills/poteto-mode/SKILL.md').read_text(encoding='utf-8')
             self.assertIn(f'the {host} adapter', text)
+            self.assertIn('[the execution platform contract](../../pstack/adapters/platforms/README.md)', text)
             self.assertEqual('disable-model-invocation: true' in text, host != 'codex')
             self.assertFalse(shared.junction(root / 'skills/poteto-mode/scripts'))
             self.assertFalse(shared.junction(root / 'skills/statechart/scripts'))
