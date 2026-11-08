@@ -1,5 +1,0 @@
-interface:
-  display_name: "in-your-own-words"
-  short_description: "In your own words workflow for pstack"
-policy:
-  allow_implicit_invocation: false

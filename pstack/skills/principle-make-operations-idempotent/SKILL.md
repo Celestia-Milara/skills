@@ -4,12 +4,6 @@ description: "Apply when designing commands, lifecycle steps, or processing loop
 disable-model-invocation: true
 ---
 
-## Host adapter
-
-Before this workflow, read the [host adapter](../poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
-
 # Make Operations Idempotent
 
 Design operations so they converge to the correct state regardless of how many times they run or where the previous run stopped. Every state-mutating operation should answer: "What happens if this runs twice? What happens if the previous run crashed halfway?"

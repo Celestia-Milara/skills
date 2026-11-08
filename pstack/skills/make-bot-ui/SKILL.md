@@ -6,12 +6,6 @@ description: >-
   when exposing that UI on Tailscale.
 disable-model-invocation: true
 ---
-
-## Host adapter
-
-Before this workflow, read the [host adapter](../poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
 # How to make a bot UI
 
 Build a page the user clicks. A server on this computer POSTs JSON to a webhook routine. The bot wakes with that JSON. Keep the sender key on the server. Do not put the sender key in the browser, in chat, or in this skill.

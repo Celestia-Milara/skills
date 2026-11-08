@@ -4,12 +4,6 @@ description: Configure Benny and prepare its triage and repro automations. Use w
 disable-model-invocation: true
 ---
 
-## Host adapter
-
-Before this workflow, read the [host adapter](../../../../skills/poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
-
 # Set up Benny
 
 Benny ships as a dormant automation pack inside pstack. The plugin manifest exposes only pstack's normal skill root; this file and the two operational files are not slash skills.

@@ -1,93 +1,8 @@
-<!-- mirror:start — this top section is specific to the mirror. Everything after mirror:end is the upstream README from cursor/plugins/pstack, unchanged. To sync with upstream, follow MIRROR.md. -->
-> This checkout includes local Codex and Claude Code adaptations. Use the library's
-> project installer or its built local plugin. Marketplace commands below install
-> other distributions. Start with the [Codex notes](docs/harness/codex.md) or
-> [local Claude Code notes](docs/harness/claude-code-local.md).
-
-<h1 align="center">pstack — standalone mirror</h1>
-
-<p align="center">
-  <a href="https://github.com/cursor/plugins/tree/main/pstack">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="mirror-assets/header-dark.svg">
-      <img src="mirror-assets/header-light.svg" width="100%" alt="cursor/plugins/pstack is kept in sync with this mirror, backnotprop/pstack. npx skills add backnotprop/pstack installs it into Claude Code, Codex, Pi, Cursor, OpenCode, and other agents.">
-    </picture>
-  </a>
-</p>
-
-<p align="center">
-  <b>Mirror</b> of cursor/plugins/pstack by Poteto — kept in sync for standalone use. Sponsored by Plannotator.
-</p>
-
-<p align="center">
-  <a href="https://github.com/backnotprop/plannotator"><picture>
-    <source media="(prefers-color-scheme: dark)" srcset="mirror-assets/sponsor-plannotator-dark.svg">
-    <img src="mirror-assets/sponsor-plannotator-light.svg" width="48%" alt="Sponsored by Plannotator">
-  </picture></a>
-  <a href="https://plannotator.ai/inbox/"><picture>
-    <source media="(prefers-color-scheme: dark)" srcset="mirror-assets/sponsor-inbox-dark.svg">
-    <img src="mirror-assets/sponsor-inbox-light.svg" width="48%" alt="Try Plannotator Inbox today">
-  </picture></a>
-</p>
-
-<p align="center">
-  Poteto's Bro Skill was created by me, <a href="https://github.com/backnotprop/bro">backnotprop/bro</a>
-</p>
-
-## Install
-
-pstack is a folder of plain [Agent Skills](https://agentskills.io) (`skills/<name>/SKILL.md`). You don't need [Cursor](https://github.com/cursor/plugins/tree/main/pstack). The [`skills` CLI](https://skills.sh) installs them into Claude Code, Codex, Pi, Cursor, OpenCode, and other agents:
-
-```bash
-npx skills add backnotprop/pstack
-```
-
-The CLI shows every skill in a list you can search. Select the skills you want, then select your agents.
-
-## Skills
-
-Cursor's original README is [further down this page](#pstack).
-
-These skills don't call other pstack skills, so each one works alone:
-
-`unslop`, `bro`, `how`, `tdd`, `typescript-best-practices`, `arena`, `swarm`, `interrogate`, `reflect`, `show-me-your-work`, `figure-it-out`, `automate-me`, `correct`, `benchmark-checklist`, `in-your-own-words`, `sharpen`, `statechart`
-
-Some skills call other skills. Install these together:
-
-| Skill | Also install |
-|---|---|
-| `teach` | `how`, `why` |
-| `why` | `how` |
-| `technical-writing` | `unslop` |
-| `architect` | `arena`, `how` |
-| `blast-radius` | `arena`, `how`, `why`, `unslop` |
-| `create-verification-skill` | `maintain-verification-skill` |
-| `create-formal-verification-skill` | `maintain-formal-verification-skill`, `statechart` |
-| `ketchup` | `bro` |
-| `ketchup-video` | `ketchup`, `bro` |
-| `poteto-mode` | all `principle-*` skills and most of the other skills |
-| `poteto-help` | the skills you want help with |
-
-Skills that spawn subagents point to the Subagents section of `poteto-mode` to pick each subagent's effort. Without `poteto-mode`, they use the default effort.
-
-## What this mirror changes
-
-Many skills were Cursor-specific. They've been rewritten to work in any harness.
-
-The mirror also carries a community fix that isn't upstream yet:
-
-- `no-comments` keeps a comment about an outside rule (a dependency, platform, or protocol) when it can't check the rule, and marks it for review instead of deleting it. A rejected review no longer stops the whole run. ([#14](https://github.com/backnotprop/pstack/issues/14))
-<!-- mirror:end -->
-
----
-
 # pstack
-
-[See Pstack Blog](https://x.com/poteto/article/2094457600259842065?lang=en)
 
 i'm [poteto](https://x.com/poteto). i'm not a president or ceo, but i've worked with millions of lines of code at Meta, Netflix, and Cursor. i'm also on the react core team where i help build and maintain react compiler.
 
-there's a growing sense that ai writes too much slop code. i agree. i don't want to ship like a team of twenty slop artists. throughput without quality is not a goal i aspire to. if you want to go fast, go deep first.
+there's a growing sense that ai writes too much slop code. i agree. i don't want to ship like a team of twenty slop artists. throughput without quality is not a goal i aspire to. if you want to go fast, go deep first. 
 
 **pstack is my answer.** these are the same skills i use every day to ship high quality code at Cursor. this turns cursor into a real engineering team. the goal is not to maximize loc, in fact it's the opposite. pstack helps you write less, but higher quality code.
 
@@ -95,7 +10,7 @@ there's a growing sense that ai writes too much slop code. i agree. i don't want
 
 **cursor gives you the best of all worlds.** every frontier model has its strengths and weaknesses. use any model with pstack. in fact, many of my skills use multi-model workflows to take advantage of each model's unique strengths.
 
-fork it. improve it. make it yours. PRs are welcome!
+fork it. improve it. make it yours. PRs are welcome! 
 
 ## install
 
@@ -353,7 +268,7 @@ install `cursor-team-kit` alongside pstack if you want the full set.
 
 ## why are there no planning skills?
 
-cursor already has a great plan mode which works great with pstack. but personally, i don't believe in planning. the best spec is code. if you do want to make a plan, [`/poteto-mode`](./skills/poteto-mode/SKILL.md) covers it, but it's not a default.
+cursor already has a great plan mode which works great with pstack. but personally, i don't believe in planning. the best spec is code. if you do want to make a plan, [`/poteto-mode`](./skills/poteto-mode/SKILL.md) covers it, but it's not a default. 
 
 ## make it yours
 

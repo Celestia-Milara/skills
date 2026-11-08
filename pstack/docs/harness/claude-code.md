@@ -1,6 +1,3 @@
-> For this local distribution, use [the local adapter](claude-code-local.md).
-> The original upstream mapping below is retained as source material.
-
 # pstack in Claude Code
 
 pstack skills use Cursor names. In Claude Code, read this file once per session, then map each Cursor name in a skill with the tables below. `<pstack>` means the folder that holds `skills/` and `docs/`. If a Cursor field has no row, drop it and say so. Never pass a field or value the tool schema rejects.

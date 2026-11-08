@@ -4,12 +4,6 @@ description: "Apply when debugging. Trace each symptom back to the first place t
 disable-model-invocation: true
 ---
 
-## Host adapter
-
-Before this workflow, read the [host adapter](../poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
-
 # Fix Root Causes
 
 When debugging, fix the fault, not the place where it surfaced. The symptom is where a wrong state became visible. The root cause is the first place the system did something it should not do, or failed to handle a state it should handle.

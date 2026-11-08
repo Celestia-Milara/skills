@@ -4,12 +4,6 @@ description: "Apply during planned rewrites and migrations with explicit phase b
 disable-model-invocation: true
 ---
 
-## Host adapter
-
-Before this workflow, read the [host adapter](../poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
-
 # Outcome-Oriented Execution
 
 Optimize for the intended, verifiable end state rather than preserving smooth intermediate states.

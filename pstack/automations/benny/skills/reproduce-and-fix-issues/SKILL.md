@@ -4,12 +4,6 @@ description: Reproduce triaged Slack bugs through a configured app-control adapt
 disable-model-invocation: true
 ---
 
-## Host adapter
-
-Before this workflow, read the [host adapter](../../../../skills/poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
-
 # Reproduce and fix issues
 
 Wait for a trusted triage marker in the source thread. Reproduce the exact symptom through the target app's real UI. Verify an existing fix when one exists. Attempt a bounded fix only after a confirmed repro.

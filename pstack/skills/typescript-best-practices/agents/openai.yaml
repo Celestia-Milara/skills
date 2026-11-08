@@ -1,5 +1,0 @@
-interface:
-  display_name: "typescript-best-practices"
-  short_description: "Typescript best practices"
-policy:
-  allow_implicit_invocation: false

@@ -1,5 +1,0 @@
-interface:
-  display_name: "teach"
-  short_description: "Teach workflow for pstack"
-policy:
-  allow_implicit_invocation: false

@@ -95,7 +95,11 @@ def main():
         entries = result.get('result', {}).get('data', [])
         local = [skill for item in entries for skill in item.get('skills', []) if str(Path(args.project).resolve()).casefold() in skill.get('path', '').casefold()]
         errors = [error for item in entries for error in item.get('errors', [])]
-        print(json.dumps({'project_skills': len(local), 'names': sorted(s['name'] for s in local), 'errors': errors}, indent=2))
+        all_skills = [skill for item in entries for skill in item.get('skills', [])]
+        marker = Path.home() / '.codex/pstack/.library-install.json'
+        expected = set(json.loads(marker.read_text()).get('skills', {})) if marker.is_file() else set()
+        user_skills = [skill for skill in all_skills if skill['name'] in expected and skill.get('scope') == 'user']
+        print(json.dumps({'project_skills': len(local), 'managed_user_skills': len(user_skills), 'names': sorted(s['name'] for s in local), 'errors': errors}, indent=2))
     else:
         response = result.get('response', {})
         body = response.get('response', {})

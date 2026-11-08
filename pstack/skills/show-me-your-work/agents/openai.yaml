@@ -1,5 +1,0 @@
-interface:
-  display_name: "show-me-your-work"
-  short_description: "Show me your work workflow for pstack"
-policy:
-  allow_implicit_invocation: false

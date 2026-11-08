@@ -1,5 +1,0 @@
-interface:
-  display_name: "principle-foundational-thinking"
-  short_description: "Principle foundational thinking"
-policy:
-  allow_implicit_invocation: false

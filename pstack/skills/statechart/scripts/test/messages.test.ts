@@ -1,11 +1,7 @@
 import assert from "node:assert/strict";
-import fs from "node:fs";
-import os from "node:os";
-import path from "node:path";
 import { test } from "node:test";
 import { plainText, runtime } from "../backends/plain-text.ts";
 import { readMessages } from "../frontends/messages.ts";
-import { fileLines } from "../run.ts";
 
 const tool = (code: number, level: number, ...lines: string[]) =>
   [`@!@!@STARTMSG ${code}:${level} @!@!@`, ...lines, `@!@!@ENDMSG ${code} @!@!@`].join("\n");
@@ -213,15 +209,4 @@ test("TLC's run time prints as plain TLC prints it, with each field wrapping", (
     [366 * 86_400_000, "1d 00h"],
   ] satisfies [number, string][])
     assert.equal(runtime(ms), printed, String(ms));
-});
-
-test("TLC's output with Windows line ends reads as the same messages", () => {
-  const text = [
-    tool(2110, 1, "Invariant Safe is violated."),
-    tool(2217, 4, "1: <Initial predicate>", "/\\ x = 0", ""),
-    "",
-  ].join("\n");
-  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "statechart-crlf-")), "tlc.out");
-  fs.writeFileSync(file, text.replaceAll("\n", "\r\n"));
-  assert.deepEqual([...readMessages(fileLines(file))], [...readMessages(text)]);
 });

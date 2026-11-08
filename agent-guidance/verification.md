@@ -20,7 +20,7 @@ Use pstack's [interrogate](../pstack/skills/interrogate/SKILL.md) for executable
 adversarial review when its tools are available. It keeps run-proven findings.
 Also assess requirements, project constraints, and statically provable defects;
 those checks are not replaced by an empty executable-review result. Keep their
-evidence distinct. Follow the [host adapter](../pstack/skills/poteto-mode/references/host.md)
+evidence distinct. Follow the [host adapter](../adapters/common.md)
 for missing delegation or model diversity. A standalone review reports findings;
 fixes require applicable implementation authorization.
 

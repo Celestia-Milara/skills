@@ -55,7 +55,7 @@ export function* fileLines(file: string) {
         kept = end;
         continue;
       }
-      yield* buf.toString("utf8", 0, cut).replace(/\r$/, "").split(/\r?\n/);
+      yield* buf.toString("utf8", 0, cut).split("\n");
       kept = buf.copy(buf, 0, cut + 1, end);
     }
     yield buf.toString("utf8", 0, kept);
@@ -81,7 +81,7 @@ const runChild = (file: string, args: string[], options: { cwd: string; env: Nod
     execFile(
       file,
       args,
-      { encoding: "utf8", maxBuffer: 1 << 30, windowsHide: true, ...options },
+      { encoding: "utf8", maxBuffer: 1 << 30, ...options },
       (error, stdout, stderr) =>
         resolve({
           status: error ? (typeof error.code === "number" ? error.code : null) : 0,
@@ -94,10 +94,10 @@ const runChild = (file: string, args: string[], options: { cwd: string; env: Nod
 
 export const killGroup = (pid: number) =>
   new Promise((resolve) =>
-    (process.platform === "win32"
-      ? spawn("taskkill", ["/pid", String(pid), "/t", "/f"], { stdio: "ignore", windowsHide: true })
-      : spawn("/bin/sh", ["-c", 'kill -s KILL -- "-$1"', "sh", String(pid)], { stdio: "ignore" })
-    ).on("exit", resolve),
+    spawn("/bin/sh", ["-c", 'kill -s KILL -- "-$1"', "sh", String(pid)], { stdio: "ignore" }).on(
+      "exit",
+      resolve,
+    ),
   );
 
 export const messageOf = (error: unknown) =>
@@ -141,7 +141,7 @@ function* outputLines(output: Output) {
       rest = buf;
       continue;
     }
-    yield* utf8.decode(buf.subarray(0, cut)).replace(/\r$/, "").split(/\r?\n/);
+    yield* utf8.decode(buf.subarray(0, cut)).split("\n");
     rest = buf.subarray(cut + 1);
   }
   yield utf8.decode(rest);
@@ -169,7 +169,7 @@ const runToFiles = (
     for (const f of files) fds.push(fs.openSync(f, "w"));
     let child: ChildProcess;
     try {
-      child = spawn(file, args, { ...options, stdio: ["ignore", ...fds], windowsHide: true });
+      child = spawn(file, args, { ...options, stdio: ["ignore", ...fds] });
     } finally {
       for (const fd of fds) fs.closeSync(fd);
     }

@@ -1,9 +1,44 @@
 # Adaptation validation
 
+## Official-source reset on 2026-11-07
+
+The source now matches all 573 Git blobs from official cursor/plugins commit
+6b0300214a09fd6029cfb7077043125758cd1fd2. The lock is external at
+[source-lock.json](../source-lock.json). The mirror is a mapping reference only.
+Earlier results below describe the former customized distribution, not this source.
+
+| Check | Observed result |
+| --- | --- |
+| Repository tests | 50 unittest checks pass; backup checks rerun after expanding the selected host roots |
+| Canonical source | All 573 paths and SHA256 hashes match; 58 entrypoints |
+| Backup | 3,467 installation/configuration files verified before reset; repository Git bundle retained privately |
+| Old install cleanup | 131 owned paths archived; four locally modified Claude statechart files retained |
+| Protected files | 363 unrelated selected files unchanged after migration |
+| Codex native discovery | app-server skills/list finds all 63 managed user skills in ~/.codex/skills, no loader errors |
+| Claude native discovery | SDK initialization lists all 63 managed commands plus poteto-agent and comment-sicko |
+| Pi native loader | Installed Pi loadSkills reads all 58 managed entries from default roots, zero diagnostics |
+| dsh native provider | Installed filesystem provider reads all 58 managed entries, zero warnings; loads poteto-mode body with adapter |
+| Installed integrity | All four managed skill/agent inventories match installation manifests |
+| Model configuration | Two fresh role files use inherit-parent; no provider or model switched |
+
+Codex and Claude retain five independent supplements. Pi and dsh are clean
+58-skill installs. Each user host has a separate directory. The native Pi/dsh
+checks exercise their installed parser/provider modules; they do not prove the
+currently open application session has refreshed or that a model executed a
+workflow. No model/API request was needed for discovery checks.
+
+Native Windows scripts, WSL execution, model-specific delegation and diverse-model
+review are not verified by this reset. No Windows Job experimental code or mirror
+workflow-policy patch is included. Model roles intentionally inherit until setup
+is run against the actual host schema.
+
+## Historical validation of the previous distribution
+
+
 Checked on Windows on 2026-11-03 against the local adaptation on
 `codex/pstack-host-adaptation`, based on library commit `61c9e1f`, pstack 0.15.36,
 Cursor snapshot `ae5650f`, and portable mirror `6c75f4e`.
-Exact upstream hashes are in [source-lock.json](../pstack/source-lock.json).
+Exact upstream hashes are in [historical source lock](https://github.com/Celestia-Milara/skills/blob/cfd8c0f/pstack/source-lock.json).
 
 ## Results
 

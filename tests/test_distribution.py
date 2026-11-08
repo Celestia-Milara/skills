@@ -16,10 +16,9 @@ class Distribution(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             bundle = build(Path(directory) / 'bundle')
             marker = json.loads((bundle / 'BUNDLE.json').read_text(encoding='utf-8'))
-            self.assertEqual(len(marker['skills']), 63)
-            for name in marker['skills']:
-                self.assertTrue((bundle / 'skills' / name / 'LICENSE').is_file())
-            self.assertTrue((bundle / 'docs/harness/codex.md').is_file())
+            self.assertEqual(len(marker['skills']), 58)
+            self.assertTrue((bundle / 'LICENSE').is_file())
+            self.assertTrue((bundle / 'adapters/codex.md').is_file())
             self.assertTrue((bundle / 'automations/benny/templates/configuration.example.yaml').is_file())
             self.assertTrue(all(digest(bundle / rel) == expected for rel, expected in marker['files'].items()))
 
@@ -38,14 +37,14 @@ class Distribution(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory)
             install('codex', project)
-            self.assertEqual(len(list((project / '.agents/skills').iterdir())), 63)
+            self.assertEqual(len(list((project / '.agents/skills').iterdir())), 58)
             linked = project / '.agents/skills/poteto-mode/SKILL.md'
             self.assertTrue(linked.is_file())
             self.assertNotIn('disable-model-invocation:', linked.read_text(encoding='utf-8'))
             policy = linked.parent / 'agents/openai.yaml'
             self.assertIn('allow_implicit_invocation: false', policy.read_text(encoding='utf-8'))
             help_path = project / '.agents/skills/poteto-help/SKILL.md'
-            href = re.search(r'\[guide page 1\]\(([^)]+)\)', help_path.read_text(encoding='utf-8'))[1]
+            href = re.search(r'\]\(([^)]+adapters/codex.md)\)', help_path.read_text(encoding='utf-8'))[1]
             doc_link = (help_path.parent / href).resolve()
             self.assertTrue(doc_link.is_file())
             install('codex', project, replace=True)
@@ -69,7 +68,7 @@ class Distribution(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / 'new project'
             plan = install('codex', project, dry_run=True)
-            self.assertEqual(plan['skills'], 63)
+            self.assertEqual(plan['skills'], 58)
             self.assertFalse(project.exists())
 
 

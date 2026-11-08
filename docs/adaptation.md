@@ -1,103 +1,55 @@
-# pstack adoption and adaptation
+# Source and host adaptation
 
-The user adopted pstack as the main workflow on 2026-11-03 and retained all five
-supplements, including `grilling` and `grill-me`. The old eight-package source is
-backed up before retiring its `tdd`, `review-code`, and `handoff` directories.
+The official pstack source at `pstack/` must match the complete path and SHA256
+inventory in [source-lock.json](../source-lock.json). The current revision is
+6b0300214a09fd6029cfb7077043125758cd1fd2. It has 58 top-level skill entrypoints.
 
-## Source ownership
+The backnotprop mirror is a reference for cross-harness mappings, not the imported
+workflow baseline. Its policy edits and Windows patch are not silently merged.
 
-| Material | Owning source |
+## Ownership
+
+| Content | Owning source |
 | --- | --- |
-| pstack workflows, principles, agents, resources | `pstack/`, imported from the complete portable mirror |
-| Original/mirror revisions and hashes | [source-lock.json](../pstack/source-lock.json) |
-| Common host boundaries and Windows substitutions | [host.md](../pstack/skills/poteto-mode/references/host.md) |
-| Supplement routing, authorization handoffs, artifact roles, and plan scope | [Workflow composition](../pstack/docs/composition.md) |
-| Codex tools, role models, history, services | [Codex adapter](../pstack/skills/poteto-mode/references/codex.md) |
-| Claude Code tools, roles, plugin names, history | [Claude adapter](../pstack/skills/poteto-mode/references/claude-code.md) |
-| Five document/interview/decision methods | Root skill packages |
-| Project-specific constraints and authorization | Each project's actual guidance |
-| Installation and bundle assembly | `scripts/install.py` and `scripts/package.py` |
+| Official workflows, principles, agents and resources | pstack/ |
+| Runtime tools and installation mapping | adapters/ |
+| Projection and metadata generation | scripts/projection.py |
+| Complete assembly and hashes | scripts/package.py |
+| Ownership, conflicts, staging and rollback | scripts/install.py |
+| Optional project integration | docs/composition.md and agent-guidance/ |
+| Independent interview and documentation methods | Five root supplement packages |
 
-All imported skill entry points, including Benny's resource skills, read the host
-router. Adapters are conditional references, not global instructions injected
-into every task. Codex metadata preserves upstream explicit-only invocation;
-Claude retains its invocation frontmatter. Codex's installed copies express
-explicit-only policy in `agents/openai.yaml` and omit unsupported Claude/Cursor
-header fields. Both project projections omit Cursor's `paths` field; TypeScript
-scope remains in the description. Internal routing uses readable local files
-when a host refuses programmatic explicit-only invocation.
+Generated entries point to a local host adapter before the workflow. Canonical
+resources remain in the complete bundle. Relative document links are resolved
+against their source file before relocation. Codex invocation metadata is generated
+from upstream explicit-only policy. Pi and dsh retain the corresponding native
+frontmatter. Claude keeps disable-model-invocation and reads the official adapter
+plus the local user-skill override. Named agents have stable installed paths and
+omit unsupported Cursor background metadata.
 
-## Intentional differences
+Claude's official marketplace adapter assumes plugin namespaces. The local override
+only changes this skill-directory installation to unprefixed skills and agents.
+The generator does not translate every workflow paragraph or duplicate a maintained
+Claude body. Host mappings must use the live tool and model schema.
 
-The backnotprop baseline already makes many skill flows host-neutral and retains
-all original file paths. Its Comment Sicko fix preserves uncertain outside-rule
-comments for review instead of deleting them. Local adapters use live tool schemas,
-avoid inventing model names, and distinguish same-model independent review from
-cross-model evidence. They preserve project authorization over workflow defaults.
+## Directory isolation
 
-The host router loads [workflow composition](../pstack/docs/composition.md) for
-engineering and document tasks. This keeps the five supplements available without
-optional project guidance. It defines when to route, how to retain authorization,
-and which artifact owns each fact. Design-only work stops before implementation;
-approved implementation does not need another approval. Ordinary plans use the
-project's existing source and risk-based checks. The retained full-program template
-and checker apply only when that format is adopted, with its required gates intact.
+Codex user installs use ~/.codex instead of shared ~/.agents because Pi and dsh
+also read that shared directory. Their generated invocation metadata differs.
+Project installs follow each host's documented roots. A project that uses multiple
+engines must avoid giving them conflicting same-name entries in shared roots.
 
-The packager relocates composition links to the bundled supplement copies. Host
-projections resolve the composition guide through their complete resource bundle.
-Source, plugin, and installed-path checks cover this route.
+## Supplements and updates
 
-Windows gets a TSV logger, a metadata-scoped session selector, and a read-only Git
-worktree audit. The audit deliberately does not claim remote PR or session safety.
-On Windows, agents start the PR watcher through `bun` because Windows does not
-read its `#!` line.
-The statechart runner stops TLC with `taskkill` and cleans up through a Node
-process instead of `/bin/sh`, and it reads TLC's CRLF output.
-The original Bash and TypeScript tooling remains available. Cursor Automations,
-cloud services, Bugbot launch controls, and persistent event supervision are not
-silently recreated in another host.
+Clean installs default to 58 official skills. Five supplements can be selected with
+--with-supplements. Existing managed supplements are preserved on update and recorded
+separately in the manifest. They do not alter the official mode or principles.
 
-The installer copies one complete bundle and the 63 discoverable active packages.
-It redirects root documentation references to that bundle. A junction-based
-prototype failed Windows relative-path resolution and was replaced. It checks
-collisions before writing and does not overwrite
-global skills, settings, or another project's guidance. Managed updates retain
-the previous complete bundle. Unrecognized or modified files need reconciliation.
+A reset first creates a private, verified archive. Cleanup moves only explicitly
+owned entries. Other skills, junction targets, account settings and historical
+archives stay untouched. Modified generated files are retained in the reset backup;
+normal updates still refuse such files.
 
-## Original guidance conflict audit
-
-The 2026-11-03 follow-up assigns Git methods to pstack. Project Git guidance now
-retains only protection of existing work, authorization for destructive effects,
-and the task's commit/push/PR/merge limits. The former feature-round commit unit
-and new-commit default no longer compete with pstack's small ordered commits and
-scoped amendments. Index and committed-version checks live in its Git playbook.
-
-| Original guidance or supplement | Resolution with pstack |
-| --- | --- |
-| Git format, commit units, worktrees, and checks | pstack owns the method; project guidance links to it. Existing staged and mixed-file work stays protected. |
-| Authorization reuse | Mode and the autonomy principle reuse permission for the same effects, while preserving explicit checkpoints. Workflow steps add no authority. |
-| Cleanup and dirty worktrees | Remove automatic reset and throwaway-file assumptions. Untracked and ignored state needs ownership and deletion-scope evidence. |
-| Verification and TDD | Compatible: practical failing-before checks, independent expectations, and risk-based evidence. Required project gates remain effective; test-first evidence does not require a separately failing delivery commit. |
-| Static review and `interrogate` | Separate source-supported static findings from run-proven adversarial findings; neither substitutes for the other. |
-| Decision history and session pickup | History informs continuation. Reuse applicable checks; recheck drift and missing evidence. Past notes do not grant new authority. |
-| `grilling` and `grill-me` | One interview method with a wrapper; reuse settled understanding and implementation approval. No new conflict found. |
-| `to-docs`, `maintenance-docs`, and collaboration guidance | Designs, progress, current facts, and rationale retain their owning sources. Saving adds no implementation or Git permission. No new conflict found. |
-| `decision-notes` | Search relevant history and retain lasting rationale when warranted. No mandatory record for each task or imported workflow. |
-
-The audit covers active project guidance and the five supplements, not retired
-`legacy/` or `zh-backup/` editions. Local historical records retain rationale and
-mark superseded choices; they are not runtime rules. See [validation](validation.md)
-for observed host behavior and limits. Installed copies need a separate update.
-
-## Updating source
-
-1. Read the locked original and mirror revisions, then inspect new upstream changes.
-2. Compare old source, new source, and local adaptation. Keep complete resources.
-3. Reapply relevant host changes and retain their reading triggers.
-4. Update source hashes and the exact list of modified source paths.
-5. Run static, portable-helper, installer, and affected host checks.
-6. Record evidence in [validation](validation.md), with unrun integrations named.
-
-Do not run the mirror's branch/push instructions in this library. A source update
-does not authorize a Git commit or publication. A local install does not prove
-that all hosts or project copies have adopted the change.
+The source and adapters are portable distribution content. Actual Windows script
+execution and WSL fallback remain separate validation. No process-tree or model
+capability claim follows from successful installation.

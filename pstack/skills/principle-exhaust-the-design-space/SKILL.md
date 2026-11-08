@@ -4,12 +4,6 @@ description: "Apply when facing a novel UI interaction or architectural decision
 disable-model-invocation: true
 ---
 
-## Host adapter
-
-Before this workflow, read the [host adapter](../poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
-
 # Exhaust the Design Space
 
 It also applies to product design decisions where user experience depends on feel, not logic.

@@ -17,9 +17,9 @@ def load(name, relative):
     return module
 
 
-sessions = load('sessions', 'pstack/skills/poteto-mode/scripts/workspace_sessions.py')
-logger = load('logger', 'pstack/skills/show-me-your-work/scripts/log.py')
-audit = load('audit', 'pstack/skills/poteto-mode/scripts/worktree_audit.py')
+sessions = load('sessions', 'adapters/tools/workspace_sessions.py')
+logger = load('logger', 'adapters/tools/log.py')
+audit = load('audit', 'adapters/tools/worktree_audit.py')
 
 
 class PortableHelpers(unittest.TestCase):

@@ -1,66 +1,69 @@
 from pathlib import Path
-import re
+import json
 import sys
 import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from install import install
-from package import build, ROOT, SUPPLEMENTS
+from package import ROOT, SUPPLEMENTS, digest
 from verify import links
 
 
-class CompositionReferences(unittest.TestCase):
-    def composition_from(self, host_router):
-        targets = re.findall(r'\]\(([^)]+)\)', host_router.read_text(encoding='utf-8'))
-        target, = [value for value in targets if value.endswith('/composition.md')]
-        return (host_router.parent / target).resolve()
-
-    def check_companions(self, composition, skills, boundary):
-        self.assertTrue(composition.is_file())
-        self.assertEqual(links(composition, boundary), [])
-        targets = re.findall(r'\]\(([^)]+)\)', composition.read_text(encoding='utf-8'))
-        for name in SUPPLEMENTS:
-            with self.subTest(skill=name):
-                target, = [value for value in targets if value.endswith(f'/{name}/SKILL.md')]
-                actual = (composition.parent / target).resolve()
-                self.assertEqual(actual, (skills / name / 'SKILL.md').resolve())
-                self.assertTrue(actual.with_name('LICENSE').is_file())
-
-    def test_source_router_reaches_complete_supplements(self):
-        router = ROOT / 'pstack/skills/poteto-mode/references/host.md'
-        self.check_companions(self.composition_from(router), ROOT, ROOT)
-
-    def test_plugin_bundle_routes_without_the_source_checkout(self):
-        with tempfile.TemporaryDirectory() as directory:
-            bundle = build(Path(directory) / 'bundle')
-            router = bundle / 'skills/poteto-mode/references/host.md'
-            self.check_companions(self.composition_from(router), bundle / 'skills', bundle)
-
-    def test_both_host_projections_route_inside_the_installed_bundle(self):
-        for host, folder in [('codex', '.agents'), ('claude-code', '.claude')]:
+class HostProjection(unittest.TestCase):
+    def test_pristine_bundle_and_host_specific_entries(self):
+        expected = json.loads((ROOT / 'source-lock.json').read_text())['upstream']['files']
+        for host, folder in [('codex', '.agents'), ('claude-code', '.claude'), ('pi', '.pi/agent'), ('dsh', '.dsh')]:
             with self.subTest(host=host), tempfile.TemporaryDirectory() as directory:
                 project = Path(directory)
                 install(host, project)
                 base = project / folder
-                router = base / 'skills/poteto-mode/references/host.md'
-                composition = self.composition_from(router)
-                self.assertEqual(composition, (base / 'pstack/docs/composition.md').resolve())
-                self.check_companions(composition, base / 'pstack/skills', project)
-                for companion in ('collaboration', 'verification', 'git'):
-                    guidance = (ROOT / f'agent-guidance/{companion}.md').read_text(encoding='utf-8')
-                    guidance = guidance.replace('../pstack/skills/', f'../{folder}/skills/')
-                    guidance = guidance.replace('../pstack/docs/', f'../{folder}/pstack/docs/')
-                    for name in SUPPLEMENTS:
-                        guidance = guidance.replace(f'../{name}/', f'../{folder}/skills/{name}/')
-                    target = project / f'agent-guidance/{companion}.md'
-                    target.parent.mkdir(exist_ok=True)
-                    target.write_text(guidance, encoding='utf-8')
-                for target in (project / 'agent-guidance').glob('*.md'):
-                    self.assertEqual(links(target, project), [])
-                for name in ('architect', 'reflect', 'poteto-mode'):
-                    for path in (base / 'skills' / name).rglob('*.md'):
-                        self.assertEqual(links(path, project), [])
+                bundle = base / 'pstack'
+                self.assertTrue(all(digest(bundle / rel) == sha for rel, sha in expected.items()))
+                mode = base / 'skills/poteto-mode/SKILL.md'
+                text = mode.read_text(encoding='utf-8')
+                self.assertIn(f'the {host} adapter', text)
+                self.assertEqual('disable-model-invocation: true' in text, host != 'codex')
+                for adapter in (bundle / 'adapters').glob('*.md'):
+                    self.assertEqual(links(adapter, project), [], adapter)
+                if host == 'codex':
+                    policy = mode.parent / 'agents/openai.yaml'
+                    self.assertIn('allow_implicit_invocation: false', policy.read_text())
+                if host == 'claude-code':
+                    agent = (base / 'agents/poteto-agent.md').read_text()
+                    self.assertNotIn('is_background:', agent)
+                    self.assertNotIn('.pstack-stage-', agent)
+                    self.assertIn(str((base / 'pstack/skills/poteto-mode/SKILL.md')).replace('\\', '/'), agent)
+
+    def test_explicit_supplements_survive_managed_update(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            install('codex', project, with_supplements=True)
+            install('codex', project, replace=True)
+            base = project / '.agents'
+            marker = json.loads((base / 'pstack/.library-install.json').read_text())
+            self.assertEqual(len(marker['pstack_skills']), 58)
+            self.assertEqual(set(marker['preserved_supplements']), set(SUPPLEMENTS))
+            for name in SUPPLEMENTS:
+                self.assertTrue((base / 'skills' / name / 'SKILL.md').is_file())
+                original = (ROOT / name / 'agents/openai.yaml').read_text(encoding='utf-8')
+                projected = (base / 'skills' / name / 'agents/openai.yaml').read_text(encoding='utf-8')
+                self.assertTrue(projected.startswith(original.split('policy:', 1)[0]))
+            self.assertNotIn('Workflow composition', (base / 'skills/poteto-mode/SKILL.md').read_text())
+
+    def test_user_codex_avoids_the_shared_skill_root(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            install('codex', scope='user', home=home)
+            self.assertTrue((home / '.codex/skills/poteto-mode/SKILL.md').is_file())
+            self.assertFalse((home / '.agents/skills/poteto-mode/SKILL.md').exists())
+
+    def test_model_setup_write_contract_is_mapped_for_each_non_cursor_host(self):
+        for host in ['codex', 'pi', 'dsh']:
+            value = (ROOT / 'adapters' / f'{host}.md').read_text(encoding='utf-8')
+            self.assertIn('setup-pstack', value)
+            self.assertIn('~/.agents/pstack-models.md', value)
+            self.assertIn('write', value.lower())
 
 
 if __name__ == '__main__':

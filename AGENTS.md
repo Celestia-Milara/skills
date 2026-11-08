@@ -1,6 +1,6 @@
 # Skills Library
 
-This repository maintains the complete adapted pstack distribution, five local
+This repository maintains the complete official pstack distribution with external host adapters, five local
 supplementary skills, and optional project guidance. pstack owns the main
 engineering workflow. Read [adaptation and source ownership](docs/adaptation.md)
 before changing host behavior or updating the imported source.
@@ -9,7 +9,7 @@ before changing host behavior or updating the imported source.
 
 - Package responsibilities and installation: [README](README.md).
 - Guidance ownership, integration, and source updates: [Agent Guidance Integration](agent-guidance/README.md). Use [AGENTS.template.md](agent-guidance/AGENTS.template.md) for other projects.
-- Checks for changes to this library: [Reading and maintenance](README.md#reading-and-maintenance). Existing host-test evidence: [Verified host behavior](README.md#verified-host-behavior).
+- Checks for changes to this library: [Reading and maintenance](README.md#reading-and-maintenance). Existing host-test evidence: [Validation](docs/validation.md).
 
 Local `design/` records, when present, contain earlier discussions and decisions. Consult relevant records for design or scope changes; historical statements may no longer describe the current files. These records are excluded from publication and are not package dependencies.
 

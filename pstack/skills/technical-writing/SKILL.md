@@ -4,12 +4,6 @@ description: "Layered technical-writing standard: Diátaxis structure, Google de
 disable-model-invocation: true
 ---
 
-## Host adapter
-
-Before this workflow, read the [host adapter](../poteto-mode/references/host.md). Reuse it if already
-read this session. It maps the tools, models, paths, and authorization for this host.
-
-
 # Technical writing
 
 Write so a tired engineer understands on the first read. Apply all four layers.

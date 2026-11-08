@@ -1,5 +1,0 @@
-interface:
-  display_name: "how"
-  short_description: "How workflow for pstack engineering"
-policy:
-  allow_implicit_invocation: false

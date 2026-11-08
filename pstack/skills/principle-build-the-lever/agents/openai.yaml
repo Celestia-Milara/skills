@@ -1,5 +1,0 @@
-interface:
-  display_name: "principle-build-the-lever"
-  short_description: "Principle build the lever"
-policy:
-  allow_implicit_invocation: false

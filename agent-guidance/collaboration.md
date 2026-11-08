@@ -19,7 +19,7 @@ Update affected sources when verified behavior or settled decisions change. Use 
 | Organize or update subsystem documentation, change designs, and plans | [maintenance-docs](../maintenance-docs/SKILL.md) |
 | Search prior decisions before concrete proposals, behavior or key trade-off decisions, related implementation or behavioral test changes | [decision-notes](../decision-notes/SKILL.md) |
 | Assess corrections or rework that could help later tasks | [decision-notes](../decision-notes/SKILL.md): candidate lessons, evidence, and prevention |
-| Prepare a task transfer or continue prior work | pstack [session pickup](../pstack/skills/poteto-mode/playbooks/session-pickup.md) or [pause safely](../pstack/skills/poteto-mode/playbooks/pause-safely.md), under its [host adapter](../pstack/skills/poteto-mode/references/host.md) |
+| Prepare a task transfer or continue prior work | pstack [session pickup](../pstack/skills/poteto-mode/playbooks/session-pickup.md) or [pause safely](../pstack/skills/poteto-mode/playbooks/pause-safely.md), under its [host adapter](../adapters/common.md) |
 
 These are task-specific methods, not a sequence of required phases. Their packages own the procedures and criteria for creating records.
 
@@ -27,7 +27,7 @@ These are task-specific methods, not a sequence of required phases. Their packag
 The five local skills supplement interviews, designs, document maintenance, and
 long-term decisions. Do not run both sets as competing mandatory workflows.
 When combining them, read pstack's
-[workflow composition](../pstack/docs/composition.md) for method triggers,
+[workflow composition](../docs/composition.md) for method triggers,
 authorization handoffs, and artifact ownership. Reuse existing findings and
 confirmed understanding rather than restarting earlier phases.
 
