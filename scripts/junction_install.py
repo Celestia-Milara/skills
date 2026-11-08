@@ -7,7 +7,6 @@ from pathlib import Path
 import re
 import shutil
 import stat
-import tempfile
 
 from package import ROOT, SUPPLEMENTS, build, digest
 from projection import LINK, entry, invocation_metadata, project_agent, relocate
@@ -79,7 +78,7 @@ def content_key(files):
 
 
 def shared_version(store):
-    from install import files, installation_lock, is_link
+    from install import files, installation_lock, is_link, create_stage
     if store.resolve() != store.absolute():
         raise ValueError(f'Store path must not traverse links: {store}')
     if os.path.lexists(store) and (not store.is_dir() or is_link(store)):
@@ -89,7 +88,7 @@ def shared_version(store):
         if os.path.lexists(versions) and (not versions.is_dir() or is_link(versions)):
             raise ValueError(f'Invalid version directory: {versions}')
         versions.mkdir(exist_ok=True)
-        temporary = Path(tempfile.mkdtemp(prefix='.build-', dir=store))
+        temporary = create_stage(store, prefix='.build-')
         try:
             candidate = build(temporary / 'bundle', include_supplements=True)
             expected = files(candidate)
@@ -226,7 +225,7 @@ def project_shared(host, base, staging, final_root, version, store, expected, na
 
 def install(host, project=None, dry_run=False, replace=False, *, scope='project', home=None,
             with_supplements=False, store=None):
-    from install import layout, installation_lock, move_paths, RecoveryError
+    from install import layout, installation_lock, move_paths, RecoveryError, create_stage
     if os.name != 'nt':
         raise ValueError('Junction storage requires native Windows CPython.')
     base, root, bundle = layout(host, project, scope, home)
@@ -252,7 +251,7 @@ def install(host, project=None, dry_run=False, replace=False, *, scope='project'
         return result
     with installation_lock(root):
         version, expected = shared_version(store)
-        staging = Path(tempfile.mkdtemp(prefix='.pstack-stage-', dir=root))
+        staging = create_stage(root)
         backup = None
         backup_created = False
         retain = False

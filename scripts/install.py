@@ -9,6 +9,7 @@ import re
 import shutil
 import stat
 import tempfile
+import uuid
 
 from package import ROOT, SUPPLEMENTS, build, digest
 from projection import HOST_ROOTS, project_skill, project_agent
@@ -29,6 +30,12 @@ def files(directory):
 
 def is_link(path):
     return path.is_symlink() or getattr(path, 'is_junction', lambda: False)() or path.resolve() != path.absolute()
+
+
+def create_stage(parent, prefix='.pstack-stage-'):
+    path = parent / (prefix + uuid.uuid4().hex)
+    path.mkdir()
+    return path
 
 
 def layout(host, project=None, scope='project', home=None):
@@ -204,7 +211,7 @@ def install(host, project=None, dry_run=False, replace=False, *, scope='project'
     if dry_run:
         return result
     with installation_lock(host_root):
-        staging = Path(tempfile.mkdtemp(prefix='.pstack-stage-', dir=host_root))
+        staging = create_stage(host_root)
         backup = None
         backup_created = False
         retain_staging = False

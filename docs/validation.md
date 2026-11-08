@@ -1,5 +1,40 @@
 # Adaptation validation
 
+## Native Windows execution and copy rollout
+
+Bun 1.4.4 was installed from its official pinned release and verified with
+`--version` and `--revision`. Seven upstream plan-checker cases ran successfully
+with Bun in a disposable private skill directory. The installer regression suite
+passed 78 checks, followed by 8 platform checks after diagnostic-report changes.
+
+Native CLI event streams show Codex, Claude Code and Pi reading the installed
+skill, host adapter and platform contract, then invoking the mapped log command.
+The resulting TSV retains the requested leading dash, literal quotes and field
+values. An earlier generic request permitted manual output under the upstream
+skill. The final request explicitly asks for its installed logging command.
+Earlier failed runs remain in the private evidence directory; they are not passes.
+
+Native Codex workspace-write initially failed to read skills because staging used
+owner-only Windows temporary ACLs. A regression probe fails with the old staging
+method and passes with parent inheritance, for both copy and new Junction versions.
+The successful native rerun kept the same sandbox mode. No sandbox bypass or global
+ACL change was used.
+
+Official `log.sh` and the portable helper produced the same header and data cells
+with a matching UTC timestamp format. Git Bash required its own `usr/bin` in the
+child PATH to find `dirname`; its absolute executable path alone was insufficient.
+This does not validate the networked worktree audit or statechart process cleanup.
+
+The dsh headless invocation failed with `MISSING_CREDENTIAL` for its existing
+`deepseek-official` route. Its web and headless profiles select the same route.
+This is a CLI credential-resolution gap, not proof that the user's account has no
+key. It does not count as native workflow acceptance. No credentials or provider
+settings were changed.
+
+Local event streams, run requests, staging regression output and backup receipts
+are in `.tmp/platform-rollout/`. These can contain local host information and stay
+private. Installation and reviewer receipts are recorded there as rollout proceeds.
+
 ## Common platform layer on 2026-11-07
 
 The platform registry and launcher are outside the official source. The source

@@ -40,6 +40,13 @@ also read that shared directory. Their generated invocation metadata differs.
 Project installs follow each host's documented roots. A project that uses multiple
 engines must avoid giving them conflicting same-name entries in shared roots.
 
+Generated staging directories inherit the destination parent's permissions. On
+Windows, owner-only temporary-directory ACLs survive a rename and can prevent
+Codex sandbox processes from reading installed skills. Host staging and new shared
+versions therefore use exclusive UUID directories with normal parent inheritance.
+This changes no global ACL and does not grant access beyond the chosen parent.
+Staging contains public package files and installation metadata, not credentials.
+
 ## Supplements and updates
 
 Clean installs default to 58 official skills. Five supplements can be selected with

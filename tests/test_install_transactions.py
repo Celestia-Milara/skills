@@ -1,6 +1,8 @@
 import json
+import os
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -10,6 +12,32 @@ import install as installer
 
 
 class InstallationTransactions(unittest.TestCase):
+    @unittest.skipUnless(os.name == 'nt', 'Windows ACL inheritance')
+    def test_published_packages_preserve_parent_read_access(self):
+        for storage in ['copy', 'junction']:
+            with self.subTest(storage=storage), tempfile.TemporaryDirectory() as directory:
+                parent = Path(directory)
+                subprocess.run(['icacls', str(parent), '/grant', '*S-1-5-32-545:(OI)(CI)(RX)', '/q'],
+                               capture_output=True, check=True)
+                installer.install('codex', scope='user', home=parent / 'home', storage=storage,
+                                  **({'store': parent / 'store'} if storage == 'junction' else {}))
+                root = parent / 'home/.codex'
+                paths = [root / 'skills/show-me-your-work/SKILL.md',
+                         root / 'pstack/adapters/common.md']
+                for path in paths:
+                    script = "$p='" + str(path).replace("'", "''") + "'; " + '''
+$read = [System.Security.AccessControl.FileSystemRights]::ReadAndExecute
+$rules = (Get-Acl -LiteralPath $p).Access | Where-Object {
+    $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value -eq 'S-1-5-32-545' -and
+    $_.AccessControlType -eq 'Allow' -and ($_.FileSystemRights -band $read) -eq $read
+}
+if (-not $rules) { Write-Error 'Published package lost parent read access'; exit 1 }
+'''
+                    probe = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', script],
+                                           capture_output=True, text=True,
+                                           env={k: v for k, v in os.environ.items() if k.casefold() != 'psmodulepath'})
+                    self.assertEqual(probe.returncode, 0, probe.stderr)
+
     def test_projection_failure_preserves_active_installation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
