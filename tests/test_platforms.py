@@ -87,7 +87,7 @@ class Platforms(unittest.TestCase):
                 runtime.validate(root)
 
     def test_unverified_and_unknown_commands_are_rejected(self):
-        for name in ['statechart', 'watch-pr', 'bootstrap', 'unknown']:
+        for name in ['watch-pr', 'bootstrap', 'unknown']:
             result = self.call(RUNTIME, 'run', name)
             self.assertEqual(result.returncode, 2)
             self.assertIn('No verified portable mapping', result.stderr)
@@ -96,15 +96,20 @@ class Platforms(unittest.TestCase):
         before = {p: digest(p) for p in (ROOT / 'adapters').rglob('*') if p.is_file()}
         result = self.call(RUNTIME, 'check')
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(json.loads(result.stdout)['tools']['statechart']['status'], 'unverified')
+        self.assertIn(json.loads(result.stdout)['tools']['statechart']['status'],
+                      ['available', 'missing-dependencies'] if os.name == 'nt' else ['unverified'])
         self.assertEqual(before, {p: digest(p) for p in (ROOT / 'adapters').rglob('*') if p.is_file()})
 
     def test_doctor_separates_missing_commands_from_unverified_requirements(self):
-        with patch.object(runtime.shutil, 'which', return_value=None):
+        with patch.object(runtime, 'find_executable', return_value=None):
             report = runtime.report(runtime.validate())
         self.assertIsNone(report['executables']['java'])
-        self.assertIsNone(report['tools']['statechart']['missing_dependencies'])
-        self.assertEqual(report['tools']['statechart']['status'], 'unverified')
+        if os.name == 'nt':
+            self.assertIn('node', report['tools']['statechart']['missing_dependencies'])
+            self.assertEqual(report['tools']['statechart']['status'], 'missing-dependencies')
+        else:
+            self.assertIsNone(report['tools']['statechart']['missing_dependencies'])
+            self.assertEqual(report['tools']['statechart']['status'], 'unverified')
         self.assertEqual(report['tools']['check-plan']['missing_dependencies'], ['node'])
 
     def test_installed_launcher_preserves_arguments_and_native_exit_codes(self):

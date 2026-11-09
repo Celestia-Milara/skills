@@ -1,5 +1,95 @@
 # Adaptation validation
 
+## Native Windows statechart
+
+The external Windows adapter invokes the unchanged official worker and its
+checker/compiler. All 573 official source files still match source-lock. No
+projection patch, WSL fallback, Java install or mise install was used. Existing
+Node 24.20, Java 25 and the pinned TLC 1.7.4 jar supplied the runtime. A verified
+copy of the existing jar was placed in the common user cache without changing
+the source cache or ACLs. Codex could not read the original Claude-private cache.
+
+The Windows Job guardian creates the worker inside its Job before execution.
+Real process tests confirm worker/child/grandchild termination after timeout,
+explicit cancellation and stdin EOF. The acceptance runner also kills the actual
+runtime launcher during a TLC check and observes confirmed Job cleanup, no output
+publication and removal of owned staging. It preserves occupied output folders
+and rejects overlapping evidence paths and modified private production scripts.
+Review exposed publication-before-cleanup, a new output junction being replaced,
+and current-directory executable lookup. The guardian now clears private temporary
+files before sending a publishable receipt. Output identity checks preserve newly
+appeared directories and reparse points. Node and Java resolution uses `.exe`
+files from explicit PATH entries, excluding the current directory. The plan
+checker uses the same resolver. Cleanup after publication cannot change the
+completed checker result into an execution error.
+
+`scripts/check_statechart_windows.py` completed twelve scenarios. Codex, Claude
+Code and Pi copy installs, plus a Codex Junction install, each ran the official
+Login and MediaPlayer corpus examples. Both generated reports and charts match
+the committed expected text. Login exits 0; MediaPlayer exits 1 with the expected
+one-step LoudWhenStopped violation. Invalid input and timeout exit 2 without
+publishing output. A Chinese output path with spaces and an ampersand succeeds
+even when the parent requests an ASCII console encoding.
+
+Two Windows format defects were reproduced before their external fixes. Java
+CRLF prevented the pinned parser from recognizing TLC messages. An external Node
+preload now adds LF and UTF-8 JVM arguments; no official parser changed. The earlier
+JAVA_TOOL_OPTIONS probe fixed parsing but added diagnostic lines to TLC output,
+so the final adapter uses direct JVM arguments. A legacy Python console
+encoding could raise an error after a valid report was published to a Chinese
+path. The adapter now emits UTF-8. Java preflight rejects a conflicting line
+separator setting instead of accepting an unreadable result.
+
+Codex, Claude Code and Pi native model calls each read their installed skill,
+host adapter and platform contract, then executed `runtime.py run statechart`.
+Their reports and charts match the MediaPlayer expected text. Each Job receipt
+records checker exit 1, zero active processes and finalized cleanup. These native
+runs used the current platform bytes. Codex retained workspace-write; Claude
+pre-authorized Bash, and Pi supplied no sandbox. These have different isolation
+properties. The initial Codex dependency-access failure remains a failed attempt.
+
+Private source fingerprints, command/event streams and receipts are under
+`.tmp/statechart-windows/`. Earlier attempts remain in `native-before-utf8/`
+and `native-jto-after-utf8/`.
+These examples validate checking, report generation and lifecycle boundaries;
+they do not validate every upstream corpus case, every Java version or every
+view module. PR monitoring remains deferred. dsh is outside this validation.
+
+The final library run passed 92 tests. Claude Opus 5.5 independently accepted the
+five execution-source fingerprints after replaying the adversarial cases and all
+33 corpus examples. It checked the native event streams and the 92-test log; it
+did not rerun that full library suite. The twelve-case installation matrix and
+the final three native samples match the accepted execution files.
+
+The accepted version was installed into the current Codex, Claude Code and Pi
+copy installations. Full ownership checks passed for each bundle and entry;
+the five execution-source hashes equal the accepted fingerprints. The installations
+retain 63, 63 and 58 skills respectively, plus Claude's two named agents. Each
+active installation also ran MediaPlayer using the common cached jar and produced
+the expected report and chart. Three selected configuration files have equal
+before/after/current hashes. Installer rollback backups and exact paths are in
+the private rollout records. Acceptance used uncommitted working-tree files.
+The recorded fingerprints bind those tested files, not the earlier HEAD or a
+main-branch release.
+The active checks were direct launcher calls. Native model calls used the isolated
+acceptance-5 installs with the same execution files. Rollback backup contents were
+verified; rollback itself was not exercised. Configuration preservation covers
+only those three selected files. The host-owned `~/.claude.json` changed during
+closeout; the actor was not observed, and that file is outside this claim.
+
+Remaining limits include relative PATH entries, which still resolve against the
+caller's directory. An explicitly configured `PATH=tools;...` can select a binary
+under that project's `tools` directory. Use absolute PATH directories for the
+validated execution setup. Forcibly killing the guardian, including a host tree
+kill such as `taskkill /T`, can leave owned directories beside the output even
+though the processes are gone. Those temporary files can reach gigabytes.
+Long paths can fail earlier than the upstream CLI because of the additional
+private staging path. Failure is reported without publishing a partial result.
+The system code page here is UTF-8; console-encoding simulations do not validate
+a non-UTF-8 Windows system code page. Native model cases cover copy storage;
+Junction evidence comes from direct installed-command tests. Node 24.20 is the
+tested Node version; the broader declared range follows the upstream wrapper.
+
 ## Native Windows execution and copy rollout
 
 Bun 1.4.4 was installed from its official pinned release and verified with

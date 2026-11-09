@@ -45,8 +45,8 @@ def _inventory(include_supplements=False):
         for relative, expected in tool['sources'].items():
             if relative not in lock['upstream']['files'] or lock['upstream']['files'][relative] != expected:
                 raise ValueError(f'Platform mapping is stale: {name}: {relative}')
-        if tool.get('helper'):
-            helper = ROOT / 'adapters/platforms' / tool['helper']
+        for relative_helper in ([tool['helper']] if tool.get('helper') else []) + tool.get('support', []):
+            helper = ROOT / 'adapters/platforms' / relative_helper
             if not helper.resolve().is_relative_to((ROOT / 'adapters').resolve()) or not helper.is_file():
                 raise ValueError(f'Platform mapping has an invalid helper: {name}')
         if tool.get('entry') and 'skills/' + tool['entry'] not in tool['sources']:

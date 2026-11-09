@@ -75,7 +75,10 @@ files. Use a three-way comparison when importing a new official revision.
 
 [Execution platforms](adapters/platforms/README.md) defines the common script layer
 used by all four hosts. It includes a read-only dependency/hash check and portable
-commands for logging, local worktree facts and plan checking. Platform mappings
+commands for logging, local worktree facts, plan checking and native Windows
+statechart execution. The statechart adapter reuses the official checker and
+compiler with Windows process containment and existing Node/Java/TLC dependencies.
+Platform mappings
 are pinned to upstream hashes. The launcher refuses unverified workflows and does
 not select WSL or install tools automatically. Current user installations are not
 updated by a repository change; verify an isolated installation before migration.
@@ -127,7 +130,8 @@ scripts directory. No Bun dependency installation is part of installer validatio
 
 The upstream tree includes POSIX scripts. Installation and discovery do not prove
 those scripts work on Windows. Native script compatibility and WSL workflows are
-separate acceptance work. No experimental Windows Job patch is included here.
+separate acceptance work. The external statechart adapter uses Windows Jobs;
+the official source contains no Windows patch. PR monitoring remains deferred.
 
 ## Publication scope
 

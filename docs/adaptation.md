@@ -60,10 +60,14 @@ normal updates still refuse such files.
 
 The source and adapters are portable distribution content. Actual Windows script
 execution is scoped by [the execution platform contract](../adapters/platforms/README.md).
-The launcher exposes the portable log helper, reduced local worktree audit and
-unchanged private check-plan script. Both storage modes generate the same contract
-link. WSL fallback and the remaining workflows need separate validation. No
-process-tree or model capability claim follows from successful installation.
+The launcher exposes the portable log helper, reduced local worktree audit,
+unchanged private check-plan script and native Windows statechart adapter. Both
+storage modes generate the same contract link. Statechart runs the unchanged
+private worker inside a Windows Job. An external Node preload sets Java's line
+separator and output encoding through JVM arguments. The official checker and
+chart compiler remain unchanged.
+WSL fallback and the remaining workflows need separate validation. Installation
+alone does not prove process cleanup or model behavior.
 
 ## Optional Junction storage
 
